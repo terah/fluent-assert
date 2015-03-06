@@ -1,6 +1,6 @@
 <?php
 
-namespace League\Skeleton\Test;
+namespace Terah\Assert\Test;
 
 class ExampleTest extends \PHPUnit_Framework_TestCase
 {
