@@ -212,7 +212,7 @@ class Assert
      *
      * @var string
      */
-    protected $exceptionClass = 'Assert\AssertionFailedException';
+    protected $exceptionClass = 'Terah\Assert\AssertionFailedException';
 
 
     public function __construct($value)
