@@ -20,128 +20,128 @@ namespace Terah\Assert;
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  *
  * METHODSTART
- * @method Assert nullOrEq($value, $value2, $message = null, $propertyPath = null)
- * @method Assert nullOrSame($value, $value2, $message = null, $propertyPath = null)
- * @method Assert nullOrNotEq($value1, $value2, $message = null, $propertyPath = null)
- * @method Assert nullOrNotSame($value1, $value2, $message = null, $propertyPath = null)
- * @method Assert nullOrInteger($value, $message = null, $propertyPath = null)
- * @method Assert nullOrFloat($value, $message = null, $propertyPath = null)
- * @method Assert nullOrDigit($value, $message = null, $propertyPath = null)
- * @method Assert nullOrDate($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIntegerish($value, $message = null, $propertyPath = null)
- * @method Assert nullOrBoolean($value, $message = null, $propertyPath = null)
- * @method Assert nullOrScalar($value, $message = null, $propertyPath = null)
- * @method Assert nullOrNotEmpty($value, $message = null, $propertyPath = null)
- * @method Assert nullOrNoContent($value, $message = null, $propertyPath = null)
- * @method Assert nullOrNotNull($value, $message = null, $propertyPath = null)
- * @method Assert nullOrString($value, $message = null, $propertyPath = null)
- * @method Assert nullOrRegex($value, $pattern, $message = null, $propertyPath = null)
- * @method Assert nullOrLength($value, $length, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrMinLength($value, $minLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrMaxLength($value, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrBetweenLength($value, $minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrStartsWith($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrEndsWith($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrContains($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrChoice($value, $choices, $message = null, $propertyPath = null)
- * @method Assert nullOrInArray($value, $choices, $message = null, $propertyPath = null)
- * @method Assert nullOrNumeric($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIsArray($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIsTraversable($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIsArrayAccessible($value, $message = null, $propertyPath = null)
- * @method Assert nullOrKeyExists($value, $key, $message = null, $propertyPath = null)
- * @method Assert nullOrKeysExist($value, $keys, $message = null, $propertyPath = null)
- * @method Assert nullOrKeyIsset($value, $key, $message = null, $propertyPath = null)
- * @method Assert nullOrPropertyExists($value, $key, $message = null, $propertyPath = null)
- * @method Assert nullOrPropertiesExist($value, $keys, $message = null, $propertyPath = null)
- * @method Assert nullOrNotEmptyKey($value, $key, $message = null, $propertyPath = null)
- * @method Assert nullOrNotBlank($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIsCallable($value, $message = null, $propertyPath = null)
- * @method Assert nullOrIsInstanceOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert nullOrNotIsInstanceOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert nullOrSubclassOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert nullOrRange($value, $minValue, $maxValue, $message = null, $propertyPath = null)
- * @method Assert nullOrMin($value, $minValue, $message = null, $propertyPath = null)
- * @method Assert nullOrMax($value, $maxValue, $message = null, $propertyPath = null)
- * @method Assert nullOrFile($value, $message = null, $propertyPath = null)
- * @method Assert nullOrDirectory($value, $message = null, $propertyPath = null)
- * @method Assert nullOrReadable($value, $message = null, $propertyPath = null)
- * @method Assert nullOrWriteable($value, $message = null, $propertyPath = null)
- * @method Assert nullOrEmail($value, $message = null, $propertyPath = null)
- * @method Assert nullOrUrl($value, $message = null, $propertyPath = null)
- * @method Assert nullOrAlnum($value, $message = null, $propertyPath = null)
- * @method Assert nullOrTrue($value, $message = null, $propertyPath = null)
- * @method Assert nullOrFalse($value, $message = null, $propertyPath = null)
- * @method Assert nullOrClassExists($value, $message = null, $propertyPath = null)
+ * @method Assert nullOrEq($value2, $message = null, $propertyPath = null)
+ * @method Assert nullOrSame($value2, $message = null, $propertyPath = null)
+ * @method Assert nullOrNotEq($value2, $message = null, $propertyPath = null)
+ * @method Assert nullOrNotSame($value2, $message = null, $propertyPath = null)
+ * @method Assert nullOrInteger($message = null, $propertyPath = null)
+ * @method Assert nullOrFloat($message = null, $propertyPath = null)
+ * @method Assert nullOrDigit($message = null, $propertyPath = null)
+ * @method Assert nullOrDate($message = null, $propertyPath = null)
+ * @method Assert nullOrIntegerish($message = null, $propertyPath = null)
+ * @method Assert nullOrBoolean($message = null, $propertyPath = null)
+ * @method Assert nullOrScalar($message = null, $propertyPath = null)
+ * @method Assert nullOrNotEmpty($message = null, $propertyPath = null)
+ * @method Assert nullOrNoContent($message = null, $propertyPath = null)
+ * @method Assert nullOrNotNull($message = null, $propertyPath = null)
+ * @method Assert nullOrString($message = null, $propertyPath = null)
+ * @method Assert nullOrRegex($pattern, $message = null, $propertyPath = null)
+ * @method Assert nullOrLength($length, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrMinLength($minLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrMaxLength($maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrBetweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrStartsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrEndsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrContains($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert nullOrChoice($choices, $message = null, $propertyPath = null)
+ * @method Assert nullOrInArray($choices, $message = null, $propertyPath = null)
+ * @method Assert nullOrNumeric($message = null, $propertyPath = null)
+ * @method Assert nullOrIsArray($message = null, $propertyPath = null)
+ * @method Assert nullOrIsTraversable($message = null, $propertyPath = null)
+ * @method Assert nullOrIsArrayAccessible($message = null, $propertyPath = null)
+ * @method Assert nullOrKeyExists($key, $message = null, $propertyPath = null)
+ * @method Assert nullOrKeysExist($keys, $message = null, $propertyPath = null)
+ * @method Assert nullOrKeyIsset($key, $message = null, $propertyPath = null)
+ * @method Assert nullOrPropertyExists($key, $message = null, $propertyPath = null)
+ * @method Assert nullOrPropertiesExist($keys, $message = null, $propertyPath = null)
+ * @method Assert nullOrNotEmptyKey($key, $message = null, $propertyPath = null)
+ * @method Assert nullOrNotBlank($message = null, $propertyPath = null)
+ * @method Assert nullOrIsCallable($message = null, $propertyPath = null)
+ * @method Assert nullOrIsInstanceOf($className, $message = null, $propertyPath = null)
+ * @method Assert nullOrNotIsInstanceOf($className, $message = null, $propertyPath = null)
+ * @method Assert nullOrSubclassOf($className, $message = null, $propertyPath = null)
+ * @method Assert nullOrRange($minValue, $maxValue, $message = null, $propertyPath = null)
+ * @method Assert nullOrMin($minValue, $message = null, $propertyPath = null)
+ * @method Assert nullOrMax($maxValue, $message = null, $propertyPath = null)
+ * @method Assert nullOrFile($message = null, $propertyPath = null)
+ * @method Assert nullOrDirectory($message = null, $propertyPath = null)
+ * @method Assert nullOrReadable($message = null, $propertyPath = null)
+ * @method Assert nullOrWriteable($message = null, $propertyPath = null)
+ * @method Assert nullOrEmail($message = null, $propertyPath = null)
+ * @method Assert nullOrUrl($message = null, $propertyPath = null)
+ * @method Assert nullOrAlnum($message = null, $propertyPath = null)
+ * @method Assert nullOrTrue($message = null, $propertyPath = null)
+ * @method Assert nullOrFalse($message = null, $propertyPath = null)
+ * @method Assert nullOrClassExists($message = null, $propertyPath = null)
  * @method Assert nullOrImplementsInterface($class, $interfaceName, $message = null, $propertyPath = null)
- * @method Assert nullOrIsJsonString($value, $message = null, $propertyPath = null)
- * @method Assert nullOrUuid($value, $message = null, $propertyPath = null)
+ * @method Assert nullOrIsJsonString($message = null, $propertyPath = null)
+ * @method Assert nullOrUuid($message = null, $propertyPath = null)
  * @method Assert nullOrCount($countable, $count, $message = null, $propertyPath = null)
  * @method Assert nullOrChoicesNotEmpty($values, $choices, $message = null, $propertyPath = null)
- * @method Assert nullOrMethodExists($value, $object, $message = null, $propertyPath = null)
- * @method Assert nullOrIsObject($value, $message = null, $propertyPath = null)
- * @method Assert nullOrUtf8($value, $message = null, $propertyPath = null)
- * @method Assert allEq($value, $value2, $message = null, $propertyPath = null)
- * @method Assert allSame($value, $value2, $message = null, $propertyPath = null)
- * @method Assert allNotEq($value1, $value2, $message = null, $propertyPath = null)
- * @method Assert allNotSame($value1, $value2, $message = null, $propertyPath = null)
- * @method Assert allInteger($value, $message = null, $propertyPath = null)
- * @method Assert allFloat($value, $message = null, $propertyPath = null)
- * @method Assert allDigit($value, $message = null, $propertyPath = null)
- * @method Assert allDate($value, $message = null, $propertyPath = null)
- * @method Assert allIntegerish($value, $message = null, $propertyPath = null)
- * @method Assert allBoolean($value, $message = null, $propertyPath = null)
- * @method Assert allScalar($value, $message = null, $propertyPath = null)
- * @method Assert allNotEmpty($value, $message = null, $propertyPath = null)
- * @method Assert allNoContent($value, $message = null, $propertyPath = null)
- * @method Assert allNotNull($value, $message = null, $propertyPath = null)
- * @method Assert allString($value, $message = null, $propertyPath = null)
- * @method Assert allRegex($value, $pattern, $message = null, $propertyPath = null)
- * @method Assert allLength($value, $length, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allMinLength($value, $minLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allMaxLength($value, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allBetweenLength($value, $minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allStartsWith($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allEndsWith($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allContains($string, $needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allChoice($value, $choices, $message = null, $propertyPath = null)
- * @method Assert allInArray($value, $choices, $message = null, $propertyPath = null)
- * @method Assert allNumeric($value, $message = null, $propertyPath = null)
- * @method Assert allIsArray($value, $message = null, $propertyPath = null)
- * @method Assert allIsTraversable($value, $message = null, $propertyPath = null)
- * @method Assert allIsArrayAccessible($value, $message = null, $propertyPath = null)
- * @method Assert allKeyExists($value, $key, $message = null, $propertyPath = null)
- * @method Assert allKeysExist($value, $keys, $message = null, $propertyPath = null)
- * @method Assert allKeyIsset($value, $key, $message = null, $propertyPath = null)
- * @method Assert allPropertyExists($value, $key, $message = null, $propertyPath = null)
- * @method Assert allPropertiesExist($value, $keys, $message = null, $propertyPath = null)
- * @method Assert allNotEmptyKey($value, $key, $message = null, $propertyPath = null)
- * @method Assert allNotBlank($value, $message = null, $propertyPath = null)
- * @method Assert allIsCallable($value, $message = null, $propertyPath = null)
- * @method Assert allIsInstanceOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert allNotIsInstanceOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert allSubclassOf($value, $className, $message = null, $propertyPath = null)
- * @method Assert allRange($value, $minValue, $maxValue, $message = null, $propertyPath = null)
- * @method Assert allMin($value, $minValue, $message = null, $propertyPath = null)
- * @method Assert allMax($value, $maxValue, $message = null, $propertyPath = null)
- * @method Assert allFile($value, $message = null, $propertyPath = null)
- * @method Assert allDirectory($value, $message = null, $propertyPath = null)
- * @method Assert allReadable($value, $message = null, $propertyPath = null)
- * @method Assert allWriteable($value, $message = null, $propertyPath = null)
- * @method Assert allEmail($value, $message = null, $propertyPath = null)
- * @method Assert allUrl($value, $message = null, $propertyPath = null)
- * @method Assert allAlnum($value, $message = null, $propertyPath = null)
- * @method Assert allTrue($value, $message = null, $propertyPath = null)
- * @method Assert allFalse($value, $message = null, $propertyPath = null)
- * @method Assert allClassExists($value, $message = null, $propertyPath = null)
+ * @method Assert nullOrMethodExists($object, $message = null, $propertyPath = null)
+ * @method Assert nullOrIsObject($message = null, $propertyPath = null)
+ * @method Assert nullOrUtf8($message = null, $propertyPath = null)
+ * @method Assert allEq($value2, $message = null, $propertyPath = null)
+ * @method Assert allSame($value2, $message = null, $propertyPath = null)
+ * @method Assert allNotEq($value2, $message = null, $propertyPath = null)
+ * @method Assert allNotSame($value2, $message = null, $propertyPath = null)
+ * @method Assert allInteger($message = null, $propertyPath = null)
+ * @method Assert allFloat($message = null, $propertyPath = null)
+ * @method Assert allDigit($message = null, $propertyPath = null)
+ * @method Assert allDate($message = null, $propertyPath = null)
+ * @method Assert allIntegerish($message = null, $propertyPath = null)
+ * @method Assert allBoolean($message = null, $propertyPath = null)
+ * @method Assert allScalar($message = null, $propertyPath = null)
+ * @method Assert allNotEmpty($message = null, $propertyPath = null)
+ * @method Assert allNoContent($message = null, $propertyPath = null)
+ * @method Assert allNotNull($message = null, $propertyPath = null)
+ * @method Assert allString($message = null, $propertyPath = null)
+ * @method Assert allRegex($pattern, $message = null, $propertyPath = null)
+ * @method Assert allLength($length, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allMinLength($minLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allMaxLength($maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allBetweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allStartsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allEndsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allContains($needle, $message = null, $propertyPath = null, $encoding = "utf8")
+ * @method Assert allChoice($choices, $message = null, $propertyPath = null)
+ * @method Assert allInArray($choices, $message = null, $propertyPath = null)
+ * @method Assert allNumeric($message = null, $propertyPath = null)
+ * @method Assert allIsArray($message = null, $propertyPath = null)
+ * @method Assert allIsTraversable($message = null, $propertyPath = null)
+ * @method Assert allIsArrayAccessible($message = null, $propertyPath = null)
+ * @method Assert allKeyExists($key, $message = null, $propertyPath = null)
+ * @method Assert allKeysExist($keys, $message = null, $propertyPath = null)
+ * @method Assert allKeyIsset($key, $message = null, $propertyPath = null)
+ * @method Assert allPropertyExists($key, $message = null, $propertyPath = null)
+ * @method Assert allPropertiesExist($keys, $message = null, $propertyPath = null)
+ * @method Assert allNotEmptyKey($key, $message = null, $propertyPath = null)
+ * @method Assert allNotBlank($message = null, $propertyPath = null)
+ * @method Assert allIsCallable($message = null, $propertyPath = null)
+ * @method Assert allIsInstanceOf($className, $message = null, $propertyPath = null)
+ * @method Assert allNotIsInstanceOf($className, $message = null, $propertyPath = null)
+ * @method Assert allSubclassOf($className, $message = null, $propertyPath = null)
+ * @method Assert allRange($minValue, $maxValue, $message = null, $propertyPath = null)
+ * @method Assert allMin($minValue, $message = null, $propertyPath = null)
+ * @method Assert allMax($maxValue, $message = null, $propertyPath = null)
+ * @method Assert allFile($message = null, $propertyPath = null)
+ * @method Assert allDirectory($message = null, $propertyPath = null)
+ * @method Assert allReadable($message = null, $propertyPath = null)
+ * @method Assert allWriteable($message = null, $propertyPath = null)
+ * @method Assert allEmail($message = null, $propertyPath = null)
+ * @method Assert allUrl($message = null, $propertyPath = null)
+ * @method Assert allAlnum($message = null, $propertyPath = null)
+ * @method Assert allTrue($message = null, $propertyPath = null)
+ * @method Assert allFalse($message = null, $propertyPath = null)
+ * @method Assert allClassExists($message = null, $propertyPath = null)
  * @method Assert allImplementsInterface($class, $interfaceName, $message = null, $propertyPath = null)
- * @method Assert allIsJsonString($value, $message = null, $propertyPath = null)
- * @method Assert allUuid($value, $message = null, $propertyPath = null)
+ * @method Assert allIsJsonString($message = null, $propertyPath = null)
+ * @method Assert allUuid($message = null, $propertyPath = null)
  * @method Assert allCount($countable, $count, $message = null, $propertyPath = null)
  * @method Assert allChoicesNotEmpty($values, $choices, $message = null, $propertyPath = null)
- * @method Assert allMethodExists($value, $object, $message = null, $propertyPath = null)
- * @method Assert allIsObject($value, $message = null, $propertyPath = null)
- * @method Assert allUtf8($value, $message = null, $propertyPath = null)
+ * @method Assert allMethodExists($object, $message = null, $propertyPath = null)
+ * @method Assert allIsObject($message = null, $propertyPath = null)
+ * @method Assert allUtf8($message = null, $propertyPath = null)
  * METHODEND
  */
 class Assert
@@ -225,17 +225,16 @@ class Assert
      * They are returned from this method so that the stack trace still shows
      * the assertions method.
      *
-     * @param string $value
      * @param string $message
      * @param int $code
      * @param string $propertyPath
      * @param array $constraints
      * @return mixed
      */
-    protected function createException($value, $message, $code, $propertyPath, array $constraints = [])
+    protected function createException($message, $code, $propertyPath, array $constraints = [])
     {
         $exceptionClass = $this->exceptionClass;
-        return new $exceptionClass($message, $code, $propertyPath, $value, $constraints);
+        return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints);
     }
     /**
      * @param $exceptionClass
@@ -247,338 +246,321 @@ class Assert
     /**
      * Assert that two values are equal (using == ).
      *
-     * @param mixed $value
      * @param mixed $value2
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function eq($value, $value2, $message = null, $propertyPath = null)
+    public function eq($value2, $message = null, $propertyPath = null)
     {
-        if ($value != $value2) {
+        if ($this->value != $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not equal expected value "%s".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($value, $message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
     /**
      * Assert that two values are the same (using ===).
      *
-     * @param mixed $value
      * @param mixed $value2
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function same($value, $value2, $message = null, $propertyPath = null)
+    public function same($value2, $message = null, $propertyPath = null)
     {
-        if ($value !== $value2) {
+        if ($this->value !== $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not the same as expected value "%s".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($value, $message, self::INVALID_SAME, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, self::INVALID_SAME, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
     /**
      * Assert that two values are not equal (using == ).
      *
-     * @param mixed $value1
      * @param mixed $value2
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEq($value1, $value2, $message = null, $propertyPath = null)
+    public function notEq($value2, $message = null, $propertyPath = null)
     {
-        if ($value1 == $value2) {
+        if ($this->value == $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is equal to expected value "%s".',
-                $this->stringify($value1),
+                $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($value1, $message,self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($this->value, $message,self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
     /**
      * Assert that two values are not the same (using === ).
      *
-     * @param mixed $value1
      * @param mixed $value2
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notSame($value1, $value2, $message = null, $propertyPath = null)
+    public function notSame($value2, $message = null, $propertyPath = null)
     {
-        if ($value1 === $value2) {
+        if ($this->value === $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is the same as expected value "%s".',
-                $this->stringify($value1),
+                $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($value1, $message, self::INVALID_NOT_SAME, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, self::INVALID_NOT_SAME, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
     /**
      * Assert that value is a php integer.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integer($value, $message = null, $propertyPath = null)
+    public function integer($message = null, $propertyPath = null)
     {
-        if ( ! is_int($value)) {
+        if ( ! is_int($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_INTEGER, $propertyPath);
+            throw $this->createException($message, self::INVALID_INTEGER, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is a php float.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function float($value, $message = null, $propertyPath = null)
+    public function float($message = null, $propertyPath = null)
     {
-        if ( ! is_float($value)) {
+        if ( ! is_float($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a float.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_FLOAT, $propertyPath);
+            throw $this->createException($message, self::INVALID_FLOAT, $propertyPath);
         }
         return $this;
     }
     /**
      * Validates if an integer or integerish is a digit.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function digit($value, $message = null, $propertyPath = null)
+    public function digit($message = null, $propertyPath = null)
     {
-        if ( ! ctype_digit((string)$value)) {
+        if ( ! ctype_digit((string)$this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a digit.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_DIGIT, $propertyPath);
+            throw $this->createException($message, self::INVALID_DIGIT, $propertyPath);
         }
         return $this;
     }
     /**
      * Validates if an string is a date .
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function date($value, $message=null, $propertyPath=null)
+    public function date($message=null, $propertyPath=null)
     {
-        if ( strtotime($value) === false )
+        if ( strtotime($this->value) === false )
         {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a date.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_DATE, $propertyPath);
+            throw $this->createException($message, self::INVALID_DATE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is a php integer'ish.
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integerish($value, $message = null, $propertyPath = null)
+    public function integerish($message = null, $propertyPath = null)
     {
-        if (is_object($value) || strval(intval($value)) != $value || is_bool($value) || is_null($value)) {
+        if (is_object($this->value) || strval(intval($this->value)) != $this->value || is_bool($this->value) || is_null($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer or a number castable to integer.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_INTEGERISH, $propertyPath);
+            throw $this->createException($message, self::INVALID_INTEGERISH, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is php boolean
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function boolean($value, $message = null, $propertyPath = null)
+    public function boolean($message = null, $propertyPath = null)
     {
-        if ( ! is_bool($value)) {
+        if ( ! is_bool($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a boolean.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_BOOLEAN, $propertyPath);
+            throw $this->createException($message, self::INVALID_BOOLEAN, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is a PHP scalar
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function scalar($value, $message = null, $propertyPath = null)
+    public function scalar($message = null, $propertyPath = null)
     {
-        if (!is_scalar($value)) {
+        if (!is_scalar($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a scalar.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_SCALAR, $propertyPath);
+            throw $this->createException($message, self::INVALID_SCALAR, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is not empty
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmpty($value, $message = null, $propertyPath = null)
+    public function notEmpty($message = null, $propertyPath = null)
     {
-        if (empty($value)) {
+        if (empty($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is empty, but non empty value was expected.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::VALUE_EMPTY, $propertyPath);
+            throw $this->createException($message, self::VALUE_EMPTY, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is empty
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function noContent($value, $message = null, $propertyPath = null)
+    public function noContent($message = null, $propertyPath = null)
     {
-        if (!empty($value)) {
+        if (!empty($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not empty, but empty value was expected.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::VALUE_NOT_EMPTY, $propertyPath);
+            throw $this->createException($message, self::VALUE_NOT_EMPTY, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is not null
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notNull($value, $message = null, $propertyPath = null)
+    public function notNull($message = null, $propertyPath = null)
     {
-        if ($value === null) {
+        if ($this->value === null) {
             $message = sprintf(
                 $message ?: 'Value "%s" is null, but non null value was expected.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::VALUE_NULL, $propertyPath);
+            throw $this->createException($message, self::VALUE_NULL, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is a string
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function string($value, $message = null, $propertyPath = null)
+    public function string($message = null, $propertyPath = null)
     {
-        if ( ! is_string($value)) {
+        if ( ! is_string($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" expected to be string, type %s given.',
-                $this->stringify($value),
-                gettype($value)
+                $this->stringify($this->value),
+                gettype($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_STRING, $propertyPath);
+            throw $this->createException($message, self::INVALID_STRING, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value matches a regex
      *
-     * @param mixed $value
      * @param string $pattern
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function regex($value, $pattern, $message = null, $propertyPath = null)
+    public function regex($pattern, $message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if ( ! preg_match($pattern, $value)) {
+        $this->string($message, $propertyPath);
+        if ( ! preg_match($pattern, $this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not match expression.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_REGEX , $propertyPath, ['pattern' => $pattern]);
+            throw $this->createException($message, self::INVALID_REGEX , $propertyPath, ['pattern' => $pattern]);
         }
         return $this;
     }
     /**
      * Assert that string has a given length.
      *
-     * @param mixed $value
      * @param int $length
      * @param string|null $message
      * @param string|null $propertyPath
@@ -586,25 +568,24 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function length($value, $length, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function length($length, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($value, $message, $propertyPath);
-        if (mb_strlen($value, $encoding) !== $length) {
+        $this->string($message, $propertyPath);
+        if (mb_strlen($this->value, $encoding) !== $length) {
             $message = sprintf(
                 $message ?: 'Value "%s" has to be %d exactly characters long, but length is %d.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $length,
-                mb_strlen($value, $encoding)
+                mb_strlen($this->value, $encoding)
             );
             $constraints = ['length' => $length, 'encoding' => $encoding];
-            throw $this->createException($value, $message, self::INVALID_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that a string is at least $minLength chars long.
      *
-     * @param mixed $value
      * @param int $minLength
      * @param string|null $message
      * @param string|null $propertyPath
@@ -612,25 +593,24 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function minLength($value, $minLength, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function minLength($minLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($value, $message, $propertyPath);
-        if (mb_strlen($value, $encoding) < $minLength) {
+        $this->string($message, $propertyPath);
+        if (mb_strlen($this->value, $encoding) < $minLength) {
             $message = sprintf(
                 $message ?: 'Value "%s" is too short, it should have more than %d characters, but only has %d characters.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $minLength,
-                mb_strlen($value, $encoding)
+                mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
-            throw $this->createException($value, $message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that string value is not longer than $maxLength chars.
      *
-     * @param mixed $value
      * @param integer $maxLength
      * @param string|null $message
      * @param string|null $propertyPath
@@ -638,25 +618,24 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function maxLength($value, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function maxLength($maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($value, $message, $propertyPath);
-        if (mb_strlen($value, $encoding) > $maxLength) {
+        $this->string($message, $propertyPath);
+        if (mb_strlen($this->value, $encoding) > $maxLength) {
             $message = sprintf(
                 $message ?: 'Value "%s" is too long, it should have no more than %d characters, but has %d characters.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $maxLength,
-                mb_strlen($value, $encoding)
+                mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
-            throw $this->createException($value, $message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that string length is between min,max lengths.
      *
-     * @param mixed $value
      * @param integer $minLength
      * @param integer $maxLength
      * @param string|null $message
@@ -665,35 +644,34 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function betweenLength($value, $minLength, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function betweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($value, $message, $propertyPath);
-        if (mb_strlen($value, $encoding) < $minLength) {
+        $this->string($message, $propertyPath);
+        if (mb_strlen($this->value, $encoding) < $minLength) {
             $message = sprintf(
                 $message ?: 'Value "%s" is too short, it should have more than %d characters, but only has %d characters.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $minLength,
-                mb_strlen($value, $encoding)
+                mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
-            throw $this->createException($value, $message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
         }
-        if (mb_strlen($value, $encoding) > $maxLength) {
+        if (mb_strlen($this->value, $encoding) > $maxLength) {
             $message = sprintf(
                 $message ?: 'Value "%s" is too long, it should have no more than %d characters, but has %d characters.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $maxLength,
-                mb_strlen($value, $encoding)
+                mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
-            throw $this->createException($value, $message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that string starts with a sequence of chars.
      *
-     * @param mixed $string
      * @param string $needle
      * @param string|null $message
      * @param string|null $propertyPath
@@ -701,24 +679,23 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function startsWith($string, $needle, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function startsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($string, $message, $propertyPath);
-        if (mb_strpos($string, $needle, null, $encoding) !== 0) {
+        $this->string($message, $propertyPath);
+        if (mb_strpos($this->value, $needle, null, $encoding) !== 0) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not start with "%s".',
-                $this->stringify($string),
+                $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($string, $message, self::INVALID_STRING_START, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_STRING_START, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that string ends with a sequence of chars.
      *
-     * @param mixed $string
      * @param string $needle
      * @param string|null $message
      * @param string|null $propertyPath
@@ -726,25 +703,24 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function endsWith($string, $needle, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function endsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($string, $message, $propertyPath);
-        $stringPosition = mb_strlen($string, $encoding) - mb_strlen($needle, $encoding);
-        if (mb_strripos($string, $needle, null, $encoding) !== $stringPosition) {
+        $this->string($message, $propertyPath);
+        $stringPosition = mb_strlen($this->value, $encoding) - mb_strlen($needle, $encoding);
+        if (mb_strripos($this->value, $needle, null, $encoding) !== $stringPosition) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not end with "%s".',
-                $this->stringify($string),
+                $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($string, $message, self::INVALID_STRING_END, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_STRING_END, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that string contains a sequence of chars.
      *
-     * @param mixed $string
      * @param string $needle
      * @param string|null $message
      * @param string|null $propertyPath
@@ -752,39 +728,38 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function contains($string, $needle, $message = null, $propertyPath = null, $encoding = 'utf8')
+    public function contains($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        $this->string($string, $message, $propertyPath);
-        if (mb_strpos($string, $needle, null, $encoding) === false) {
+        $this->string($message, $propertyPath);
+        if (mb_strpos($this->value, $needle, null, $encoding) === false) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not contain "%s".',
-                $this->stringify($string),
+                $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($string, $message, self::INVALID_STRING_CONTAINS, $propertyPath, $constraints);
+            throw $this->createException($message, self::INVALID_STRING_CONTAINS, $propertyPath, $constraints);
         }
         return $this;
     }
     /**
      * Assert that value is in array of choices.
      *
-     * @param mixed $value
      * @param array $choices
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function choice($value, array $choices, $message = null, $propertyPath = null)
+    public function choice(array $choices, $message = null, $propertyPath = null)
     {
-        if ( ! in_array($value, $choices, true)) {
+        if ( ! in_array($this->value, $choices, true)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an element of the valid values: %s',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 implode(", ", array_map('Assert\Assertion::stringify', $choices))
             );
-            throw $this->createException($value, $message, self::INVALID_CHOICE, $propertyPath, ['choices' => $choices]);
+            throw $this->createException($message, self::INVALID_CHOICE, $propertyPath, ['choices' => $choices]);
         }
         return $this;
     }
@@ -793,139 +768,132 @@ class Assert
      *
      * @throws AssertionFailedException
      *
-     * @param       $value
      * @param array $choices
      * @param null  $message
      * @param null  $propertyPath
      * @return $this
      */
-    public function inArray($value, array $choices, $message = null, $propertyPath = null)
+    public function inArray(array $choices, $message = null, $propertyPath = null)
     {
-        $this->choice($value, $choices, $message, $propertyPath);
+        $this->choice($this->value, $choices, $message, $propertyPath);
         return $this;
     }
     /**
      * Assert that value is numeric.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function numeric($value, $message = null, $propertyPath = null)
+    public function numeric($message = null, $propertyPath = null)
     {
-        if ( ! is_numeric($value)) {
+        if ( ! is_numeric($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not numeric.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_NUMERIC, $propertyPath);
+            throw $this->createException($message, self::INVALID_NUMERIC, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is an array.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArray($value, $message = null, $propertyPath = null)
+    public function isArray($message = null, $propertyPath = null)
     {
-        if ( ! is_array($value)) {
+        if ( ! is_array($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_ARRAY, $propertyPath);
+            throw $this->createException($message, self::INVALID_ARRAY, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is an array or a traversable object.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isTraversable($value, $message = null, $propertyPath = null)
+    public function isTraversable($message = null, $propertyPath = null)
     {
-        if ( ! is_array($value) && ! $value instanceof \Traversable) {
+        if ( ! is_array($this->value) && ! $this->value instanceof \Traversable) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement Traversable.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_TRAVERSABLE, $propertyPath);
+            throw $this->createException($message, self::INVALID_TRAVERSABLE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is an array or an array-accessible object.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArrayAccessible($value, $message = null, $propertyPath = null)
+    public function isArrayAccessible($message = null, $propertyPath = null)
     {
-        if ( ! is_array($value) && ! $value instanceof \ArrayAccess) {
+        if ( ! is_array($this->value) && ! $this->value instanceof \ArrayAccess) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement ArrayAccess.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_ARRAY_ACCESSIBLE, $propertyPath);
+            throw $this->createException($message, self::INVALID_ARRAY_ACCESSIBLE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that key exists in an array
      *
-     * @param mixed $value
      * @param string|integer $key
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyExists($value, $key, $message = null, $propertyPath = null)
+    public function keyExists($key, $message = null, $propertyPath = null)
     {
-        $this->isArray($value, $message, $propertyPath);
-        if ( ! array_key_exists($key, $value)) {
+        $this->isArray($this->value, $message, $propertyPath);
+        if ( ! array_key_exists($key, $this->value)) {
             $message = sprintf(
                 $message ?: 'Array does not contain an element with key "%s"',
                 $this->stringify($key)
             );
-            throw $this->createException($value, $message, self::INVALID_KEY_EXISTS, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, self::INVALID_KEY_EXISTS, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
     /**
      * Assert that keys exist in array
      *
-     * @param mixed $value
      * @param array $keys
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keysExist($value, $keys, $message = null, $propertyPath = null)
+    public function keysExist($keys, $message = null, $propertyPath = null)
     {
-        $this->isArray($value, $message, $propertyPath);
+        $this->isArray($this->value, $message, $propertyPath);
         foreach ( $keys as $key ) {
-            if ( ! array_key_exists($key, $value)) {
+            if ( ! array_key_exists($key, $this->value)) {
                 $message = $message ?: sprintf(
                     'Array does not contain an element with key "%s"',
                     $this->stringify($key)
                 );
-                throw $this->createException($value, $message, self::INVALID_KEYS_EXIST, $propertyPath, ['key' => $key]);
+                throw $this->createException($message, self::INVALID_KEYS_EXIST, $propertyPath, ['key' => $key]);
             }
         }
         return $this;
@@ -933,48 +901,46 @@ class Assert
     /**
      * Assert that property exists in array
      *
-     * @param mixed $value
      * @param string|integer $key
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertyExists($value, $key, $message = null, $propertyPath = null)
+    public function propertyExists($key, $message = null, $propertyPath = null)
     {
-        $this->isObject($value);
-        if ( ! property_exists($value, $key) && ! isset($value->$key) ) {
+        $this->isObject($this->value);
+        if ( ! property_exists($this->value, $key) && ! isset($this->value->$key) ) {
             $message = $message ?: sprintf(
                 'Object does not contain an property with key "%s"',
                 $this->stringify($key)
             );
-            throw $this->createException($value, $message, self::INVALID_PROPERTY_EXISTS, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, self::INVALID_PROPERTY_EXISTS, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
     /**
      * Assert that properties exists in array
      *
-     * @param mixed $value
      * @param array $keys
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertiesExist($value, array $keys, $message = null, $propertyPath = null)
+    public function propertiesExist(array $keys, $message = null, $propertyPath = null)
     {
-        $this->isObject($value);
+        $this->isObject($this->value);
         foreach ($keys as $key )
         {
             // Using isset to allow resolution of magically defined properties
-            if ( ! property_exists($value, $key) && ! isset($value->$key) )
+            if ( ! property_exists($this->value, $key) && ! isset($this->value->$key) )
             {
                 $message = $message ?: sprintf(
                     'Object does not contain an property with key "%s"',
                     $this->stringify($key)
                 );
-                throw $this->createException($value, $message, self::INVALID_PROPERTIES_EXIST, $propertyPath, ['key' => $key]);
+                throw $this->createException($message, self::INVALID_PROPERTIES_EXIST, $propertyPath, ['key' => $key]);
             }
         }
         return $this;
@@ -982,152 +948,144 @@ class Assert
     /**
      * Assert that string is valid utf8
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function utf8($value, $message = null, $propertyPath = null)
+    public function utf8($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if  ( mb_detect_encoding($value, 'UTF-8', true) !== 'UTF-8' ) {
+        $this->string($this->value, $message, $propertyPath);
+        if  ( mb_detect_encoding($this->value, 'UTF-8', true) !== 'UTF-8' ) {
             $message = $message ?: sprintf(
                 'Value "%s" was expected to be a valid UTF8 string',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_UTF8, $propertyPath);
+            throw $this->createException($message, self::INVALID_UTF8, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that key exists in an array/array-accessible object using isset()
      *
-     * @param mixed $value
      * @param string|integer $key
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyIsset($value, $key, $message = null, $propertyPath = null)
+    public function keyIsset($key, $message = null, $propertyPath = null)
     {
-        $this->isArrayAccessible($value, $message, $propertyPath);
-        if ( ! isset($value[$key])) {
+        $this->isArrayAccessible($this->value, $message, $propertyPath);
+        if ( ! isset($this->value[$key])) {
             $message = sprintf(
                 $message ?: 'The element with key "%s" was not found',
                 $this->stringify($key)
             );
-            throw $this->createException($value, $message, self::INVALID_KEY_ISSET, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, self::INVALID_KEY_ISSET, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
     /**
      * Assert that key exists in an array/array-accessible object and it's value is not empty.
      *
-     * @param mixed $value
      * @param string|integer $key
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmptyKey($value, $key, $message = null, $propertyPath = null)
+    public function notEmptyKey($key, $message = null, $propertyPath = null)
     {
-        $this->keyIsset($value, $key, $message, $propertyPath);
-        $this->notEmpty($value[$key], $message, $propertyPath);
+        $this->keyIsset($this->value, $key, $message, $propertyPath);
+        $this->notEmpty($this->value[$key], $message, $propertyPath);
         return $this;
     }
     /**
      * Assert that value is not blank
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notBlank($value, $message = null, $propertyPath = null)
+    public function notBlank($message = null, $propertyPath = null)
     {
-        if (false === $value || (empty($value) && '0' != $value)) {
+        if (false === $this->value || (empty($this->value) && '0' != $this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is blank, but was expected to contain a value.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_NOT_BLANK, $propertyPath);
+            throw $this->createException($message, self::INVALID_NOT_BLANK, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is instance of given class-name.
      *
-     * @param mixed $value
      * @param string $className
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isInstanceOf($value, $className, $message = null, $propertyPath = null)
+    public function isInstanceOf($className, $message = null, $propertyPath = null)
     {
-        if ( ! ($value instanceof $className)) {
+        if ( ! ($this->value instanceof $className)) {
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be instanceof of "%s" but is not.',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($value, $message, self::INVALID_INSTANCE_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, self::INVALID_INSTANCE_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
     /**
      * Assert that value is not instance of given class-name.
      *
-     * @param mixed $value
      * @param string $className
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notIsInstanceOf($value, $className, $message = null, $propertyPath = null)
+    public function notIsInstanceOf($className, $message = null, $propertyPath = null)
     {
-        if ($value instanceof $className) {
+        if ($this->value instanceof $className) {
             $message = sprintf(
                 $message ?: 'Class "%s" was not expected to be instanceof of "%s".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($value, $message, self::INVALID_NOT_INSTANCE_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, self::INVALID_NOT_INSTANCE_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
     /**
      * Assert that value is subclass of given class-name.
      *
-     * @param mixed $value
      * @param string $className
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function subclassOf($value, $className, $message = null, $propertyPath = null)
+    public function subclassOf($className, $message = null, $propertyPath = null)
     {
-        if ( ! is_subclass_of($value, $className)) {
+        if ( ! is_subclass_of($this->value, $className)) {
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be subclass of "%s".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($value, $message, self::INVALID_SUBCLASS_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, self::INVALID_SUBCLASS_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
     /**
      * Assert that value is in range of numbers.
      *
-     * @param mixed $value
      * @param integer $minValue
      * @param integer $maxValue
      * @param string|null $message
@@ -1135,148 +1093,142 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function range($value, $minValue, $maxValue, $message = null, $propertyPath = null)
+    public function range($minValue, $maxValue, $message = null, $propertyPath = null)
     {
-        $this->numeric($value, $message, $propertyPath);
-        if ($value < $minValue || $value > $maxValue) {
+        $this->numeric($this->value, $message, $propertyPath);
+        if ($this->value < $minValue || $this->value > $maxValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d" and at most "%d".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $this->stringify($minValue),
                 $this->stringify($maxValue)
             );
-            throw $this->createException($value, $message, self::INVALID_RANGE, $propertyPath, ['min' => $minValue, 'max' => $maxValue]);
+            throw $this->createException($message, self::INVALID_RANGE, $propertyPath, ['min' => $minValue, 'max' => $maxValue]);
         }
         return $this;
     }
     /**
      * Assert that a value is at least as big as a given limit
      *
-     * @param mixed $value
      * @param mixed $minValue
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function min($value, $minValue, $message = null, $propertyPath = null)
+    public function min($minValue, $message = null, $propertyPath = null)
     {
-        $this->numeric($value, $message, $propertyPath);
-        if ($value < $minValue) {
+        $this->numeric($this->value, $message, $propertyPath);
+        if ($this->value < $minValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $this->stringify($minValue)
             );
-            throw $this->createException($value, $message, self::INVALID_MIN, $propertyPath, ['min' => $minValue]);
+            throw $this->createException($message, self::INVALID_MIN, $propertyPath, ['min' => $minValue]);
         }
         return $this;
     }
     /**
      * Assert that a number is smaller as a given limit
      *
-     * @param mixed $value
      * @param mixed $maxValue
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function max($value, $maxValue, $message = null, $propertyPath = null)
+    public function max($maxValue, $message = null, $propertyPath = null)
     {
-        $this->numeric($value, $message, $propertyPath);
-        if ($value > $maxValue) {
+        $this->numeric($this->value, $message, $propertyPath);
+        if ($this->value > $maxValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at most "%d".',
-                $this->stringify($value),
+                $this->stringify($this->value),
                 $this->stringify($maxValue)
             );
-            throw $this->createException($value, $message, self::INVALID_MAX, $propertyPath, ['max' => $maxValue]);
+            throw $this->createException($message, self::INVALID_MAX, $propertyPath, ['max' => $maxValue]);
         }
         return $this;
     }
     /**
      * Assert that a file exists
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function file($value, $message = null, $propertyPath = null)
+    public function file($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        $this->notEmpty($value, $message, $propertyPath);
-        if ( ! is_file($value)) {
+        $this->string($this->value, $message, $propertyPath);
+        $this->notEmpty($this->value, $message, $propertyPath);
+        if ( ! is_file($this->value)) {
             $message = sprintf(
                 $message ?: 'File "%s" was expected to exist.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_FILE, $propertyPath);
+            throw $this->createException($message, self::INVALID_FILE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that a directory exists
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function directory($value, $message = null, $propertyPath = null)
+    public function directory($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if ( ! is_dir($value)) {
+        $this->string($this->value, $message, $propertyPath);
+        if ( ! is_dir($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be a directory.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_DIRECTORY, $propertyPath);
+            throw $this->createException($message, self::INVALID_DIRECTORY, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the value is something readable
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function readable($value, $message = null, $propertyPath = null)
+    public function readable($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if ( ! is_readable($value)) {
+        $this->string($this->value, $message, $propertyPath);
+        if ( ! is_readable($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be readable.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_READABLE, $propertyPath);
+            throw $this->createException($message, self::INVALID_READABLE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the value is something writeable
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function writeable($value, $message = null, $propertyPath = null)
+    public function writeable($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if ( ! is_writeable($value)) {
+        $this->string($this->value, $message, $propertyPath);
+        if ( ! is_writeable($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be writeable.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_WRITEABLE, $propertyPath);
+            throw $this->createException($message, self::INVALID_WRITEABLE, $propertyPath);
         }
         return $this;
     }
@@ -1284,30 +1236,29 @@ class Assert
      * Assert that value is an email adress (using
      * input_filter/FILTER_VALIDATE_EMAIL).
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function email($value, $message = null, $propertyPath = null)
+    public function email($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
-        if ( ! filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        $this->string($this->value, $message, $propertyPath);
+        if ( ! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid e-mail address.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_EMAIL, $propertyPath);
+            throw $this->createException($message, self::INVALID_EMAIL, $propertyPath);
         } else {
-            $host = substr($value, strpos($value, '@') + 1);
+            $host = substr($this->value, strpos($this->value, '@') + 1);
             // Likely not a FQDN, bug in PHP FILTER_VALIDATE_EMAIL prior to PHP 5.3.3
             if (version_compare(PHP_VERSION, '5.3.3', '<') && strpos($host, '.') === false) {
                 $message = sprintf(
                     $message ?: 'Value "%s" was expected to be a valid e-mail address.',
-                    $this->stringify($value)
+                    $this->stringify($this->value)
                 );
-                throw $this->createException($value, $message, self::INVALID_EMAIL, $propertyPath);
+                throw $this->createException($message, self::INVALID_EMAIL, $propertyPath);
             }
         }
         return $this;
@@ -1317,7 +1268,6 @@ class Assert
      *
      * This code snipped was taken from the Symfony project and modified to the special demands of this method.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
@@ -1327,9 +1277,9 @@ class Assert
      * @link https://github.com/symfony/Validator/blob/master/Constraints/UrlValidator.php
      * @link https://github.com/symfony/Validator/blob/master/Constraints/Url.php
      */
-    public function url($value, $message = null, $propertyPath = null)
+    public function url($message = null, $propertyPath = null)
     {
-        $this->string($value, $message, $propertyPath);
+        $this->string($this->value, $message, $propertyPath);
         $protocols = ['http', 'https'];
         $pattern = '~^
             (%s)://                                 # protocol
@@ -1346,117 +1296,112 @@ class Assert
             (/?|/\S+)                               # a /, nothing or a / with something
         $~ixu';
         $pattern = sprintf($pattern, implode('|', $protocols));
-        if (!preg_match($pattern, $value)) {
+        if (!preg_match($pattern, $this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid URL starting with http or https',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_URL, $propertyPath);
+            throw $this->createException($message, self::INVALID_URL, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that value is alphanumeric.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function alnum($value, $message = null, $propertyPath = null)
+    public function alnum($message = null, $propertyPath = null)
     {
         try {
-            $this->regex($value, '(^([a-zA-Z]{1}[a-zA-Z0-9]*)$)', $message, $propertyPath);
+            $this->regex($this->value, '(^([a-zA-Z]{1}[a-zA-Z0-9]*)$)', $message, $propertyPath);
         } catch(AssertionFailedException $e) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not alphanumeric, starting with letters and containing only letters and numbers.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_ALNUM, $propertyPath);
+            throw $this->createException($message, self::INVALID_ALNUM, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the value is boolean True.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function true($value, $message = null, $propertyPath = null)
+    public function true($message = null, $propertyPath = null)
     {
-        if ($value !== true) {
+        if ($this->value !== true) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not TRUE.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_TRUE, $propertyPath);
+            throw $this->createException($message, self::INVALID_TRUE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the value is boolean False.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function false($value, $message = null, $propertyPath = null)
+    public function false($message = null, $propertyPath = null)
     {
-        if ($value !== false) {
+        if ($this->value !== false) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not FALSE.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_FALSE, $propertyPath);
+            throw $this->createException($message, self::INVALID_FALSE, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the class exists.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function classExists($value, $message = null, $propertyPath = null)
+    public function classExists($message = null, $propertyPath = null)
     {
-        if ( ! class_exists($value)) {
+        if ( ! class_exists($this->value)) {
             $message = sprintf(
                 $message ?: 'Class "%s" does not exist.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_CLASS, $propertyPath);
+            throw $this->createException($message, self::INVALID_CLASS, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the class implements the interface
      *
-     * @param mixed $class
      * @param string $interfaceName
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function implementsInterface($class, $interfaceName, $message = null, $propertyPath = null)
+    public function implementsInterface($interfaceName, $message = null, $propertyPath = null)
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new \ReflectionClass($this->value);
         if ( ! $reflection->implementsInterface($interfaceName)) {
             $message = sprintf(
                 $message ?: 'Class "%s" does not implement interface "%s".',
-                $this->stringify($class),
+                $this->stringify($this->value),
                 $this->stringify($interfaceName)
             );
-            throw $this->createException($class, $message, self::INTERFACE_NOT_IMPLEMENTED, $propertyPath, ['interface' => $interfaceName]);
+            throw $this->createException($message, self::INTERFACE_NOT_IMPLEMENTED, $propertyPath, ['interface' => $interfaceName]);
         }
         return $this;
     }
@@ -1469,20 +1414,19 @@ class Assert
      * content afterwards, just to decode and check for yourself instead
      * of using this assertion.
      *
-     * @param mixed $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isJsonString($value, $message = null, $propertyPath = null)
+    public function isJsonString($message = null, $propertyPath = null)
     {
-        if (null === json_decode($value) && JSON_ERROR_NONE !== json_last_error()) {
+        if (null === json_decode($this->value) && JSON_ERROR_NONE !== json_last_error()) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a valid JSON string.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_JSON_STRING, $propertyPath);
+            throw $this->createException($message, self::INVALID_JSON_STRING, $propertyPath);
         }
         return $this;
     }
@@ -1491,46 +1435,44 @@ class Assert
      *
      * Uses code from {@link https://github.com/ramsey/uuid} that is MIT licensed.
      *
-     * @param string $value
      * @param string|null $message
      * @param string|null $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function uuid($value, $message = null, $propertyPath = null)
+    public function uuid($message = null, $propertyPath = null)
     {
-        $value = str_replace(['urn:', 'uuid:', '{', '}'], '', $value);
-        if ($value === '00000000-0000-0000-0000-000000000000') {
+        $this->value = str_replace(['urn:', 'uuid:', '{', '}'], '', $this->value);
+        if ($this->value === '00000000-0000-0000-0000-000000000000') {
             return $this;
         }
-        if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $value)) {
+        if (!preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a valid UUID.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_UUID, $propertyPath);
+            throw $this->createException($message, self::INVALID_UUID, $propertyPath);
         }
         return $this;
     }
     /**
      * Assert that the count of countable is equal to count.
      *
-     * @param array|\Countable $countable
      * @param int              $count
      * @param string           $message
      * @param string           $propertyPath
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function count($countable, $count, $message = null, $propertyPath = null)
+    public function count($count, $message = null, $propertyPath = null)
     {
-        if ($count !== count($countable)) {
+        if ($count !== count($this->value)) {
             $message = sprintf(
                 $message ?: 'List does not contain exactly "%d" elements.',
-                $this->stringify($countable),
+                $this->stringify($this->value),
                 $this->stringify($count)
             );
-            throw $this->createException($countable, $message, self::INVALID_COUNT, $propertyPath, ['count' => $count]);
+            throw $this->createException($message, self::INVALID_COUNT, $propertyPath, ['count' => $count]);
         }
         return $this;
     }
@@ -1563,8 +1505,8 @@ class Assert
             $method      = substr($method, 3);
             $values      = array_shift($args);
             $calledClass = get_called_class();
-            foreach ($values as $value) {
-                call_user_func_array([$calledClass, $method], array_merge([$value], $args));
+            foreach ($values as $this->value) {
+                call_user_func_array([$calledClass, $method], array_merge([$this->value], $args));
             }
             return $this;
         }
@@ -1573,68 +1515,65 @@ class Assert
     /**
      * Determines if the values array has every choice as key and that this choice has content.
      *
-     * @param array $values
      * @param array $choices
      * @param null  $message
      * @param null  $propertyPath
      * @return $this
      */
-    public function choicesNotEmpty(array $values, array $choices, $message = null, $propertyPath = null)
+    public function choicesNotEmpty(array $choices, $message = null, $propertyPath = null)
     {
-        $this->notEmpty($values, $message, $propertyPath);
+        $this->notEmpty($message, $propertyPath);
         foreach ($choices as $choice) {
-            $this->notEmptyKey($values, $choice, $message, $propertyPath);
+            $this->notEmptyKey($choice, $message, $propertyPath);
         }
         return $this;
     }
     /**
      * Determines that the named method is defined in the provided object.
      *
-     * @param string $value
      * @param mixed  $object
      * @param null   $message
      * @param null   $propertyPath
      * @returns Assert
      * @throws
      */
-    public function methodExists($value, $object, $message = null, $propertyPath = null)
+    public function methodExists($object, $message = null, $propertyPath = null)
     {
-        $this->isObject($object, $message, $propertyPath);
-        if (!method_exists($object, $value)) {
+        (new Assert($object))->isObject($message, $propertyPath);
+        if (!method_exists($object, $this->value)) {
             $message = sprintf(
                 $message ?: 'Expected "%s" does not a exist in provided object.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_METHOD, $propertyPath);
+            throw $this->createException($message, self::INVALID_METHOD, $propertyPath);
         }
         return $this;
     }
     /**
      * Determines that the provided value is an object.
      *
-     * @param mixed $value
      * @param null $message
      * @param null $propertyPath
      * @return $this
      */
-    public function isObject($value, $message = null, $propertyPath = null)
+    public function isObject($message = null, $propertyPath = null)
     {
-        if (!is_object($value)) {
+        if (!is_object($this->value)) {
             $message = sprintf(
                 $message ?: 'Provided "%s" is not a valid object.',
-                $this->stringify($value)
+                $this->stringify($this->value)
             );
-            throw $this->createException($value, $message, self::INVALID_OBJECT, $propertyPath);
+            throw $this->createException($message, self::INVALID_OBJECT, $propertyPath);
         }
         return $this;
     }
     /**
      * Make a string version of a value.
      *
-     * @param mixed $value
+     * @param $value
      * @return string
      */
-    private static function stringify($value)
+    private function stringify($value)
     {
         if (is_bool($value)) {
             return $value ? '<TRUE>' : '<FALSE>';
