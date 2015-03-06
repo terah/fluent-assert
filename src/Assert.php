@@ -113,7 +113,8 @@ class Assert
      */
     public static function that($value)
     {
-        static::$instance = ! is_null(static::$instance) ? static::$instance : new Assert($value);
+        $class = get_called_class();
+        static::$instance = ! is_null(static::$instance) ? static::$instance : new $class($value);
         return static::$instance->reset($value);
     }
 
