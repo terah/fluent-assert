@@ -205,7 +205,7 @@ class Assert
     const INVALID_UTF8              = 303;
 
     protected $nullOr   = false;
-    protected $all      = false;
+
     protected $value    = null;
     /**
      * Exception to throw when an assertion failed.
@@ -216,6 +216,11 @@ class Assert
 
 
     public function __construct($value)
+    {
+        $this->setValue($value);
+    }
+
+    public function setValue($value)
     {
         $this->value = $value;
     }
@@ -254,6 +259,10 @@ class Assert
      */
     public function eq($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value != $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" does not equal expected value "%s".',
@@ -275,6 +284,10 @@ class Assert
      */
     public function same($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value !== $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not the same as expected value "%s".',
@@ -296,13 +309,17 @@ class Assert
      */
     public function notEq($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value == $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is equal to expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($this->value, $message,self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message,self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -317,6 +334,10 @@ class Assert
      */
     public function notSame($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value === $value2) {
             $message = sprintf(
                 $message ?: 'Value "%s" is the same as expected value "%s".',
@@ -337,6 +358,10 @@ class Assert
      */
     public function integer($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_int($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer.',
@@ -356,6 +381,10 @@ class Assert
      */
     public function float($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_float($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a float.',
@@ -375,6 +404,10 @@ class Assert
      */
     public function digit($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! ctype_digit((string)$this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a digit.',
@@ -394,6 +427,10 @@ class Assert
      */
     public function date($message=null, $propertyPath=null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( strtotime($this->value) === false )
         {
             $message = sprintf(
@@ -413,6 +450,10 @@ class Assert
      */
     public function integerish($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (is_object($this->value) || strval(intval($this->value)) != $this->value || is_bool($this->value) || is_null($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer or a number castable to integer.',
@@ -432,6 +473,10 @@ class Assert
      */
     public function boolean($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_bool($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a boolean.',
@@ -451,6 +496,10 @@ class Assert
      */
     public function scalar($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (!is_scalar($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a scalar.',
@@ -470,6 +519,10 @@ class Assert
      */
     public function notEmpty($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (empty($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is empty, but non empty value was expected.',
@@ -489,6 +542,10 @@ class Assert
      */
     public function noContent($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (!empty($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not empty, but empty value was expected.',
@@ -508,6 +565,10 @@ class Assert
      */
     public function notNull($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value === null) {
             $message = sprintf(
                 $message ?: 'Value "%s" is null, but non null value was expected.',
@@ -527,6 +588,10 @@ class Assert
      */
     public function string($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_string($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" expected to be string, type %s given.',
@@ -548,6 +613,10 @@ class Assert
      */
     public function regex($pattern, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if ( ! preg_match($pattern, $this->value)) {
             $message = sprintf(
@@ -570,6 +639,11 @@ class Assert
      */
     public function length($length, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
+
         $this->string($message, $propertyPath);
         if (mb_strlen($this->value, $encoding) !== $length) {
             $message = sprintf(
@@ -595,6 +669,10 @@ class Assert
      */
     public function minLength($minLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if (mb_strlen($this->value, $encoding) < $minLength) {
             $message = sprintf(
@@ -620,6 +698,10 @@ class Assert
      */
     public function maxLength($maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if (mb_strlen($this->value, $encoding) > $maxLength) {
             $message = sprintf(
@@ -646,6 +728,10 @@ class Assert
      */
     public function betweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if (mb_strlen($this->value, $encoding) < $minLength) {
             $message = sprintf(
@@ -681,6 +767,10 @@ class Assert
      */
     public function startsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if (mb_strpos($this->value, $needle, null, $encoding) !== 0) {
             $message = sprintf(
@@ -705,6 +795,10 @@ class Assert
      */
     public function endsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         $stringPosition = mb_strlen($this->value, $encoding) - mb_strlen($needle, $encoding);
         if (mb_strripos($this->value, $needle, null, $encoding) !== $stringPosition) {
@@ -730,6 +824,10 @@ class Assert
      */
     public function contains($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($message, $propertyPath);
         if (mb_strpos($this->value, $needle, null, $encoding) === false) {
             $message = sprintf(
@@ -753,6 +851,10 @@ class Assert
      */
     public function choice(array $choices, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! in_array($this->value, $choices, true)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an element of the valid values: %s',
@@ -775,7 +877,11 @@ class Assert
      */
     public function inArray(array $choices, $message = null, $propertyPath = null)
     {
-        $this->choice($this->value, $choices, $message, $propertyPath);
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
+        $this->choice($choices, $message, $propertyPath);
         return $this;
     }
     /**
@@ -788,6 +894,10 @@ class Assert
      */
     public function numeric($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_numeric($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not numeric.',
@@ -807,6 +917,10 @@ class Assert
      */
     public function isArray($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_array($this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array.',
@@ -826,6 +940,10 @@ class Assert
      */
     public function isTraversable($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_array($this->value) && ! $this->value instanceof \Traversable) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement Traversable.',
@@ -845,6 +963,10 @@ class Assert
      */
     public function isArrayAccessible($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_array($this->value) && ! $this->value instanceof \ArrayAccess) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement ArrayAccess.',
@@ -865,6 +987,10 @@ class Assert
      */
     public function keyExists($key, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->isArray($this->value, $message, $propertyPath);
         if ( ! array_key_exists($key, $this->value)) {
             $message = sprintf(
@@ -886,6 +1012,10 @@ class Assert
      */
     public function keysExist($keys, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->isArray($this->value, $message, $propertyPath);
         foreach ( $keys as $key ) {
             if ( ! array_key_exists($key, $this->value)) {
@@ -909,6 +1039,10 @@ class Assert
      */
     public function propertyExists($key, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->isObject($this->value);
         if ( ! property_exists($this->value, $key) && ! isset($this->value->$key) ) {
             $message = $message ?: sprintf(
@@ -930,6 +1064,10 @@ class Assert
      */
     public function propertiesExist(array $keys, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->isObject($this->value);
         foreach ($keys as $key )
         {
@@ -955,6 +1093,10 @@ class Assert
      */
     public function utf8($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         if  ( mb_detect_encoding($this->value, 'UTF-8', true) !== 'UTF-8' ) {
             $message = $message ?: sprintf(
@@ -976,6 +1118,10 @@ class Assert
      */
     public function keyIsset($key, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->isArrayAccessible($this->value, $message, $propertyPath);
         if ( ! isset($this->value[$key])) {
             $message = sprintf(
@@ -997,8 +1143,12 @@ class Assert
      */
     public function notEmptyKey($key, $message = null, $propertyPath = null)
     {
-        $this->keyIsset($this->value, $key, $message, $propertyPath);
-        $this->notEmpty($this->value[$key], $message, $propertyPath);
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
+        $this->keyIsset($key, $message, $propertyPath);
+        (new Assert($this->value[$key]))->notEmpty($message, $propertyPath);
         return $this;
     }
     /**
@@ -1011,6 +1161,10 @@ class Assert
      */
     public function notBlank($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (false === $this->value || (empty($this->value) && '0' != $this->value)) {
             $message = sprintf(
                 $message ?: 'Value "%s" is blank, but was expected to contain a value.',
@@ -1031,6 +1185,10 @@ class Assert
      */
     public function isInstanceOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! ($this->value instanceof $className)) {
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be instanceof of "%s" but is not.',
@@ -1052,6 +1210,10 @@ class Assert
      */
     public function notIsInstanceOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value instanceof $className) {
             $message = sprintf(
                 $message ?: 'Class "%s" was not expected to be instanceof of "%s".',
@@ -1073,6 +1235,10 @@ class Assert
      */
     public function subclassOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! is_subclass_of($this->value, $className)) {
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be subclass of "%s".',
@@ -1095,6 +1261,10 @@ class Assert
      */
     public function range($minValue, $maxValue, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->numeric($this->value, $message, $propertyPath);
         if ($this->value < $minValue || $this->value > $maxValue) {
             $message = sprintf(
@@ -1118,6 +1288,10 @@ class Assert
      */
     public function min($minValue, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->numeric($this->value, $message, $propertyPath);
         if ($this->value < $minValue) {
             $message = sprintf(
@@ -1140,6 +1314,10 @@ class Assert
      */
     public function max($maxValue, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->numeric($this->value, $message, $propertyPath);
         if ($this->value > $maxValue) {
             $message = sprintf(
@@ -1161,6 +1339,10 @@ class Assert
      */
     public function file($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         $this->notEmpty($this->value, $message, $propertyPath);
         if ( ! is_file($this->value)) {
@@ -1182,6 +1364,10 @@ class Assert
      */
     public function directory($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         if ( ! is_dir($this->value)) {
             $message = sprintf(
@@ -1202,6 +1388,10 @@ class Assert
      */
     public function readable($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         if ( ! is_readable($this->value)) {
             $message = sprintf(
@@ -1222,6 +1412,10 @@ class Assert
      */
     public function writeable($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         if ( ! is_writeable($this->value)) {
             $message = sprintf(
@@ -1243,6 +1437,10 @@ class Assert
      */
     public function email($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         if ( ! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
             $message = sprintf(
@@ -1279,6 +1477,10 @@ class Assert
      */
     public function url($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->string($this->value, $message, $propertyPath);
         $protocols = ['http', 'https'];
         $pattern = '~^
@@ -1315,8 +1517,12 @@ class Assert
      */
     public function alnum($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         try {
-            $this->regex($this->value, '(^([a-zA-Z]{1}[a-zA-Z0-9]*)$)', $message, $propertyPath);
+            $this->regex('(^([a-zA-Z]{1}[a-zA-Z0-9]*)$)', $message, $propertyPath);
         } catch(AssertionFailedException $e) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not alphanumeric, starting with letters and containing only letters and numbers.',
@@ -1336,6 +1542,10 @@ class Assert
      */
     public function true($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value !== true) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not TRUE.',
@@ -1355,6 +1565,10 @@ class Assert
      */
     public function false($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($this->value !== false) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not FALSE.',
@@ -1374,6 +1588,10 @@ class Assert
      */
     public function classExists($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ( ! class_exists($this->value)) {
             $message = sprintf(
                 $message ?: 'Class "%s" does not exist.',
@@ -1394,6 +1612,10 @@ class Assert
      */
     public function implementsInterface($interfaceName, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $reflection = new \ReflectionClass($this->value);
         if ( ! $reflection->implementsInterface($interfaceName)) {
             $message = sprintf(
@@ -1421,6 +1643,10 @@ class Assert
      */
     public function isJsonString($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (null === json_decode($this->value) && JSON_ERROR_NONE !== json_last_error()) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a valid JSON string.',
@@ -1442,6 +1668,10 @@ class Assert
      */
     public function uuid($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->value = str_replace(['urn:', 'uuid:', '{', '}'], '', $this->value);
         if ($this->value === '00000000-0000-0000-0000-000000000000') {
             return $this;
@@ -1466,6 +1696,10 @@ class Assert
      */
     public function count($count, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if ($count !== count($this->value)) {
             $message = sprintf(
                 $message ?: 'List does not contain exactly "%d" elements.',
@@ -1487,7 +1721,7 @@ class Assert
      */
     public function __call($method, $args)
     {
-        if (strpos($method, "nullOr") === 0) {
+        if ( strpos($method, "nullOr") === 0 ) {
             if ( ! array_key_exists(0, $args)) {
                 throw new \BadMethodCallException("Missing the first argument.");
             }
@@ -1495,18 +1729,20 @@ class Assert
                 return $this;
             }
             $method = substr($method, 6);
+            $this->nullOr = true;
             return call_user_func_array([get_called_class(), $method], $args);
         }
-        if (strpos($method, "all") === 0) {
-            if ( ! array_key_exists(0, $args)) {
-                throw new \BadMethodCallException("Missing the first argument.");
-            }
-            $this->isTraversable($args[0]);
+        if (strpos($method, "all") === 0)
+        {
+            $this->isTraversable($this->value);
             $method      = substr($method, 3);
             $values      = array_shift($args);
             $calledClass = get_called_class();
-            foreach ($values as $this->value) {
-                call_user_func_array([$calledClass, $method], array_merge([$this->value], $args));
+
+            foreach ($this->value as $values )
+            {
+                $object = new $calledClass($values);
+                call_user_func_array([$object, $method], $args);
             }
             return $this;
         }
@@ -1522,6 +1758,10 @@ class Assert
      */
     public function choicesNotEmpty(array $choices, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         $this->notEmpty($message, $propertyPath);
         foreach ($choices as $choice) {
             $this->notEmptyKey($choice, $message, $propertyPath);
@@ -1539,6 +1779,10 @@ class Assert
      */
     public function methodExists($object, $message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         (new Assert($object))->isObject($message, $propertyPath);
         if (!method_exists($object, $this->value)) {
             $message = sprintf(
@@ -1558,6 +1802,10 @@ class Assert
      */
     public function isObject($message = null, $propertyPath = null)
     {
+        if ( $this->nullOr && is_null($this->value) )
+        {
+            return $this;
+        }
         if (!is_object($this->value)) {
             $message = sprintf(
                 $message ?: 'Provided "%s" is not a valid object.',
