@@ -19,130 +19,6 @@ namespace Terah\Assert;
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
  *
- * METHODSTART
- * @method Assert nullOrEq($value2, $message = null, $propertyPath = null)
- * @method Assert nullOrSame($value2, $message = null, $propertyPath = null)
- * @method Assert nullOrNotEq($value2, $message = null, $propertyPath = null)
- * @method Assert nullOrNotSame($value2, $message = null, $propertyPath = null)
- * @method Assert nullOrInteger($message = null, $propertyPath = null)
- * @method Assert nullOrFloat($message = null, $propertyPath = null)
- * @method Assert nullOrDigit($message = null, $propertyPath = null)
- * @method Assert nullOrDate($message = null, $propertyPath = null)
- * @method Assert nullOrIntegerish($message = null, $propertyPath = null)
- * @method Assert nullOrBoolean($message = null, $propertyPath = null)
- * @method Assert nullOrScalar($message = null, $propertyPath = null)
- * @method Assert nullOrNotEmpty($message = null, $propertyPath = null)
- * @method Assert nullOrNoContent($message = null, $propertyPath = null)
- * @method Assert nullOrNotNull($message = null, $propertyPath = null)
- * @method Assert nullOrString($message = null, $propertyPath = null)
- * @method Assert nullOrRegex($pattern, $message = null, $propertyPath = null)
- * @method Assert nullOrLength($length, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrMinLength($minLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrMaxLength($maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrBetweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrStartsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrEndsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrContains($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert nullOrChoice($choices, $message = null, $propertyPath = null)
- * @method Assert nullOrInArray($choices, $message = null, $propertyPath = null)
- * @method Assert nullOrNumeric($message = null, $propertyPath = null)
- * @method Assert nullOrIsArray($message = null, $propertyPath = null)
- * @method Assert nullOrIsTraversable($message = null, $propertyPath = null)
- * @method Assert nullOrIsArrayAccessible($message = null, $propertyPath = null)
- * @method Assert nullOrKeyExists($key, $message = null, $propertyPath = null)
- * @method Assert nullOrKeysExist($keys, $message = null, $propertyPath = null)
- * @method Assert nullOrKeyIsset($key, $message = null, $propertyPath = null)
- * @method Assert nullOrPropertyExists($key, $message = null, $propertyPath = null)
- * @method Assert nullOrPropertiesExist($keys, $message = null, $propertyPath = null)
- * @method Assert nullOrNotEmptyKey($key, $message = null, $propertyPath = null)
- * @method Assert nullOrNotBlank($message = null, $propertyPath = null)
- * @method Assert nullOrIsCallable($message = null, $propertyPath = null)
- * @method Assert nullOrIsInstanceOf($className, $message = null, $propertyPath = null)
- * @method Assert nullOrNotIsInstanceOf($className, $message = null, $propertyPath = null)
- * @method Assert nullOrSubclassOf($className, $message = null, $propertyPath = null)
- * @method Assert nullOrRange($minValue, $maxValue, $message = null, $propertyPath = null)
- * @method Assert nullOrMin($minValue, $message = null, $propertyPath = null)
- * @method Assert nullOrMax($maxValue, $message = null, $propertyPath = null)
- * @method Assert nullOrFile($message = null, $propertyPath = null)
- * @method Assert nullOrDirectory($message = null, $propertyPath = null)
- * @method Assert nullOrReadable($message = null, $propertyPath = null)
- * @method Assert nullOrWriteable($message = null, $propertyPath = null)
- * @method Assert nullOrEmail($message = null, $propertyPath = null)
- * @method Assert nullOrUrl($message = null, $propertyPath = null)
- * @method Assert nullOrAlnum($message = null, $propertyPath = null)
- * @method Assert nullOrTrue($message = null, $propertyPath = null)
- * @method Assert nullOrFalse($message = null, $propertyPath = null)
- * @method Assert nullOrClassExists($message = null, $propertyPath = null)
- * @method Assert nullOrImplementsInterface($class, $interfaceName, $message = null, $propertyPath = null)
- * @method Assert nullOrIsJsonString($message = null, $propertyPath = null)
- * @method Assert nullOrUuid($message = null, $propertyPath = null)
- * @method Assert nullOrCount($countable, $count, $message = null, $propertyPath = null)
- * @method Assert nullOrChoicesNotEmpty($values, $choices, $message = null, $propertyPath = null)
- * @method Assert nullOrMethodExists($object, $message = null, $propertyPath = null)
- * @method Assert nullOrIsObject($message = null, $propertyPath = null)
- * @method Assert nullOrUtf8($message = null, $propertyPath = null)
- * @method Assert allEq($value2, $message = null, $propertyPath = null)
- * @method Assert allSame($value2, $message = null, $propertyPath = null)
- * @method Assert allNotEq($value2, $message = null, $propertyPath = null)
- * @method Assert allNotSame($value2, $message = null, $propertyPath = null)
- * @method Assert allInteger($message = null, $propertyPath = null)
- * @method Assert allFloat($message = null, $propertyPath = null)
- * @method Assert allDigit($message = null, $propertyPath = null)
- * @method Assert allDate($message = null, $propertyPath = null)
- * @method Assert allIntegerish($message = null, $propertyPath = null)
- * @method Assert allBoolean($message = null, $propertyPath = null)
- * @method Assert allScalar($message = null, $propertyPath = null)
- * @method Assert allNotEmpty($message = null, $propertyPath = null)
- * @method Assert allNoContent($message = null, $propertyPath = null)
- * @method Assert allNotNull($message = null, $propertyPath = null)
- * @method Assert allString($message = null, $propertyPath = null)
- * @method Assert allRegex($pattern, $message = null, $propertyPath = null)
- * @method Assert allLength($length, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allMinLength($minLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allMaxLength($maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allBetweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allStartsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allEndsWith($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allContains($needle, $message = null, $propertyPath = null, $encoding = "utf8")
- * @method Assert allChoice($choices, $message = null, $propertyPath = null)
- * @method Assert allInArray($choices, $message = null, $propertyPath = null)
- * @method Assert allNumeric($message = null, $propertyPath = null)
- * @method Assert allIsArray($message = null, $propertyPath = null)
- * @method Assert allIsTraversable($message = null, $propertyPath = null)
- * @method Assert allIsArrayAccessible($message = null, $propertyPath = null)
- * @method Assert allKeyExists($key, $message = null, $propertyPath = null)
- * @method Assert allKeysExist($keys, $message = null, $propertyPath = null)
- * @method Assert allKeyIsset($key, $message = null, $propertyPath = null)
- * @method Assert allPropertyExists($key, $message = null, $propertyPath = null)
- * @method Assert allPropertiesExist($keys, $message = null, $propertyPath = null)
- * @method Assert allNotEmptyKey($key, $message = null, $propertyPath = null)
- * @method Assert allNotBlank($message = null, $propertyPath = null)
- * @method Assert allIsCallable($message = null, $propertyPath = null)
- * @method Assert allIsInstanceOf($className, $message = null, $propertyPath = null)
- * @method Assert allNotIsInstanceOf($className, $message = null, $propertyPath = null)
- * @method Assert allSubclassOf($className, $message = null, $propertyPath = null)
- * @method Assert allRange($minValue, $maxValue, $message = null, $propertyPath = null)
- * @method Assert allMin($minValue, $message = null, $propertyPath = null)
- * @method Assert allMax($maxValue, $message = null, $propertyPath = null)
- * @method Assert allFile($message = null, $propertyPath = null)
- * @method Assert allDirectory($message = null, $propertyPath = null)
- * @method Assert allReadable($message = null, $propertyPath = null)
- * @method Assert allWriteable($message = null, $propertyPath = null)
- * @method Assert allEmail($message = null, $propertyPath = null)
- * @method Assert allUrl($message = null, $propertyPath = null)
- * @method Assert allAlnum($message = null, $propertyPath = null)
- * @method Assert allTrue($message = null, $propertyPath = null)
- * @method Assert allFalse($message = null, $propertyPath = null)
- * @method Assert allClassExists($message = null, $propertyPath = null)
- * @method Assert allImplementsInterface($class, $interfaceName, $message = null, $propertyPath = null)
- * @method Assert allIsJsonString($message = null, $propertyPath = null)
- * @method Assert allUuid($message = null, $propertyPath = null)
- * @method Assert allCount($countable, $count, $message = null, $propertyPath = null)
- * @method Assert allChoicesNotEmpty($values, $choices, $message = null, $propertyPath = null)
- * @method Assert allMethodExists($object, $message = null, $propertyPath = null)
- * @method Assert allIsObject($message = null, $propertyPath = null)
- * @method Assert allUtf8($message = null, $propertyPath = null)
- * METHODEND
  */
 class Assert
 {
@@ -207,13 +83,13 @@ class Assert
     protected $nullOr   = false;
 
     protected $value    = null;
+    protected $all      = false;
     /**
      * Exception to throw when an assertion failed.
      *
      * @var string
      */
     protected $exceptionClass = 'Terah\Assert\AssertionFailedException';
-
 
     public function __construct($value)
     {
@@ -223,6 +99,19 @@ class Assert
     public function setValue($value)
     {
         $this->value = $value;
+        return $this;
+    }
+
+    public function nullOr()
+    {
+        $this->nullOr = true;
+        return $this;
+    }
+
+    public function all($all=true)
+    {
+        $this->all = $all;
+        return $this;
     }
 
     /**
@@ -241,12 +130,15 @@ class Assert
         $exceptionClass = $this->exceptionClass;
         return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints);
     }
+
     /**
      * @param $exceptionClass
+     * @return $this
      */
     public function setExceptionClass($exceptionClass)
     {
         $this->$exceptionClass = $exceptionClass;
+        return $this;
     }
     /**
      * Assert that two values are equal (using == ).
@@ -259,6 +151,10 @@ class Assert
      */
     public function eq($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -284,6 +180,10 @@ class Assert
      */
     public function same($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -309,6 +209,10 @@ class Assert
      */
     public function notEq($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -334,6 +238,10 @@ class Assert
      */
     public function notSame($value2, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -358,6 +266,10 @@ class Assert
      */
     public function integer($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -381,6 +293,10 @@ class Assert
      */
     public function float($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -404,6 +320,10 @@ class Assert
      */
     public function digit($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -427,6 +347,10 @@ class Assert
      */
     public function date($message=null, $propertyPath=null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -450,6 +374,10 @@ class Assert
      */
     public function integerish($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -473,6 +401,10 @@ class Assert
      */
     public function boolean($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -496,6 +428,10 @@ class Assert
      */
     public function scalar($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -519,6 +455,10 @@ class Assert
      */
     public function notEmpty($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -542,6 +482,10 @@ class Assert
      */
     public function noContent($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -565,6 +509,10 @@ class Assert
      */
     public function notNull($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -588,6 +536,10 @@ class Assert
      */
     public function string($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -613,6 +565,10 @@ class Assert
      */
     public function regex($pattern, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -639,6 +595,10 @@ class Assert
      */
     public function length($length, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -669,6 +629,10 @@ class Assert
      */
     public function minLength($minLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -698,6 +662,10 @@ class Assert
      */
     public function maxLength($maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -728,6 +696,10 @@ class Assert
      */
     public function betweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -767,6 +739,10 @@ class Assert
      */
     public function startsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -795,6 +771,10 @@ class Assert
      */
     public function endsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -824,6 +804,10 @@ class Assert
      */
     public function contains($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -851,6 +835,10 @@ class Assert
      */
     public function choice(array $choices, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -859,7 +847,7 @@ class Assert
             $message = sprintf(
                 $message ?: 'Value "%s" is not an element of the valid values: %s',
                 $this->stringify($this->value),
-                implode(", ", array_map('Assert\Assertion::stringify', $choices))
+                implode(", ", array_map('Terah\Assert\Assert::stringify', $choices))
             );
             throw $this->createException($message, self::INVALID_CHOICE, $propertyPath, ['choices' => $choices]);
         }
@@ -877,6 +865,10 @@ class Assert
      */
     public function inArray(array $choices, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -894,6 +886,10 @@ class Assert
      */
     public function numeric($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -917,6 +913,10 @@ class Assert
      */
     public function isArray($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -940,6 +940,10 @@ class Assert
      */
     public function isTraversable($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -963,6 +967,10 @@ class Assert
      */
     public function isArrayAccessible($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -987,6 +995,10 @@ class Assert
      */
     public function keyExists($key, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1012,6 +1024,10 @@ class Assert
      */
     public function keysExist($keys, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1039,6 +1055,10 @@ class Assert
      */
     public function propertyExists($key, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1064,6 +1084,10 @@ class Assert
      */
     public function propertiesExist(array $keys, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1093,6 +1117,10 @@ class Assert
      */
     public function utf8($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1118,6 +1146,10 @@ class Assert
      */
     public function keyIsset($key, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1143,6 +1175,10 @@ class Assert
      */
     public function notEmptyKey($key, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1161,6 +1197,10 @@ class Assert
      */
     public function notBlank($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1185,6 +1225,10 @@ class Assert
      */
     public function isInstanceOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1210,6 +1254,10 @@ class Assert
      */
     public function notIsInstanceOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1235,6 +1283,10 @@ class Assert
      */
     public function subclassOf($className, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1261,6 +1313,10 @@ class Assert
      */
     public function range($minValue, $maxValue, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1288,6 +1344,10 @@ class Assert
      */
     public function min($minValue, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1314,6 +1374,10 @@ class Assert
      */
     public function max($maxValue, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1339,6 +1403,10 @@ class Assert
      */
     public function file($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1364,6 +1432,10 @@ class Assert
      */
     public function directory($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1388,6 +1460,10 @@ class Assert
      */
     public function readable($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1412,6 +1488,10 @@ class Assert
      */
     public function writeable($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1437,6 +1517,10 @@ class Assert
      */
     public function email($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1477,6 +1561,10 @@ class Assert
      */
     public function url($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1517,6 +1605,10 @@ class Assert
      */
     public function alnum($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1542,6 +1634,10 @@ class Assert
      */
     public function true($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1565,6 +1661,10 @@ class Assert
      */
     public function false($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1588,6 +1688,10 @@ class Assert
      */
     public function classExists($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1612,6 +1716,10 @@ class Assert
      */
     public function implementsInterface($interfaceName, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1643,6 +1751,10 @@ class Assert
      */
     public function isJsonString($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1668,6 +1780,10 @@ class Assert
      */
     public function uuid($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1696,6 +1812,10 @@ class Assert
      */
     public function count($count, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1710,44 +1830,58 @@ class Assert
         }
         return $this;
     }
-    /**
-     * static call handler to implement:
-     *  - "null or assertion" delegation
-     *  - "all" delegation
-     *
-     * @param $method
-     * @param $args
-     * @return $this|mixed
-     */
-    public function __call($method, $args)
-    {
-        if ( strpos($method, "nullOr") === 0 ) {
-            if ( ! array_key_exists(0, $args)) {
-                throw new \BadMethodCallException("Missing the first argument.");
-            }
-            if ($args[0] === null) {
-                return $this;
-            }
-            $method = substr($method, 6);
-            $this->nullOr = true;
-            return call_user_func_array([get_called_class(), $method], $args);
-        }
-        if (strpos($method, "all") === 0)
-        {
-            $this->isTraversable($this->value);
-            $method      = substr($method, 3);
-            $values      = array_shift($args);
-            $calledClass = get_called_class();
 
-            foreach ($this->value as $values )
+    protected function doAll($func, $args)
+    {
+        if ( $this->all &&  (new Assert($this->value))->isTraversable() )
+        {
+            foreach ( $this->value as $idx => $value )
             {
-                $object = new $calledClass($values);
-                call_user_func_array([$object, $method], $args);
+                $object = (new Assert($value));
+                call_user_func_array([$object, $func], $args);
             }
-            return $this;
+            return true;
         }
-        throw new \BadMethodCallException("No assertion Assertion#" . $method . " exists.");
+        return false;
     }
+//    /**
+//     * static call handler to implement:
+//     *  - "null or assertion" delegation
+//     *  - "all" delegation
+//     *
+//     * @param $method
+//     * @param $args
+//     * @return $this|mixed
+//     */
+//    public function __call($method, $args)
+//    {
+//        if ( strpos($method, "nullOr") === 0 )
+//        {
+//            if ( ! array_key_exists(0, $args) )
+//            {
+//                throw new \BadMethodCallException("Missing the first argument.");
+//            }
+//            $method         = substr($method, 6);
+//            $this->nullOr   = true;
+//            return call_user_func_array([get_called_class(), $method], $args);
+//        }
+//        if (strpos($method, "all") === 0)
+//        {
+////            $this->isTraversable($this->value);
+////            $method      = substr($method, 3);
+////            //$values      = array_shift($args);
+////            $calledClass = get_called_class();
+////
+////            foreach ($this->value as $values )
+////            {
+////                $object = new $calledClass($values);
+////                call_user_func_array([$object, $method], $args);
+////            }
+////            return $this;
+//
+//        }
+//        throw new \BadMethodCallException("No assertion Assertion#" . $method . " exists.");
+//    }
     /**
      * Determines if the values array has every choice as key and that this choice has content.
      *
@@ -1758,6 +1892,10 @@ class Assert
      */
     public function choicesNotEmpty(array $choices, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1779,6 +1917,10 @@ class Assert
      */
     public function methodExists($object, $message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;
@@ -1802,6 +1944,10 @@ class Assert
      */
     public function isObject($message = null, $propertyPath = null)
     {
+        if ( $this->doAll(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
         if ( $this->nullOr && is_null($this->value) )
         {
             return $this;

@@ -3,7 +3,7 @@
 namespace Terah\Assert\Test;
 
 use Terah\Assert\Assert;
-use Terah\Terah\Assert\AssertionFailedException;
+use Terah\Assert\AssertionFailedException;
 
 class AssertTest extends \PHPUnit_Framework_TestCase
 {
@@ -326,7 +326,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidChoice()
     {
-        $this->setExpectedException('BadMethodCallException', null, Assert::INVALID_CHOICE);
+        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_CHOICE);
         (new Assert("foo"))->choice(array("bar", "baz"));
     }
 
@@ -475,8 +475,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     public function testInvalidUrl($url)
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_URL);
-
-        (new Assert(null))->url($url);
+        (new Assert('foo'))->url($url);
     }
 
     public static function dataInvalidUrl()
@@ -627,14 +626,8 @@ class AssertTest extends \PHPUnit_Framework_TestCase
 
     public function testNullOr()
     {
-        (new Assert(null))->nullOrMax(1);
-        (new Assert(null))->nullOrMax(2);
-    }
-
-    public function testNullOrWithNoValueThrows()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException');
-        (new Assert())->nullOrMax();
+        (new Assert(null))->nullOr()->max(1);
+        (new Assert(null))->nullOr()->max(2);
     }
 
     public function testLength()
@@ -717,15 +710,6 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert(__DIR__ . '/does-not-exist'))->writeable();
     }
 
-    /**
-     * @expectedException \Terah\Assert\AssertionFailedException
-     * @expectedExceptionMessage No assertion
-     */
-    public function testFailedNullOrMethodCall()
-    {
-        (new Assert())->NullOrAssertionDoesNotExist();
-    }
-
     public function testImplementsInterface()
     {
         (new Assert('\ArrayIterator'))->implementsInterface('\Traversable');
@@ -792,7 +776,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidUuids($uuid)
     {
-        $this->setExpectedException('Assert\InvalidArgumentException');
+        $this->setExpectedException('Terah\Assert\AssertionFailedException');
         (new Assert($uuid))->uuid();
     }
 
@@ -829,7 +813,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidNotEmptyKey($invalidArray, $key)
     {
-        $this->setExpectedException('Assert\InvalidArgumentException');
+        $this->setExpectedException('Terah\Assert\AssertionFailedException');
         (new Assert($invalidArray))->notEmptyKey($key);
     }
 
@@ -843,31 +827,31 @@ class AssertTest extends \PHPUnit_Framework_TestCase
 
     public function testAllWithSimpleAssertion()
     {
-        (new Assert(array(true, true)))->allTrue();
+        (new Assert(array(true, true)))->all()->true();
     }
 
     public function testAllWithSimpleAssertionThrowsExceptionOnElementThatFailsAssertion()
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_TRUE);
-        (new Assert(array(true, false)))->allTrue();
+        (new Assert(array(true, false)))->all()->true();
     }
 
     public function testAllWithComplexAssertion()
     {
-        (new Assert(array(new \stdClass, new \stdClass)))->allIsInstanceOf('stdClass');
+        (new Assert(array(new \stdClass, new \stdClass)))->all()->isInstanceOf('stdClass');
     }
 
     public function testAllWithComplexAssertionThrowsExceptionOnElementThatFailsAssertion()
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException', 'Assertion failed', Assert::INVALID_INSTANCE_OF);
 
-        (new Assert(array(new \stdClass, new \stdClass)))->allIsInstanceOf('PDO', 'Assertion failed', 'foos');
+        (new Assert(array(new \stdClass, new \stdClass)))->all()->isInstanceOf('PDO', 'Assertion failed', 'foos');
     }
 
     public function testAllWithNoValueThrows()
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException');
-        (new Assert(null))->allTrue();
+        (new Assert(null))->all()->True();
     }
 
     public function testValidCount()
