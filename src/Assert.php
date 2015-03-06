@@ -18,6 +18,7 @@ namespace Terah\Assert;
  * Assert library
  *
  * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @author Terry Cullen <terry@terah.com.au>
  *
  */
 class Assert
@@ -80,9 +81,16 @@ class Assert
     const INVALID_PROPERTIES_EXIST  = 302;
     const INVALID_UTF8              = 303;
 
+    /** @var Assert $instance */
+    static protected $instance = null;
+
+    /** @var bool */
     protected $nullOr   = false;
 
+    /** @var mixed */
     protected $value    = null;
+
+    /** @var bool */
     protected $all      = false;
     /**
      * Exception to throw when an assertion failed.
@@ -91,23 +99,57 @@ class Assert
      */
     protected $exceptionClass = 'Terah\Assert\AssertionFailedException';
 
+    /**
+     * @param mixed $value
+     */
     public function __construct($value)
     {
-        $this->setValue($value);
+        $this->value($value);
     }
 
-    public function setValue($value)
+    /**
+     * @param $value
+     * @return Assert
+     */
+    public static function that($value)
+    {
+        static::$instance = ! is_null(static::$instance) ? static::$instance : new Assert($value);
+        return static::$instance->reset($value);
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function reset($value)
+    {
+        return $this->all(false)->nullOr(false)->value($value);
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function value($value)
     {
         $this->value = $value;
         return $this;
     }
 
-    public function nullOr()
+    /**
+     * @param bool $nullOr
+     * @return $this
+     */
+    public function nullOr($nullOr=true)
     {
-        $this->nullOr = true;
+        $this->nullOr = $nullOr;
         return $this;
     }
 
+    /**
+     * @param bool $all
+     * @return $this
+     */
     public function all($all=true)
     {
         $this->all = $all;
