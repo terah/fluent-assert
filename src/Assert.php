@@ -81,9 +81,6 @@ class Assert
     const INVALID_PROPERTIES_EXIST  = 302;
     const INVALID_UTF8              = 303;
 
-    /** @var Assert $instance */
-    static protected $instance = null;
-
     /** @var bool */
     protected $nullOr   = false;
 
@@ -113,9 +110,7 @@ class Assert
      */
     public static function that($value)
     {
-        $class = get_called_class();
-        static::$instance = ! is_null(static::$instance) ? static::$instance : new $class($value);
-        return static::$instance->reset($value);
+        return (new Assert($value));
     }
 
     /**
