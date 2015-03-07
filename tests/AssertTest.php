@@ -916,6 +916,23 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert('methodExists'))->methodExists(new Assert(null));
     }
 
+    public function testChaining()
+    {
+        (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(1);
+        (new Assert(array(1,1,1,1,1,1,)))->all()->integer()->integerish()->numeric()->notNull()->eq(1);
+    }
+
+    public function testChainingFails()
+    {
+        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
+        (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(2);
+    }
+
+    public function testAllChainingFails()
+    {
+        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
+        (new Assert(array(1,1,1,1,1,2,)))->all()->integer()->integerish()->numeric()->notNull()->eq(1);
+    }
     /**
      * @test
      */

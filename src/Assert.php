@@ -189,12 +189,7 @@ class Assert
      */
     public function eq($value2, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value != $value2) {
@@ -218,12 +213,7 @@ class Assert
      */
     public function same($value2, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value !== $value2) {
@@ -247,12 +237,7 @@ class Assert
      */
     public function notEq($value2, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value == $value2) {
@@ -276,12 +261,7 @@ class Assert
      */
     public function notSame($value2, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value === $value2) {
@@ -304,12 +284,7 @@ class Assert
      */
     public function integer($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_int($this->value)) {
@@ -331,12 +306,7 @@ class Assert
      */
     public function float($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_float($this->value)) {
@@ -358,12 +328,7 @@ class Assert
      */
     public function digit($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! ctype_digit((string)$this->value)) {
@@ -385,12 +350,7 @@ class Assert
      */
     public function date($message=null, $propertyPath=null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( strtotime($this->value) === false )
@@ -412,12 +372,7 @@ class Assert
      */
     public function integerish($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (is_object($this->value) || strval(intval($this->value)) != $this->value || is_bool($this->value) || is_null($this->value)) {
@@ -439,12 +394,7 @@ class Assert
      */
     public function boolean($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_bool($this->value)) {
@@ -466,12 +416,7 @@ class Assert
      */
     public function scalar($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (!is_scalar($this->value)) {
@@ -493,12 +438,7 @@ class Assert
      */
     public function notEmpty($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (empty($this->value)) {
@@ -520,12 +460,7 @@ class Assert
      */
     public function noContent($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (!empty($this->value)) {
@@ -547,12 +482,7 @@ class Assert
      */
     public function notNull($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value === null) {
@@ -574,12 +504,7 @@ class Assert
      */
     public function string($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_string($this->value)) {
@@ -603,12 +528,7 @@ class Assert
      */
     public function regex($pattern, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -633,8 +553,7 @@ class Assert
      */
     public function length($length, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( $this->nullOr && is_null($this->value) )
@@ -667,12 +586,7 @@ class Assert
      */
     public function minLength($minLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -700,12 +614,7 @@ class Assert
      */
     public function maxLength($maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -734,12 +643,7 @@ class Assert
      */
     public function betweenLength($minLength, $maxLength, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -777,12 +681,7 @@ class Assert
      */
     public function startsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -809,12 +708,7 @@ class Assert
      */
     public function endsWith($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -842,12 +736,7 @@ class Assert
      */
     public function contains($needle, $message = null, $propertyPath = null, $encoding = 'utf8')
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($message, $propertyPath);
@@ -873,12 +762,7 @@ class Assert
      */
     public function choice(array $choices, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! in_array($this->value, $choices, true)) {
@@ -903,12 +787,7 @@ class Assert
      */
     public function inArray(array $choices, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->choice($choices, $message, $propertyPath);
@@ -924,12 +803,7 @@ class Assert
      */
     public function numeric($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_numeric($this->value)) {
@@ -951,12 +825,7 @@ class Assert
      */
     public function isArray($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_array($this->value)) {
@@ -978,12 +847,7 @@ class Assert
      */
     public function isTraversable($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_array($this->value) && ! $this->value instanceof \Traversable) {
@@ -1005,12 +869,7 @@ class Assert
      */
     public function isArrayAccessible($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_array($this->value) && ! $this->value instanceof \ArrayAccess) {
@@ -1033,12 +892,7 @@ class Assert
      */
     public function keyExists($key, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->isArray($this->value, $message, $propertyPath);
@@ -1062,12 +916,7 @@ class Assert
      */
     public function keysExist($keys, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->isArray($this->value, $message, $propertyPath);
@@ -1093,12 +942,7 @@ class Assert
      */
     public function propertyExists($key, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->isObject($this->value);
@@ -1122,12 +966,7 @@ class Assert
      */
     public function propertiesExist(array $keys, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->isObject($this->value);
@@ -1155,12 +994,7 @@ class Assert
      */
     public function utf8($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1184,12 +1018,7 @@ class Assert
      */
     public function keyIsset($key, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->isArrayAccessible($this->value, $message, $propertyPath);
@@ -1213,12 +1042,7 @@ class Assert
      */
     public function notEmptyKey($key, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->keyIsset($key, $message, $propertyPath);
@@ -1235,12 +1059,7 @@ class Assert
      */
     public function notBlank($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (false === $this->value || (empty($this->value) && '0' != $this->value)) {
@@ -1263,12 +1082,7 @@ class Assert
      */
     public function isInstanceOf($className, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! ($this->value instanceof $className)) {
@@ -1292,12 +1106,7 @@ class Assert
      */
     public function notIsInstanceOf($className, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value instanceof $className) {
@@ -1321,12 +1130,7 @@ class Assert
      */
     public function subclassOf($className, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! is_subclass_of($this->value, $className)) {
@@ -1351,12 +1155,7 @@ class Assert
      */
     public function range($minValue, $maxValue, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->numeric($this->value, $message, $propertyPath);
@@ -1382,12 +1181,7 @@ class Assert
      */
     public function min($minValue, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->numeric($this->value, $message, $propertyPath);
@@ -1412,12 +1206,7 @@ class Assert
      */
     public function max($maxValue, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->numeric($this->value, $message, $propertyPath);
@@ -1441,12 +1230,7 @@ class Assert
      */
     public function file($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1470,12 +1254,7 @@ class Assert
      */
     public function directory($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1498,12 +1277,7 @@ class Assert
      */
     public function readable($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1526,12 +1300,7 @@ class Assert
      */
     public function writeable($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1555,12 +1324,7 @@ class Assert
      */
     public function email($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1599,12 +1363,7 @@ class Assert
      */
     public function url($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->string($this->value, $message, $propertyPath);
@@ -1643,12 +1402,7 @@ class Assert
      */
     public function alnum($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         try {
@@ -1672,12 +1426,7 @@ class Assert
      */
     public function true($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value !== true) {
@@ -1699,12 +1448,7 @@ class Assert
      */
     public function false($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($this->value !== false) {
@@ -1726,12 +1470,7 @@ class Assert
      */
     public function classExists($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ( ! class_exists($this->value)) {
@@ -1754,12 +1493,7 @@ class Assert
      */
     public function implementsInterface($interfaceName, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $reflection = new \ReflectionClass($this->value);
@@ -1789,12 +1523,7 @@ class Assert
      */
     public function isJsonString($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (null === json_decode($this->value) && JSON_ERROR_NONE !== json_last_error()) {
@@ -1818,12 +1547,7 @@ class Assert
      */
     public function uuid($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->value = str_replace(['urn:', 'uuid:', '{', '}'], '', $this->value);
@@ -1850,12 +1574,7 @@ class Assert
      */
     public function count($count, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if ($count !== count($this->value)) {
@@ -1869,7 +1588,7 @@ class Assert
         return $this;
     }
 
-    protected function doAll($func, $args)
+    protected function doAllOrNullOr($func, $args)
     {
         if ( $this->all &&  (new Assert($this->value))->isTraversable() )
         {
@@ -1878,6 +1597,10 @@ class Assert
                 $object = (new Assert($value));
                 call_user_func_array([$object, $func], $args);
             }
+            return true;
+        }
+        if ( $this->nullOr && is_null($this->value) )
+        {
             return true;
         }
         return false;
@@ -1930,12 +1653,7 @@ class Assert
      */
     public function choicesNotEmpty(array $choices, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         $this->notEmpty($message, $propertyPath);
@@ -1955,12 +1673,7 @@ class Assert
      */
     public function methodExists($object, $message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         (new Assert($object))->isObject($message, $propertyPath);
@@ -1982,12 +1695,7 @@ class Assert
      */
     public function isObject($message = null, $propertyPath = null)
     {
-        if ( $this->doAll(__FUNCTION__, func_get_args()) )
-        {
-            return $this;
-        }
-        if ( $this->nullOr && is_null($this->value) )
-        {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
         if (!is_object($this->value)) {
