@@ -556,11 +556,6 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        if ( $this->nullOr && is_null($this->value) )
-        {
-            return $this;
-        }
-
         $this->string($message, $propertyPath);
         if (mb_strlen($this->value, $encoding) !== $length) {
             $message = sprintf(
@@ -1605,44 +1600,6 @@ class Assert
         }
         return false;
     }
-//    /**
-//     * static call handler to implement:
-//     *  - "null or assertion" delegation
-//     *  - "all" delegation
-//     *
-//     * @param $method
-//     * @param $args
-//     * @return $this|mixed
-//     */
-//    public function __call($method, $args)
-//    {
-//        if ( strpos($method, "nullOr") === 0 )
-//        {
-//            if ( ! array_key_exists(0, $args) )
-//            {
-//                throw new \BadMethodCallException("Missing the first argument.");
-//            }
-//            $method         = substr($method, 6);
-//            $this->nullOr   = true;
-//            return call_user_func_array([get_called_class(), $method], $args);
-//        }
-//        if (strpos($method, "all") === 0)
-//        {
-////            $this->isTraversable($this->value);
-////            $method      = substr($method, 3);
-////            //$values      = array_shift($args);
-////            $calledClass = get_called_class();
-////
-////            foreach ($this->value as $values )
-////            {
-////                $object = new $calledClass($values);
-////                call_user_func_array([$object, $method], $args);
-////            }
-////            return $this;
-//
-//        }
-//        throw new \BadMethodCallException("No assertion Assertion#" . $method . " exists.");
-//    }
     /**
      * Determines if the values array has every choice as key and that this choice has content.
      *
