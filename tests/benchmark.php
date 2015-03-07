@@ -1,5 +1,6 @@
 <?php
 
+
 require_once 'src/Assert.php';
 
 use Terah\Assert\Assert;

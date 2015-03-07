@@ -309,7 +309,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        if ( ! is_float($this->value)) {
+        if ( ! is_float($this->value) ) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a float.',
                 $this->stringify($this->value)
@@ -331,7 +331,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        if ( ! ctype_digit((string)$this->value)) {
+        if ( ! ctype_digit((string)$this->value) ) {
             $message = sprintf(
                 $message ?: 'Value "%s" is not a digit.',
                 $this->stringify($this->value)
@@ -895,7 +895,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isArray($this->value, $message, $propertyPath);
+        $this->isArray($message, $propertyPath);
         if ( ! array_key_exists($key, $this->value)) {
             $message = sprintf(
                 $message ?: 'Array does not contain an element with key "%s"',
@@ -919,7 +919,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isArray($this->value, $message, $propertyPath);
+        $this->isArray($message, $propertyPath);
         foreach ( $keys as $key ) {
             if ( ! array_key_exists($key, $this->value)) {
                 $message = $message ?: sprintf(
@@ -945,7 +945,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isObject($this->value);
+        $this->isObject($message, $propertyPath);
         if ( ! property_exists($this->value, $key) && ! isset($this->value->$key) ) {
             $message = $message ?: sprintf(
                 'Object does not contain an property with key "%s"',
@@ -969,7 +969,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isObject($this->value);
+        $this->isObject($$message, $propertyPath);
         foreach ($keys as $key )
         {
             // Using isset to allow resolution of magically defined properties
@@ -997,7 +997,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         if  ( mb_detect_encoding($this->value, 'UTF-8', true) !== 'UTF-8' ) {
             $message = $message ?: sprintf(
                 'Value "%s" was expected to be a valid UTF8 string',
@@ -1021,7 +1021,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isArrayAccessible($this->value, $message, $propertyPath);
+        $this->isArrayAccessible($message, $propertyPath);
         if ( ! isset($this->value[$key])) {
             $message = sprintf(
                 $message ?: 'The element with key "%s" was not found',
@@ -1158,7 +1158,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->numeric($this->value, $message, $propertyPath);
+        $this->numeric($message, $propertyPath);
         if ($this->value < $minValue || $this->value > $maxValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d" and at most "%d".',
@@ -1184,7 +1184,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->numeric($this->value, $message, $propertyPath);
+        $this->numeric($message, $propertyPath);
         if ($this->value < $minValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d".',
@@ -1209,7 +1209,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->numeric($this->value, $message, $propertyPath);
+        $this->numeric($message, $propertyPath);
         if ($this->value > $maxValue) {
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at most "%d".',
@@ -1233,8 +1233,8 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
-        $this->notEmpty($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
+        $this->notEmpty($message, $propertyPath);
         if ( ! is_file($this->value)) {
             $message = sprintf(
                 $message ?: 'File "%s" was expected to exist.',
@@ -1257,7 +1257,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         if ( ! is_dir($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be a directory.',
@@ -1280,7 +1280,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         if ( ! is_readable($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be readable.',
@@ -1303,7 +1303,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         if ( ! is_writeable($this->value)) {
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be writeable.',
@@ -1327,7 +1327,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         if ( ! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid e-mail address.',
@@ -1366,7 +1366,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->string($this->value, $message, $propertyPath);
+        $this->string($message, $propertyPath);
         $protocols = ['http', 'https'];
         $pattern = '~^
             (%s)://                                 # protocol
