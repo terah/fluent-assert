@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/terah/fluent-assert.svg?style=flat-square)](https://scrutinizer-ci.com/g/terah/fluent-assert)
 [![Total Downloads](https://img.shields.io/packagist/dt/terah/fluent-assert.svg?style=flat-square)](https://packagist.org/packages/terah/fluent-assert)
 
-This is a fork/subset of the awesome package Assert (https://github.com/beberlei/assert).  I only use the fluent (chained) interface and the assert library is very heavily used chunk of code.  By breaking it into it's own library the library is about 3 times faster (using my very unscienctific benchark).
+This is a fork/subset of the awesome package Assert (https://github.com/beberlei/assert).  I only use the fluent (chained) interface and the assert library is very heavily used chunk of code.  By breaking it into it's own library the library is about 3 times faster (using my very unscientific benchark).
 
 ## Install
 
