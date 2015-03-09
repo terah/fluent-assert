@@ -7,7 +7,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/terah/fluent-assert.svg?style=flat-square)](https://scrutinizer-ci.com/g/terah/fluent-assert)
 [![Total Downloads](https://img.shields.io/packagist/dt/terah/fluent-assert.svg?style=flat-square)](https://packagist.org/packages/terah/fluent-assert)
 
-This is a fork/subset of the awesome package Assert (https://github.com/beberlei/assert).  I only use the fluent (chained) interface and the assert library is very heavily used chunk of code.  By breaking it into it's own library the library is about 3 times faster (using my very unscientific benchark).
+This is a fork/subset of the awesome package Assert (https://github.com/beberlei/assert).  I only use the fluent (chained) interface and the assert library is very heavily used chunk of code.  By breaking it into it's own library the library is about 3 times faster (using my very unscienctific benchark).
 
 ## Install
 
@@ -21,7 +21,7 @@ $ composer require terah/fluent-assert
 
 ``` php
 
-use Terah\Assert;
+use Terah\Assert\Assert;
 
 (new Assert($value))->eq($value2, $message = null, $propertyPath = null);
 (new Assert($value))->same($value2, $message = null, $propertyPath = null);
@@ -88,7 +88,7 @@ use Terah\Assert;
 (new Assert($myValue))->integer()->notEmpty()->eq(1);
 
 // Checking members of arrays and objects)
-(new Assert($myArray)->all()->integer()->notEmpty()->eq(1);
+(new Assert($myArray))->all()->integer()->notEmpty()->eq(1);
 
 // Null or valid
 (new Assert($myNullValue)->nullOr()->integer()->notEmpty()->eq(1);
