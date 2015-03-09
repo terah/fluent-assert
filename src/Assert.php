@@ -964,7 +964,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
-        $this->isObject($$message, $propertyPath);
+        $this->isObject($message, $propertyPath);
         foreach ($keys as $key )
         {
             // Using isset to allow resolution of magically defined properties
