@@ -250,6 +250,27 @@ class Assert
         }
         return $this;
     }
+
+    /**
+     * @param string|null $message
+     * @param null $propertyPath
+     *
+     * @return $this
+     */
+    public function isCallable($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
+            return $this;
+        }
+        if ( ! is_callable($this->value) ) {
+            $message = sprintf(
+                $message ?: 'Value "%s" is not callable.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message,self::INVALID_NOT_EQ, $propertyPath);
+        }
+        return $this;
+    }
     /**
      * Assert that two values are not the same (using === ).
      *
