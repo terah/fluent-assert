@@ -295,6 +295,33 @@ class Assert
         }
         return $this;
     }
+
+    public function id($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not an integer id.';
+        return $this->nonEmptyInt($message, $propertyPath)->range(1, PHP_INT_MAX);
+    }
+
+    public function status($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not a valid status.';
+        return $this->integer($message, $propertyPath)->inArray([-1, 0, 1]);
+    }
+
+    public function nullOrId($message = null, $propertyPath = null)
+    {
+        return $this->nullOr()->id($message, $propertyPath);
+    }
+
+    public function allIds($message = null, $propertyPath = null)
+    {
+        return $this->all()->id($message, $propertyPath);
+    }
+
+    public function int($message = null, $propertyPath = null)
+    {
+        return $this->integer($message, $propertyPath);
+    }
     /**
      * Assert that value is a php integer.
      *
@@ -374,6 +401,7 @@ class Assert
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )  {
             return $this;
         }
+        $this->notEmpty($message, $propertyPath);
         if ( strtotime($this->value) === false )
         {
             $message = sprintf(
@@ -831,6 +859,25 @@ class Assert
         }
         return $this;
     }
+
+    public function nonEmptyArray($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not a non-empty array.';
+        return $this->isArray($message, $propertyPath)->notEmpty($message, $propertyPath);
+    }
+
+    public function nonEmptyInt($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not a non-empty integer.';
+        return $this->integer($message, $propertyPath)->notEmpty($message, $propertyPath);
+    }
+
+    public function nonEmptyString($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not a non-empty string.';
+        return $this->integer($message, $propertyPath)->notEmpty($message, $propertyPath);
+    }
+
     /**
      * Assert that value is an array.
      *
@@ -1383,7 +1430,7 @@ class Assert
             return $this;
         }
         $this->string($message, $propertyPath);
-        $protocols = ['http', 'https'];
+        $protocols = array('http', 'https');
         $pattern = '~^
             (%s)://                                 # protocol
             (
@@ -1399,7 +1446,8 @@ class Assert
             (/?|/\S+)                               # a /, nothing or a / with something
         $~ixu';
         $pattern = sprintf($pattern, implode('|', $protocols));
-        if (!preg_match($pattern, $this->value)) {
+        if ( ! preg_match($pattern, $this->value) )
+        {
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid URL starting with http or https',
                 $this->stringify($this->value)

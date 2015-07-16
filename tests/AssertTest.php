@@ -919,7 +919,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     public function testChaining()
     {
         (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(1);
-        (new Assert(array(1,1,1,1,1,1,)))->all()->integer()->integerish()->numeric()->notNull()->eq(1);
+        (new Assert(array(1,1,1,1,1,1,)))->allIds()->integerish()->numeric()->notNull()->eq(1);
     }
 
     public function testChainingFails()
@@ -931,7 +931,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     public function testAllChainingFails()
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
-        (new Assert(array(1,1,1,1,1,2,)))->all()->integer()->integerish()->numeric()->notNull()->eq(1);
+        (new Assert(array(1,1,1,1,1,2,)))->all()->id()->integerish()->numeric()->notNull()->eq(1);
     }
     /**
      * @test
