@@ -25,7 +25,8 @@
     "autoload": {
         "psr-4": {
             "Terah\\Assert\\": "src"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "autoload-dev": {
         "psr-4": {

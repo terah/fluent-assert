@@ -3,7 +3,7 @@
 
 require_once 'vendor/autoload.php';
 
-use Terah\Assert\Assert;
+use function Terah\Assert\Assert;
 use Assert as Beberlei;
 
 $assert = new Assert('');
@@ -25,7 +25,7 @@ $start = microtime(true);
 
 for ( $i = 0 ; $i < 100000 ; $i++ )
 {
-    (new Assert(true))->true();
+    Assert(true)->true();
 }
 $time = microtime(true) - $start;
 echo "Taken: $time" . PHP_EOL;
