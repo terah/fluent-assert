@@ -81,7 +81,8 @@ class Assert
     const INVALID_PROPERTIES_EXIST = 302;
     const INVALID_UTF8 = 303;
     const INVALID_DOMAIN_NAME = 304;
-
+    const INVALID_NOT_FALSE = 305;
+    const INVALID_FILE_OR_DIR = 306;
     /** @var bool */
     protected $nullOr = false;
 
@@ -1451,6 +1452,30 @@ class Assert
     }
 
     /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return $this
+     */
+    public function fileExists($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        $this->string($message, $propertyPath);
+        $this->notEmpty($message, $propertyPath);
+        if ( ! file_exists($this->value) )
+        {
+            $message = sprintf(
+                $message ?: 'File or directory "%s" was expected to exist.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, self::INVALID_FILE_OR_DIR, $propertyPath);
+        }
+        return $this;
+    }
+
+    /**
      * Assert that a directory exists
      *
      * @param string|null $message
@@ -1544,7 +1569,7 @@ class Assert
             return $this;
         }
         $this->string($message, $propertyPath);
-        if ( !filter_var($this->value, FILTER_VALIDATE_EMAIL) )
+        if ( ! filter_var($this->value, FILTER_VALIDATE_EMAIL) )
         {
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid e-mail address.',
@@ -1708,6 +1733,31 @@ class Assert
     }
 
     /**
+     * Assert that the value is boolean True.
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function truthy($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( ! $this->value )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" is not truthy.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, self::INVALID_TRUE, $propertyPath);
+        }
+        return $this;
+    }
+
+    /**
      * Assert that the value is boolean False.
      *
      * @param string|null $message
@@ -1728,6 +1778,31 @@ class Assert
                 $this->stringify($this->value)
             );
             throw $this->createException($message, self::INVALID_FALSE, $propertyPath);
+        }
+        return $this;
+    }
+
+    /**
+     * Assert that the value is not boolean False.
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function notFalse($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( $this->value === false )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" is not FALSE.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, self::INVALID_NOT_FALSE, $propertyPath);
         }
         return $this;
     }
