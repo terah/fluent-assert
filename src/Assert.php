@@ -529,7 +529,7 @@ class Assert
         {
             return $this;
         }
-        if ( empty( $this->value ) )
+        if ( ( is_object($this->value) && empty((array)$this->value) ) || empty($this->value) )
         {
             $message = sprintf(
                 $message ?: 'Value "%s" is empty, but non empty value was expected.',
