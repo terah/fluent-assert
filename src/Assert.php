@@ -83,14 +83,19 @@ class Assert
     const INVALID_DOMAIN_NAME = 304;
     const INVALID_NOT_FALSE = 305;
     const INVALID_FILE_OR_DIR = 306;
+    const INVALID_ASCII = 307;
+    const INVALID_NOT_REGEX = 308;
     /** @var bool */
-    protected $nullOr = false;
+    protected $nullOr       = false;
 
     /** @var mixed */
-    protected $value = null;
+    protected $value        = null;
 
     /** @var bool */
-    protected $all = false;
+    protected $all          = false;
+
+    /** @var null|string */
+    protected $propertyPath = null;
     /**
      * Exception to throw when an assertion failed.
      *
@@ -117,7 +122,7 @@ class Assert
 
     /**
      * @param mixed $value
-     * @return $this
+     * @return Assert
      */
     public function reset($value)
     {
@@ -126,7 +131,7 @@ class Assert
 
     /**
      * @param mixed $value
-     * @return $this
+     * @return Assert
      */
     public function value($value)
     {
@@ -136,7 +141,7 @@ class Assert
 
     /**
      * @param bool $nullOr
-     * @return $this
+     * @return Assert
      */
     public function nullOr($nullOr = true)
     {
@@ -146,7 +151,7 @@ class Assert
 
     /**
      * @param bool $all
-     * @return $this
+     * @return Assert
      */
     public function all($all = true)
     {
@@ -163,21 +168,32 @@ class Assert
      * @param int    $code
      * @param string $propertyPath
      * @param array  $constraints
-     * @return mixed
+     * @return AssertionFailedException
      */
     protected function createException($message, $code, $propertyPath, array $constraints = [])
     {
         $exceptionClass = $this->exceptionClass;
+        $propertyPath = is_null($propertyPath) ? $this->propertyPath : $propertyPath;
         return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints);
     }
 
     /**
      * @param $exceptionClass
-     * @return $this
+     * @return Assert
      */
     public function setExceptionClass($exceptionClass)
     {
         $this->exceptionClass = $exceptionClass;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return Assert
+     */
+    public function name($name)
+    {
+        $this->propertyPath = $name;
         return $this;
     }
 
@@ -316,6 +332,12 @@ class Assert
     {
         $message = $message ?: 'Value "%s" is not an integer id.';
         return $this->nonEmptyInt($message, $propertyPath)->range(1, PHP_INT_MAX);
+    }
+
+    public function flag($message = null, $propertyPath = null)
+    {
+        $message = $message ?: 'Value "%s" is not a 0 or 1.';
+        return $this->range(0, 1, $message, $propertyPath);
     }
 
     public function status($message = null, $propertyPath = null)
@@ -633,6 +655,24 @@ class Assert
         }
         $this->string($message, $propertyPath);
         if ( !preg_match($pattern, $this->value) )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" does not match expression.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, self::INVALID_REGEX, $propertyPath, ['pattern' => $pattern]);
+        }
+        return $this;
+    }
+
+    public function notRegex($pattern, $message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        $this->string($message, $propertyPath);
+        if ( preg_match($pattern, $this->value) )
         {
             $message = sprintf(
                 $message ?: 'Value "%s" does not match expression.',
@@ -1178,6 +1218,34 @@ class Assert
                     $this->stringify($this->value)
                 );
             throw $this->createException($message, self::INVALID_UTF8, $propertyPath);
+        }
+        return $this;
+    }
+
+
+    /**
+     * Assert that string is valid utf8
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function ascii($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        $this->string($message, $propertyPath);
+        if ( ! preg_match('/^[ -~]+$/', $this->value) )
+        {
+            $message = $message
+                ?: sprintf(
+                    'Value "%s" was expected to be a valid ASCII string',
+                    $this->stringify($this->value)
+                );
+            throw $this->createException($message, self::INVALID_ASCII, $propertyPath);
         }
         return $this;
     }

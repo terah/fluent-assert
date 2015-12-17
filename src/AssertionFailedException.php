@@ -41,6 +41,14 @@ class AssertionFailedException extends \Exception
     }
 
     /**
+     * @return null|string
+     */
+    public function getProperty()
+    {
+        return $this->propertyPath;
+    }
+
+    /**
      * @return string
      */
     protected function getCallingFileAndLine()
@@ -80,7 +88,7 @@ class AssertionFailedException extends \Exception
         return $this->constraints;
     }
 
-    static public function afterLast($needle, $haystack, $return_original=false)
+    public static function afterLast($needle, $haystack, $return_original=false)
     {
         if ( ! is_bool(static::strrevpos($haystack, $needle)) )
         {
@@ -89,13 +97,13 @@ class AssertionFailedException extends \Exception
         return $return_original ? $haystack : '';
     }
 
-    static public function strrevpos($string, $needle)
+    public static function strrevpos($string, $needle)
     {
         $revStr = mb_strpos(strrev($string), strrev($needle));
         return $revStr === false ? false : mb_strlen($string) - $revStr - mb_strlen($needle);
     }
 
-    static public function beforeLast($needle, $haystack)
+    public static function beforeLast($needle, $haystack)
     {
         return mb_substr($haystack, 0, static::strrevpos($haystack, $needle));
     }

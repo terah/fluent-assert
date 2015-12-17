@@ -2,7 +2,25 @@
 
 namespace Terah\Assert;
 
-function Assert($value)
+/**
+ * @param mixed      $value
+ * @param bool|false $throwValidationError
+ * @return Assert
+ */
+function Assert($value, $throwValidationError=false)
 {
-    return new Assert($value);
+    if ( ! $throwValidationError )
+    {
+        return new Assert($value);
+    }
+    return (new Assert($value))->setExceptionClass('Terah\Assert\ValidationFailedException');
+}
+
+/**
+ * @param mixed $value
+ * @return Assert
+ */
+function Validate($value)
+{
+    return (new Assert($value))->setExceptionClass('Terah\Assert\ValidationFailedException');
 }

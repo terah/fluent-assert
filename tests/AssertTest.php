@@ -780,7 +780,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert($uuid))->uuid();
     }
 
-    static public function providesValidUuids()
+    public static function providesValidUuids()
     {
         return array(
             array('ff6f8cb0-c57d-11e1-9b21-0800200c9a66'),
@@ -792,7 +792,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    static public function providesInvalidUuids()
+    public static function providesInvalidUuids()
     {
         return array(
             array('zf6f8cb0-c57d-11e1-9b21-0800200c9a66'),
