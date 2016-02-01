@@ -973,7 +973,7 @@ class Assert
         {
             return $this;
         }
-        if ( !is_numeric($this->value) )
+        if ( ! is_numeric($this->value) )
         {
             $message = sprintf(
                 $message ?: 'Value "%s" is not numeric.',
