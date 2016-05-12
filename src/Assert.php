@@ -117,7 +117,7 @@ class Assert
      */
     public static function that($value)
     {
-        return Assert($value);
+        return new Assert($value);
     }
 
     /**
@@ -1293,7 +1293,7 @@ class Assert
             return $this;
         }
         $this->keyIsset($key, $message, $propertyPath);
-        Assert($this->value[$key])->notEmpty($message, $propertyPath);
+        (new Assert($this->value[$key]))->notEmpty($message, $propertyPath);
         return $this;
     }
 
@@ -2024,11 +2024,11 @@ class Assert
         {
             return true;
         }
-        if ( $this->all && Assert($this->value)->isTraversable() )
+        if ( $this->all && (new Assert($this->value))->isTraversable() )
         {
             foreach ( $this->value as $idx => $value )
             {
-                $object = Assert($value);
+                $object = new Assert($value);
                 call_user_func_array([$object, $func], $args);
             }
             return true;
@@ -2073,7 +2073,7 @@ class Assert
         {
             return $this;
         }
-        Assert($object)->isObject($message, $propertyPath);
+        (new Assert($object))->isObject($message, $propertyPath);
         if ( !method_exists($object, $this->value) )
         {
             $message = sprintf(
