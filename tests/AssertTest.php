@@ -367,7 +367,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
             array("test"),
             array(1),
             array(1.23),
-            array(new \StdClass),
+            array(new \stdClass),
             array(fopen('php://memory', 'r')),
         );
     }
@@ -590,10 +590,10 @@ class AssertTest extends \PHPUnit_Framework_TestCase
 
     public function testNotEq()
     {
-        (new Assert("1"))->NotEq(false);
-        (new Assert(new \stdClass()))->NotEq(array());
+        (new Assert("1"))->notEq(false);
+        (new Assert(new \stdClass()))->notEq(array());
         $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NOT_EQ);
-        (new Assert("1"))->NotEq(1);
+        (new Assert("1"))->notEq(1);
     }
 
     public function testNotSame()
@@ -851,7 +851,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     public function testAllWithNoValueThrows()
     {
         $this->setExpectedException('Terah\Assert\AssertionFailedException');
-        (new Assert(null))->all()->True();
+        (new Assert(null))->all()->true();
     }
 
     public function testValidCount()
@@ -902,7 +902,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
 
     public function testIsObject()
     {
-        (new Assert(new \StdClass))->isObject();
+        (new Assert(new \stdClass))->isObject();
     }
 
     public function testIsObjectExpectingException()

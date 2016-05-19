@@ -280,9 +280,10 @@ class Assert
 
     /**
      * @param string|null $message
-     * @param null        $propertyPath
+     * @param string|null        $propertyPath
      *
      * @return $this
+     * @throws AssertionFailedException
      */
     public function isCallable($message = null, $propertyPath = null)
     {
@@ -1523,6 +1524,7 @@ class Assert
      * @param string|null $message
      * @param string|null $propertyPath
      * @return $this
+     * @throws AssertionFailedException
      */
     public function fileExists($message = null, $propertyPath = null)
     {
@@ -2091,6 +2093,7 @@ class Assert
      * @param null $message
      * @param null $propertyPath
      * @return $this
+     * @throws AssertionFailedException
      */
     public function isObject($message = null, $propertyPath = null)
     {
