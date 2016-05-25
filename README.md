@@ -122,7 +122,7 @@ If you discover any security related issues, please email terry@terah.com.au ins
 
 ## Credits
 
-- [Terry Cullen](https://github.com/:author_username)
+- [Terry Cullen](https://github.com/terah)
 - [All Contributors](../../contributors)
 
 ## License
