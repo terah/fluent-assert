@@ -45,7 +45,7 @@ class AssertionFailedException extends \Exception
      */
     public function getProperty()
     {
-        return $this->propertyPath;
+        return $this->propertyPath ? $this->propertyPath : 'General Error';
     }
 
     /**
@@ -69,6 +69,7 @@ class AssertionFailedException extends \Exception
         }
         return '';
     }
+
     /**
      * Get the value that caused the assertion to fail.
      *

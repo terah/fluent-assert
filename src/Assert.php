@@ -1294,7 +1294,7 @@ class Assert
             return $this;
         }
         $this->keyIsset($key, $message, $propertyPath);
-        (new Assert($this->value[$key]))->notEmpty($message, $propertyPath);
+        (new Assert($this->value[$key]))->setExceptionClass($this->exceptionClass)->notEmpty($message, $propertyPath);
         return $this;
     }
 
@@ -2026,11 +2026,11 @@ class Assert
         {
             return true;
         }
-        if ( $this->all && (new Assert($this->value))->isTraversable() )
+        if ( $this->all && (new Assert($this->value))->setExceptionClass($this->exceptionClass)->isTraversable() )
         {
             foreach ( $this->value as $idx => $value )
             {
-                $object = new Assert($value);
+                $object = (new Assert($value))->setExceptionClass($this->exceptionClass);
                 call_user_func_array([$object, $func], $args);
             }
             return true;
@@ -2075,7 +2075,7 @@ class Assert
         {
             return $this;
         }
-        (new Assert($object))->isObject($message, $propertyPath);
+        (new Assert($object))->setExceptionClass($this->exceptionClass)->isObject($message, $propertyPath);
         if ( !method_exists($object, $this->value) )
         {
             $message = sprintf(

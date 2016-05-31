@@ -13,7 +13,7 @@ function Assert($value, $throwValidationError=false)
     {
         return new Assert($value);
     }
-    return (new Assert($value))->setExceptionClass('Terah\Assert\ValidationFailedException');
+    return (new Assert($value))->setExceptionClass('Terah\Assert\AssertionFailedException');
 }
 
 /**
