@@ -85,6 +85,11 @@ class Assert
     const INVALID_FILE_OR_DIR = 306;
     const INVALID_ASCII = 307;
     const INVALID_NOT_REGEX = 308;
+    const INVALID_GREATER_THAN = 309;
+    const INVALID_LESS_THAN = 310;
+    const INVALID_GREATER_THAN_OR_EQ = 311;
+    const INVALID_LESS_THAN_OR_EQ = 312;
+
     /** @var bool */
     protected $nullOr       = false;
 
@@ -225,6 +230,110 @@ class Assert
     }
 
     /**
+     *
+     * @param mixed       $value2
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function greaterThan($value2, $message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( ! ( $this->value > $value2 ) )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" does not greater then expected value "%s".',
+                $this->stringify($this->value),
+                $this->stringify($value2)
+            );
+            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+        }
+        return $this;
+    }
+
+    /**
+     *
+     * @param mixed       $value2
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function greaterThanOrEq($value2, $message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( ! ( $this->value >= $value2 ) )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" does not greater than or equal to expected value "%s".',
+                $this->stringify($this->value),
+                $this->stringify($value2)
+            );
+            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+        }
+        return $this;
+    }
+
+    /**
+     *
+     * @param mixed       $value2
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function lessThan($value2, $message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( ! ( $this->value < $value2 ) )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" does not less then expected value "%s".',
+                $this->stringify($this->value),
+                $this->stringify($value2)
+            );
+            throw $this->createException($message, self::INVALID_LESS_THAN, $propertyPath, ['expected' => $value2]);
+        }
+        return $this;
+    }
+
+    /**
+     *
+     * @param mixed       $value2
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function lessThanOrEq($value2, $message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( ! ( $this->value <= $value2 ) )
+        {
+            $message = sprintf(
+                $message ?: 'Value "%s" does not less than or equal to expected value "%s".',
+                $this->stringify($this->value),
+                $this->stringify($value2)
+            );
+            throw $this->createException($message, self::INVALID_LESS_THAN_OR_EQ, $propertyPath, ['expected' => $value2]);
+        }
+        return $this;
+    }
+
+    /**
      * Assert that two values are the same (using ===).
      *
      * @param mixed       $value2
@@ -329,34 +438,68 @@ class Assert
         return $this;
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function id($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not an integer id.';
         return $this->nonEmptyInt($message, $propertyPath)->range(1, PHP_INT_MAX);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function flag($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a 0 or 1.';
         return $this->range(0, 1, $message, $propertyPath);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function status($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a valid status.';
         return $this->integer($message, $propertyPath)->inArray([-1, 0, 1]);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     */
     public function nullOrId($message = null, $propertyPath = null)
     {
         return $this->nullOr()->id($message, $propertyPath);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     */
     public function allIds($message = null, $propertyPath = null)
     {
         return $this->all()->id($message, $propertyPath);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function int($message = null, $propertyPath = null)
     {
         return $this->integer($message, $propertyPath);
@@ -666,6 +809,13 @@ class Assert
         return $this;
     }
 
+    /**
+     * @param string $pattern
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return $this
+     * @throws AssertionFailedException
+     */
     public function notRegex($pattern, $message = null, $propertyPath = null)
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
@@ -946,8 +1096,8 @@ class Assert
      * @throws AssertionFailedException
      *
      * @param array $choices
-     * @param null  $message
-     * @param null  $propertyPath
+     * @param string|null $message
+     * @param string|null $propertyPath
      * @return $this
      */
     public function inArray(array $choices, $message = null, $propertyPath = null)
@@ -985,18 +1135,36 @@ class Assert
         return $this;
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function nonEmptyArray($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a non-empty array.';
         return $this->isArray($message, $propertyPath)->notEmpty($message, $propertyPath);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function nonEmptyInt($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a non-empty integer.';
         return $this->integer($message, $propertyPath)->notEmpty($message, $propertyPath);
     }
 
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function nonEmptyString($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a non-empty string.';
@@ -1152,7 +1320,7 @@ class Assert
             return $this;
         }
         $this->isObject($message, $propertyPath);
-        if ( !property_exists($this->value, $key) && !isset( $this->value->$key ) )
+        if ( !property_exists($this->value, $key) && !isset( $this->value->{$key} ) )
         {
             $message = $message
                 ?: sprintf(
@@ -1183,7 +1351,7 @@ class Assert
         foreach ( $keys as $key )
         {
             // Using isset to allow resolution of magically defined properties
-            if ( !property_exists($this->value, $key) && !isset( $this->value->$key ) )
+            if ( !property_exists($this->value, $key) && !isset( $this->value->{$key} ) )
             {
                 $message = $message
                     ?: sprintf(
@@ -1663,6 +1831,12 @@ class Assert
         return $this;
     }
 
+    /**
+     * @param null $message
+     * @param null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function emailPrefix($message = null, $propertyPath = null)
     {
         $this->value($this->value . '@example.com');
@@ -2020,6 +2194,12 @@ class Assert
         return $this;
     }
 
+    /**
+     * @param $func
+     * @param $args
+     * @return bool
+     * @throws AssertionFailedException
+     */
     protected function doAllOrNullOr($func, $args)
     {
         if ( $this->nullOr && is_null($this->value) )
@@ -2042,8 +2222,8 @@ class Assert
      * Determines if the values array has every choice as key and that this choice has content.
      *
      * @param array $choices
-     * @param null  $message
-     * @param null  $propertyPath
+     * @param string|null $message
+     * @param string|null $propertyPath
      * @return $this
      */
     public function choicesNotEmpty(array $choices, $message = null, $propertyPath = null)
@@ -2064,8 +2244,8 @@ class Assert
      * Determines that the named method is defined in the provided object.
      *
      * @param mixed $object
-     * @param null  $message
-     * @param null  $propertyPath
+     * @param string|null $message
+     * @param string|null $propertyPath
      * @returns Assert
      * @throws
      */
@@ -2090,8 +2270,8 @@ class Assert
     /**
      * Determines that the provided value is an object.
      *
-     * @param null $message
-     * @param null $propertyPath
+     * @param string|null $message
+     * @param string|null $propertyPath
      * @return $this
      * @throws AssertionFailedException
      */
