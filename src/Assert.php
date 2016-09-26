@@ -93,6 +93,9 @@ class Assert
     /** @var bool */
     protected $nullOr       = false;
 
+    /** @var bool */
+    protected $emptyOr     = false;
+
     /** @var mixed */
     protected $value        = null;
 
@@ -151,6 +154,16 @@ class Assert
     public function nullOr($nullOr = true)
     {
         $this->nullOr = $nullOr;
+        return $this;
+    }
+
+    /**
+     * @param bool $emptyOr
+     * @return Assert
+     */
+    public function emptyOr($emptyOr = true)
+    {
+        $this->emptyOr = $emptyOr;
         return $this;
     }
 
@@ -2206,6 +2219,10 @@ class Assert
         {
             return true;
         }
+        if ( $this->emptyOr && empty($this->value) )
+        {
+            return true;
+        }
         if ( $this->all && (new Assert($this->value))->setExceptionClass($this->exceptionClass)->isTraversable() )
         {
             foreach ( $this->value as $idx => $value )
@@ -2215,7 +2232,7 @@ class Assert
             }
             return true;
         }
-        return $this->nullOr && is_null($this->value) ? true : false;
+        return ( $this->nullOr && is_null($this->value) ) || ( $this->emptyOr && empty($this->value) ) ? true : false;
     }
 
     /**
