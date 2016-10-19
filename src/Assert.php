@@ -89,6 +89,7 @@ class Assert
     const INVALID_LESS_THAN = 310;
     const INVALID_GREATER_THAN_OR_EQ = 311;
     const INVALID_LESS_THAN_OR_EQ = 312;
+    const INVALID_IP_ADDRESS = 313;
 
     /** @var bool */
     protected $nullOr       = false;
@@ -104,6 +105,12 @@ class Assert
 
     /** @var null|string */
     protected $propertyPath = null;
+
+    /** @var int */
+    protected $overrideCode  = null;
+
+    /** @var string */
+    protected $overrideError  = '';
     /**
      * Exception to throw when an assertion failed.
      *
@@ -191,7 +198,7 @@ class Assert
     protected function createException($message, $code, $propertyPath, array $constraints = [])
     {
         $exceptionClass = $this->exceptionClass;
-        $propertyPath = is_null($propertyPath) ? $this->propertyPath : $propertyPath;
+        $propertyPath   = is_null($propertyPath) ? $this->propertyPath : $propertyPath;
         return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints);
     }
 
@@ -202,6 +209,26 @@ class Assert
     public function setExceptionClass($exceptionClass)
     {
         $this->exceptionClass = $exceptionClass;
+        return $this;
+    }
+
+    /**
+     * @param int $code
+     * @return Assert
+     */
+    public function code($code)
+    {
+        $this->overrideCode = $code;
+        return $this;
+    }
+
+    /**
+     * @param string $error
+     * @return Assert
+     */
+    public function error($error)
+    {
+        $this->overrideError = $error;
         return $this;
     }
 
@@ -232,12 +259,13 @@ class Assert
         }
         if ( $this->value != $value2 )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not equal expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -258,12 +286,13 @@ class Assert
         }
         if ( ! ( $this->value > $value2 ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not greater then expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -284,12 +313,13 @@ class Assert
         }
         if ( ! ( $this->value >= $value2 ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not greater than or equal to expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -310,12 +340,13 @@ class Assert
         }
         if ( ! ( $this->value < $value2 ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not less then expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_LESS_THAN, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_LESS_THAN, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -336,12 +367,13 @@ class Assert
         }
         if ( ! ( $this->value <= $value2 ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not less than or equal to expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_LESS_THAN_OR_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_LESS_THAN_OR_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -363,12 +395,13 @@ class Assert
         }
         if ( $this->value !== $value2 )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not the same as expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_SAME, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_SAME, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -390,12 +423,13 @@ class Assert
         }
         if ( $this->value == $value2 )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is equal to expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_EQ, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -415,11 +449,12 @@ class Assert
         }
         if ( !is_callable($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not callable.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_NOT_EQ, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_EQ, $propertyPath);
         }
         return $this;
     }
@@ -441,12 +476,13 @@ class Assert
         }
         if ( $this->value === $value2 )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is the same as expected value "%s".',
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
-            throw $this->createException($message, self::INVALID_NOT_SAME, $propertyPath, ['expected' => $value2]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_SAME, $propertyPath, ['expected' => $value2]);
         }
         return $this;
     }
@@ -459,6 +495,7 @@ class Assert
      */
     public function id($message = null, $propertyPath = null)
     {
+        $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not an integer id.';
         return $this->nonEmptyInt($message, $propertyPath)->range(1, PHP_INT_MAX);
     }
@@ -471,6 +508,7 @@ class Assert
      */
     public function flag($message = null, $propertyPath = null)
     {
+        $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a 0 or 1.';
         return $this->range(0, 1, $message, $propertyPath);
     }
@@ -483,6 +521,7 @@ class Assert
      */
     public function status($message = null, $propertyPath = null)
     {
+        $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a valid status.';
         return $this->integer($message, $propertyPath)->inArray([-1, 0, 1]);
     }
@@ -534,11 +573,12 @@ class Assert
         }
         if ( !is_int($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_INTEGER, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_INTEGER, $propertyPath);
         }
         return $this;
     }
@@ -557,13 +597,14 @@ class Assert
         {
             return $this;
         }
-        if ( !is_float($this->value) )
+        if ( ! is_float($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a float.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_FLOAT, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_FLOAT, $propertyPath);
         }
         return $this;
     }
@@ -582,13 +623,14 @@ class Assert
         {
             return $this;
         }
-        if ( !ctype_digit((string)$this->value) )
+        if ( ! ctype_digit((string)$this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a digit.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_DIGIT, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DIGIT, $propertyPath);
         }
         return $this;
     }
@@ -610,11 +652,12 @@ class Assert
         $this->notEmpty($message, $propertyPath);
         if ( strtotime($this->value) === false )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a date.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_DATE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DATE, $propertyPath);
         }
         return $this;
     }
@@ -635,11 +678,12 @@ class Assert
         }
         if ( is_object($this->value) || strval(intval($this->value)) != $this->value || is_bool($this->value) || is_null($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an integer or a number castable to integer.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_INTEGERISH, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_INTEGERISH, $propertyPath);
         }
         return $this;
     }
@@ -658,13 +702,14 @@ class Assert
         {
             return $this;
         }
-        if ( !is_bool($this->value) )
+        if ( ! is_bool($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a boolean.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_BOOLEAN, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_BOOLEAN, $propertyPath);
         }
         return $this;
     }
@@ -685,11 +730,12 @@ class Assert
         }
         if ( !is_scalar($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a scalar.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_SCALAR, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_SCALAR, $propertyPath);
         }
         return $this;
     }
@@ -710,11 +756,12 @@ class Assert
         }
         if ( ( is_object($this->value) && empty((array)$this->value) ) || empty($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is empty, but non empty value was expected.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::VALUE_EMPTY, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::VALUE_EMPTY, $propertyPath);
         }
         return $this;
     }
@@ -735,11 +782,12 @@ class Assert
         }
         if ( !empty( $this->value ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not empty, but empty value was expected.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::VALUE_NOT_EMPTY, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::VALUE_NOT_EMPTY, $propertyPath);
         }
         return $this;
     }
@@ -760,11 +808,12 @@ class Assert
         }
         if ( $this->value === null )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is null, but non null value was expected.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::VALUE_NULL, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::VALUE_NULL, $propertyPath);
         }
         return $this;
     }
@@ -785,12 +834,13 @@ class Assert
         }
         if ( !is_string($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" expected to be string, type %s given.',
                 $this->stringify($this->value),
                 gettype($this->value)
             );
-            throw $this->createException($message, self::INVALID_STRING, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING, $propertyPath);
         }
         return $this;
     }
@@ -804,20 +854,47 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function regex($pattern, $message = null, $propertyPath = null)
+    public function regex($pattern, $message=null, $propertyPath=null)
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
             return $this;
         }
         $this->string($message, $propertyPath);
-        if ( !preg_match($pattern, $this->value) )
+        if ( ! preg_match($pattern, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not match expression.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_REGEX, $propertyPath, ['pattern' => $pattern]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_REGEX, $propertyPath, ['pattern' => $pattern]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $message
+     * @param string $propertyPath
+     * @return $this
+     * @throws AssertionFailedException
+     */
+    public function ipAddress($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        $this->string($message, $propertyPath);
+        $pattern   = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
+        if ( ! preg_match($pattern, $this->value) )
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message ?: 'Value "%s" was expected to be a valid IP Address',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_IP_ADDRESS, $propertyPath);
         }
         return $this;
     }
@@ -838,11 +915,12 @@ class Assert
         $this->string($message, $propertyPath);
         if ( preg_match($pattern, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" does not match expression.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_REGEX, $propertyPath, ['pattern' => $pattern]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_REGEX, $propertyPath, ['pattern' => $pattern]);
         }
         return $this;
     }
@@ -866,14 +944,15 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strlen($this->value, $encoding) !== $length )
         {
-            $message     = sprintf(
+            $message    = $message ?: $this->overrideError;
+            $message    = sprintf(
                 $message ?: 'Value "%s" has to be %d exactly characters long, but length is %d.',
                 $this->stringify($this->value),
                 $length,
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['length' => $length, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -897,6 +976,7 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strlen($this->value, $encoding) < $minLength )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message
                     ?: 'Value "%s" is too short, it should have more than %d characters, but only has %d characters.',
@@ -905,7 +985,7 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -929,6 +1009,7 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strlen($this->value, $encoding) > $maxLength )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message ?: 'Value "%s" is too long, it should have no more than %d characters, but has %d characters.',
                 $this->stringify($this->value),
@@ -936,7 +1017,7 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -961,6 +1042,7 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strlen($this->value, $encoding) < $minLength )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message
                     ?: 'Value "%s" is too short, it should have more than %d characters, but only has %d characters.',
@@ -969,10 +1051,11 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN_LENGTH, $propertyPath, $constraints);
         }
         if ( mb_strlen($this->value, $encoding) > $maxLength )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message ?: 'Value "%s" is too long, it should have no more than %d characters, but has %d characters.',
                 $this->stringify($this->value),
@@ -980,7 +1063,7 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX_LENGTH, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -1004,13 +1087,14 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strpos($this->value, $needle, null, $encoding) !== 0 )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message ?: 'Value "%s" does not start with "%s".',
                 $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_STRING_START, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_START, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -1035,13 +1119,14 @@ class Assert
         $stringPosition = mb_strlen($this->value, $encoding) - mb_strlen($needle, $encoding);
         if ( mb_strripos($this->value, $needle, null, $encoding) !== $stringPosition )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message ?: 'Value "%s" does not end with "%s".',
                 $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_STRING_END, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_END, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -1065,13 +1150,14 @@ class Assert
         $this->string($message, $propertyPath);
         if ( mb_strpos($this->value, $needle, null, $encoding) === false )
         {
+            $message = $message ?: $this->overrideError;
             $message     = sprintf(
                 $message ?: 'Value "%s" does not contain "%s".',
                 $this->stringify($this->value),
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
-            throw $this->createException($message, self::INVALID_STRING_CONTAINS, $propertyPath, $constraints);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_CONTAINS, $propertyPath, $constraints);
         }
         return $this;
     }
@@ -1093,12 +1179,13 @@ class Assert
         }
         if ( !in_array($this->value, $choices, true) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an element of the valid values: %s',
                 $this->stringify($this->value),
                 implode(", ", array_map('Terah\Assert\Assert::stringify', $choices))
             );
-            throw $this->createException($message, self::INVALID_CHOICE, $propertyPath, ['choices' => $choices]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_CHOICE, $propertyPath, ['choices' => $choices]);
         }
         return $this;
     }
@@ -1139,11 +1226,12 @@ class Assert
         }
         if ( ! is_numeric($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not numeric.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_NUMERIC, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NUMERIC, $propertyPath);
         }
         return $this;
     }
@@ -1200,11 +1288,12 @@ class Assert
         }
         if ( !is_array($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_ARRAY, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_ARRAY, $propertyPath);
         }
         return $this;
     }
@@ -1225,11 +1314,12 @@ class Assert
         }
         if ( !is_array($this->value) && !$this->value instanceof \Traversable )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement Traversable.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_TRAVERSABLE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRAVERSABLE, $propertyPath);
         }
         return $this;
     }
@@ -1250,11 +1340,12 @@ class Assert
         }
         if ( !is_array($this->value) && !$this->value instanceof \ArrayAccess )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not an array and does not implement ArrayAccess.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_ARRAY_ACCESSIBLE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_ARRAY_ACCESSIBLE, $propertyPath);
         }
         return $this;
     }
@@ -1277,11 +1368,12 @@ class Assert
         $this->isArray($message, $propertyPath);
         if ( !array_key_exists($key, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Array does not contain an element with key "%s"',
                 $this->stringify($key)
             );
-            throw $this->createException($message, self::INVALID_KEY_EXISTS, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEY_EXISTS, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
@@ -1311,7 +1403,7 @@ class Assert
                         'Array does not contain an element with key "%s"',
                         $this->stringify($key)
                     );
-                throw $this->createException($message, self::INVALID_KEYS_EXIST, $propertyPath, ['key' => $key]);
+                throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEYS_EXIST, $propertyPath, ['key' => $key]);
             }
         }
         return $this;
@@ -1340,7 +1432,7 @@ class Assert
                     'Object does not contain a property with key "%s"',
                     $this->stringify($key)
                 );
-            throw $this->createException($message, self::INVALID_PROPERTY_EXISTS, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_PROPERTY_EXISTS, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
@@ -1371,7 +1463,7 @@ class Assert
                         'Object does not contain a property with key "%s"',
                         $this->stringify($key)
                     );
-                throw $this->createException($message, self::INVALID_PROPERTIES_EXIST, $propertyPath, ['key' => $key]);
+                throw $this->createException($message, $this->overrideCode ?: self::INVALID_PROPERTIES_EXIST, $propertyPath, ['key' => $key]);
             }
         }
         return $this;
@@ -1399,7 +1491,7 @@ class Assert
                     'Value "%s" was expected to be a valid UTF8 string',
                     $this->stringify($this->value)
                 );
-            throw $this->createException($message, self::INVALID_UTF8, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_UTF8, $propertyPath);
         }
         return $this;
     }
@@ -1427,7 +1519,7 @@ class Assert
                     'Value "%s" was expected to be a valid ASCII string',
                     $this->stringify($this->value)
                 );
-            throw $this->createException($message, self::INVALID_ASCII, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_ASCII, $propertyPath);
         }
         return $this;
     }
@@ -1450,11 +1542,12 @@ class Assert
         $this->isArrayAccessible($message, $propertyPath);
         if ( !isset( $this->value[$key] ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'The element with key "%s" was not found',
                 $this->stringify($key)
             );
-            throw $this->createException($message, self::INVALID_KEY_ISSET, $propertyPath, ['key' => $key]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEY_ISSET, $propertyPath, ['key' => $key]);
         }
         return $this;
     }
@@ -1495,11 +1588,12 @@ class Assert
         }
         if ( false === $this->value || ( empty( $this->value ) && '0' != $this->value ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is blank, but was expected to contain a value.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_NOT_BLANK, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_BLANK, $propertyPath);
         }
         return $this;
     }
@@ -1521,12 +1615,13 @@ class Assert
         }
         if ( !( $this->value instanceof $className ) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be instanceof of "%s" but is not.',
                 $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($message, self::INVALID_INSTANCE_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_INSTANCE_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
@@ -1548,12 +1643,13 @@ class Assert
         }
         if ( $this->value instanceof $className )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Class "%s" was not expected to be instanceof of "%s".',
                 $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($message, self::INVALID_NOT_INSTANCE_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_INSTANCE_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
@@ -1575,12 +1671,13 @@ class Assert
         }
         if ( !is_subclass_of($this->value, $className) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Class "%s" was expected to be subclass of "%s".',
                 $this->stringify($this->value),
                 $className
             );
-            throw $this->createException($message, self::INVALID_SUBCLASS_OF, $propertyPath, ['class' => $className]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_SUBCLASS_OF, $propertyPath, ['class' => $className]);
         }
         return $this;
     }
@@ -1604,13 +1701,14 @@ class Assert
         $this->numeric($message, $propertyPath);
         if ( $this->value < $minValue || $this->value > $maxValue )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d" and at most "%d".',
                 $this->stringify($this->value),
                 $this->stringify($minValue),
                 $this->stringify($maxValue)
             );
-            throw $this->createException($message, self::INVALID_RANGE, $propertyPath, [
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_RANGE, $propertyPath, [
                 'min' => $minValue,
                 'max' => $maxValue
             ]);
@@ -1636,12 +1734,13 @@ class Assert
         $this->numeric($message, $propertyPath);
         if ( $this->value < $minValue )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at least "%d".',
                 $this->stringify($this->value),
                 $this->stringify($minValue)
             );
-            throw $this->createException($message, self::INVALID_MIN, $propertyPath, ['min' => $minValue]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN, $propertyPath, ['min' => $minValue]);
         }
         return $this;
     }
@@ -1664,12 +1763,13 @@ class Assert
         $this->numeric($message, $propertyPath);
         if ( $this->value > $maxValue )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Number "%s" was expected to be at most "%d".',
                 $this->stringify($this->value),
                 $this->stringify($maxValue)
             );
-            throw $this->createException($message, self::INVALID_MAX, $propertyPath, ['max' => $maxValue]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX, $propertyPath, ['max' => $maxValue]);
         }
         return $this;
     }
@@ -1692,11 +1792,12 @@ class Assert
         $this->notEmpty($message, $propertyPath);
         if ( !is_file($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'File "%s" was expected to exist.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_FILE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_FILE, $propertyPath);
         }
         return $this;
     }
@@ -1717,11 +1818,12 @@ class Assert
         $this->notEmpty($message, $propertyPath);
         if ( ! file_exists($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'File or directory "%s" was expected to exist.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_FILE_OR_DIR, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_FILE_OR_DIR, $propertyPath);
         }
         return $this;
     }
@@ -1743,11 +1845,12 @@ class Assert
         $this->string($message, $propertyPath);
         if ( !is_dir($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be a directory.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_DIRECTORY, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DIRECTORY, $propertyPath);
         }
         return $this;
     }
@@ -1769,11 +1872,12 @@ class Assert
         $this->string($message, $propertyPath);
         if ( !is_readable($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be readable.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_READABLE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_READABLE, $propertyPath);
         }
         return $this;
     }
@@ -1795,11 +1899,12 @@ class Assert
         $this->string($message, $propertyPath);
         if ( !is_writeable($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Path "%s" was expected to be writeable.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_WRITEABLE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_WRITEABLE, $propertyPath);
         }
         return $this;
     }
@@ -1822,11 +1927,12 @@ class Assert
         $this->string($message, $propertyPath);
         if ( ! filter_var($this->value, FILTER_VALIDATE_EMAIL) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid e-mail address.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_EMAIL, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_EMAIL, $propertyPath);
         }
         else
         {
@@ -1834,11 +1940,12 @@ class Assert
             // Likely not a FQDN, bug in PHP FILTER_VALIDATE_EMAIL prior to PHP 5.3.3
             if ( version_compare(PHP_VERSION, '5.3.3', '<') && strpos($host, '.') === false )
             {
+                $message = $message ?: $this->overrideError;
                 $message = sprintf(
                     $message ?: 'Value "%s" was expected to be a valid e-mail address.',
                     $this->stringify($this->value)
                 );
-                throw $this->createException($message, self::INVALID_EMAIL, $propertyPath);
+                throw $this->createException($message, $this->overrideCode ?: self::INVALID_EMAIL, $propertyPath);
             }
         }
         return $this;
@@ -1895,11 +2002,12 @@ class Assert
         $pattern   = sprintf($pattern, implode('|', $protocols));
         if ( !preg_match($pattern, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid URL starting with http or https',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_URL, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_URL, $propertyPath);
         }
         return $this;
     }
@@ -1925,11 +2033,12 @@ class Assert
         $pattern   = '/^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}$/';
         if ( ! preg_match($pattern, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" was expected to be a valid domain name',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_DOMAIN_NAME, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DOMAIN_NAME, $propertyPath);
         }
         return $this;
     }
@@ -1954,12 +2063,13 @@ class Assert
         }
         catch (AssertionFailedException $e)
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message
                     ?: 'Value "%s" is not alphanumeric, starting with letters and containing only letters and numbers.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_ALNUM, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_ALNUM, $propertyPath);
         }
         return $this;
     }
@@ -1980,11 +2090,12 @@ class Assert
         }
         if ( $this->value !== true )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not TRUE.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_TRUE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRUE, $propertyPath);
         }
         return $this;
     }
@@ -2005,11 +2116,12 @@ class Assert
         }
         if ( ! $this->value )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not truthy.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_TRUE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRUE, $propertyPath);
         }
         return $this;
     }
@@ -2030,11 +2142,12 @@ class Assert
         }
         if ( $this->value !== false )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not FALSE.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_FALSE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_FALSE, $propertyPath);
         }
         return $this;
     }
@@ -2055,11 +2168,12 @@ class Assert
         }
         if ( $this->value === false )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not FALSE.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_NOT_FALSE, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_FALSE, $propertyPath);
         }
         return $this;
     }
@@ -2080,11 +2194,12 @@ class Assert
         }
         if ( !class_exists($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Class "%s" does not exist.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_CLASS, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_CLASS, $propertyPath);
         }
         return $this;
     }
@@ -2107,6 +2222,7 @@ class Assert
         $reflection = new \ReflectionClass($this->value);
         if ( !$reflection->implementsInterface($interfaceName) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Class "%s" does not implement interface "%s".',
                 $this->stringify($this->value),
@@ -2139,11 +2255,12 @@ class Assert
         }
         if ( null === json_decode($this->value) && JSON_ERROR_NONE !== json_last_error() )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a valid JSON string.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_JSON_STRING, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_JSON_STRING, $propertyPath);
         }
         return $this;
     }
@@ -2171,11 +2288,12 @@ class Assert
         }
         if ( !preg_match('/^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$/', $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Value "%s" is not a valid UUID.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_UUID, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_UUID, $propertyPath);
         }
         return $this;
     }
@@ -2197,12 +2315,13 @@ class Assert
         }
         if ( $count !== count($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'List does not contain exactly "%d" elements.',
                 $this->stringify($this->value),
                 $this->stringify($count)
             );
-            throw $this->createException($message, self::INVALID_COUNT, $propertyPath, ['count' => $count]);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_COUNT, $propertyPath, ['count' => $count]);
         }
         return $this;
     }
@@ -2275,11 +2394,12 @@ class Assert
         (new Assert($object))->setExceptionClass($this->exceptionClass)->isObject($message, $propertyPath);
         if ( !method_exists($object, $this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Expected "%s" does not a exist in provided object.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_METHOD, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_METHOD, $propertyPath);
         }
         return $this;
     }
@@ -2300,11 +2420,12 @@ class Assert
         }
         if ( !is_object($this->value) )
         {
+            $message = $message ?: $this->overrideError;
             $message = sprintf(
                 $message ?: 'Provided "%s" is not a valid object.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, self::INVALID_OBJECT, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_OBJECT, $propertyPath);
         }
         return $this;
     }

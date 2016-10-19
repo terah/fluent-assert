@@ -9,18 +9,36 @@ namespace Terah\Assert;
  */
 function Assert($value, $throwValidationError=false)
 {
+    $assert = new Assert($value);
     if ( ! $throwValidationError )
     {
-        return new Assert($value);
+        return $assert;
     }
-    return (new Assert($value))->setExceptionClass('Terah\Assert\AssertionFailedException');
+    return $assert->setExceptionClass('Terah\Assert\AssertionFailedException');
 }
 
 /**
  * @param mixed $value
+ * @param string $name
+ * @param int    $code
+ * @param string $error
  * @return Assert
  */
-function Validate($value)
+function Validate($value, $name='', $code=0, $error='')
 {
-    return (new Assert($value))->setExceptionClass('Terah\Assert\ValidationFailedException');
+    $assert = new Assert($value);
+    $assert->setExceptionClass('Terah\Assert\ValidationFailedException');
+    if ( $name )
+    {
+        $assert->name($name);
+    }
+    if ( $code )
+    {
+        $assert->code($code);
+    }
+    if ( $error )
+    {
+        $assert->error($error);
+    }
+    return $assert;
 }
