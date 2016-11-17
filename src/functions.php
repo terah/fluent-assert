@@ -24,7 +24,7 @@ function Assert($value, $throwValidationError=false)
  * @param string $error
  * @return Assert
  */
-function Validate($value, $name='', $code=0, $error='')
+function Validate($value, $name='', $code=0, $error='', $level=Assert::WARNING)
 {
     $assert = new Assert($value);
     $assert->setExceptionClass('Terah\Assert\ValidationFailedException');
@@ -40,5 +40,10 @@ function Validate($value, $name='', $code=0, $error='')
     {
         $assert->error($error);
     }
+    if ( $level )
+    {
+        $assert->level($level);
+    }
+
     return $assert;
 }

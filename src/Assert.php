@@ -23,100 +23,112 @@ namespace Terah\Assert;
  */
 class Assert
 {
-    const INVALID_FLOAT = 9;
-    const INVALID_INTEGER = 10;
-    const INVALID_DIGIT = 11;
-    const INVALID_INTEGERISH = 12;
-    const INVALID_BOOLEAN = 13;
-    const VALUE_EMPTY = 14;
-    const VALUE_NULL = 15;
-    const INVALID_STRING = 16;
-    const INVALID_REGEX = 17;
-    const INVALID_MIN_LENGTH = 18;
-    const INVALID_MAX_LENGTH = 19;
-    const INVALID_STRING_START = 20;
-    const INVALID_STRING_CONTAINS = 21;
-    const INVALID_CHOICE = 22;
-    const INVALID_NUMERIC = 23;
-    const INVALID_ARRAY = 24;
-    const INVALID_KEY_EXISTS = 26;
-    const INVALID_NOT_BLANK = 27;
-    const INVALID_INSTANCE_OF = 28;
-    const INVALID_SUBCLASS_OF = 29;
-    const INVALID_RANGE = 30;
-    const INVALID_ALNUM = 31;
-    const INVALID_TRUE = 32;
-    const INVALID_EQ = 33;
-    const INVALID_SAME = 34;
-    const INVALID_MIN = 35;
-    const INVALID_MAX = 36;
-    const INVALID_LENGTH = 37;
-    const INVALID_FALSE = 38;
-    const INVALID_STRING_END = 39;
-    const INVALID_UUID = 40;
-    const INVALID_COUNT = 41;
-    const INVALID_NOT_EQ = 42;
-    const INVALID_NOT_SAME = 43;
-    const INVALID_TRAVERSABLE = 44;
-    const INVALID_ARRAY_ACCESSIBLE = 45;
-    const INVALID_KEY_ISSET = 46;
-    const INVALID_DIRECTORY = 101;
-    const INVALID_FILE = 102;
-    const INVALID_READABLE = 103;
-    const INVALID_WRITEABLE = 104;
-    const INVALID_CLASS = 105;
-    const INVALID_EMAIL = 201;
-    const INTERFACE_NOT_IMPLEMENTED = 202;
-    const INVALID_URL = 203;
-    const INVALID_NOT_INSTANCE_OF = 204;
-    const VALUE_NOT_EMPTY = 205;
-    const INVALID_JSON_STRING = 206;
-    const INVALID_OBJECT = 207;
-    const INVALID_METHOD = 208;
-    const INVALID_SCALAR = 209;
-    const INVALID_DATE = 210;
-    const INVALID_CALLABLE = 211;
-    const INVALID_KEYS_EXIST = 300;
-    const INVALID_PROPERTY_EXISTS = 301;
-    const INVALID_PROPERTIES_EXIST = 302;
-    const INVALID_UTF8 = 303;
-    const INVALID_DOMAIN_NAME = 304;
-    const INVALID_NOT_FALSE = 305;
-    const INVALID_FILE_OR_DIR = 306;
-    const INVALID_ASCII = 307;
-    const INVALID_NOT_REGEX = 308;
-    const INVALID_GREATER_THAN = 309;
-    const INVALID_LESS_THAN = 310;
-    const INVALID_GREATER_THAN_OR_EQ = 311;
-    const INVALID_LESS_THAN_OR_EQ = 312;
-    const INVALID_IP_ADDRESS = 313;
+    const INVALID_FLOAT                 = 9;
+    const INVALID_INTEGER               = 10;
+    const INVALID_DIGIT                 = 11;
+    const INVALID_INTEGERISH            = 12;
+    const INVALID_BOOLEAN               = 13;
+    const VALUE_EMPTY                   = 14;
+    const VALUE_NULL                    = 15;
+    const INVALID_STRING                = 16;
+    const INVALID_REGEX                 = 17;
+    const INVALID_MIN_LENGTH            = 18;
+    const INVALID_MAX_LENGTH            = 19;
+    const INVALID_STRING_START          = 20;
+    const INVALID_STRING_CONTAINS       = 21;
+    const INVALID_CHOICE                = 22;
+    const INVALID_NUMERIC               = 23;
+    const INVALID_ARRAY                 = 24;
+    const INVALID_KEY_EXISTS            = 26;
+    const INVALID_NOT_BLANK             = 27;
+    const INVALID_INSTANCE_OF           = 28;
+    const INVALID_SUBCLASS_OF           = 29;
+    const INVALID_RANGE                 = 30;
+    const INVALID_ALNUM                 = 31;
+    const INVALID_TRUE                  = 32;
+    const INVALID_EQ                    = 33;
+    const INVALID_SAME                  = 34;
+    const INVALID_MIN                   = 35;
+    const INVALID_MAX                   = 36;
+    const INVALID_LENGTH                = 37;
+    const INVALID_FALSE                 = 38;
+    const INVALID_STRING_END            = 39;
+    const INVALID_UUID                  = 40;
+    const INVALID_COUNT                 = 41;
+    const INVALID_NOT_EQ                = 42;
+    const INVALID_NOT_SAME              = 43;
+    const INVALID_TRAVERSABLE           = 44;
+    const INVALID_ARRAY_ACCESSIBLE      = 45;
+    const INVALID_KEY_ISSET             = 46;
+    const INVALID_DIRECTORY             = 101;
+    const INVALID_FILE                  = 102;
+    const INVALID_READABLE              = 103;
+    const INVALID_WRITEABLE             = 104;
+    const INVALID_CLASS                 = 105;
+    const INVALID_EMAIL                 = 201;
+    const INTERFACE_NOT_IMPLEMENTED     = 202;
+    const INVALID_URL                   = 203;
+    const INVALID_NOT_INSTANCE_OF       = 204;
+    const VALUE_NOT_EMPTY               = 205;
+    const INVALID_JSON_STRING           = 206;
+    const INVALID_OBJECT                = 207;
+    const INVALID_METHOD                = 208;
+    const INVALID_SCALAR                = 209;
+    const INVALID_DATE                  = 210;
+    const INVALID_CALLABLE              = 211;
+    const INVALID_KEYS_EXIST            = 300;
+    const INVALID_PROPERTY_EXISTS       = 301;
+    const INVALID_PROPERTIES_EXIST      = 302;
+    const INVALID_UTF8                  = 303;
+    const INVALID_DOMAIN_NAME           = 304;
+    const INVALID_NOT_FALSE             = 305;
+    const INVALID_FILE_OR_DIR           = 306;
+    const INVALID_ASCII                 = 307;
+    const INVALID_NOT_REGEX             = 308;
+    const INVALID_GREATER_THAN          = 309;
+    const INVALID_LESS_THAN             = 310;
+    const INVALID_GREATER_THAN_OR_EQ    = 311;
+    const INVALID_LESS_THAN_OR_EQ       = 312;
+    const INVALID_IP_ADDRESS            = 313;
+
+    const EMERGENCY                     = 'emergency';
+    const ALERT                         = 'alert';
+    const CRITICAL                      = 'critical';
+    const ERROR                         = 'error';
+    const WARNING                       = 'warning';
+    const NOTICE                        = 'notice';
+    const INFO                          = 'info';
+    const DEBUG                         = 'debug';
 
     /** @var bool */
-    protected $nullOr       = false;
+    protected $nullOr                   = false;
 
     /** @var bool */
-    protected $emptyOr     = false;
+    protected $emptyOr                  = false;
 
     /** @var mixed */
-    protected $value        = null;
+    protected $value                    = null;
 
     /** @var bool */
-    protected $all          = false;
+    protected $all                      = false;
 
     /** @var null|string */
-    protected $propertyPath = null;
+    protected $propertyPath             = null;
+
+    /** @var null|string */
+    protected $level                    = 'critical';
 
     /** @var int */
-    protected $overrideCode  = null;
+    protected $overrideCode             = null;
 
     /** @var string */
-    protected $overrideError  = '';
+    protected $overrideError            = '';
     /**
      * Exception to throw when an assertion failed.
      *
      * @var string
      */
-    protected $exceptionClass = 'Terah\Assert\AssertionFailedException';
+    protected $exceptionClass           = 'Terah\Assert\AssertionFailedException';
 
     /**
      * @param mixed $value
@@ -193,13 +205,16 @@ class Assert
      * @param int    $code
      * @param string $propertyPath
      * @param array  $constraints
+     * @param string $level
      * @return AssertionFailedException
      */
-    protected function createException($message, $code, $propertyPath, array $constraints = [])
+    protected function createException($message, $code, $propertyPath, array $constraints = [], $level=null)
     {
         $exceptionClass = $this->exceptionClass;
         $propertyPath   = is_null($propertyPath) ? $this->propertyPath : $propertyPath;
-        return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints);
+        $level          = is_null($level) ? $this->level : $level;
+
+        return new $exceptionClass($message, $code, $propertyPath, $this->value, $constraints, $level);
     }
 
     /**
@@ -219,6 +234,16 @@ class Assert
     public function code($code)
     {
         $this->overrideCode = $code;
+        return $this;
+    }
+
+    /**
+     * @param int $level
+     * @return Assert
+     */
+    public function level($level)
+    {
+        $this->level = $level;
         return $this;
     }
 

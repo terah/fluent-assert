@@ -17,13 +17,15 @@ class AssertionFailedException extends \Exception
     private $propertyPath;
     private $value;
     private $constraints;
+    private $level;
 
-    public function __construct($message, $code, $propertyPath = null, $value, array $constraints = [])
+    public function __construct($message, $code, $propertyPath = null, $value, array $constraints = [], $level='critical')
     {
         parent::__construct($message, $code);
-        $this->propertyPath = $propertyPath;
-        $this->value = $value;
-        $this->constraints = $constraints;
+        $this->propertyPath     = $propertyPath;
+        $this->value            = $value;
+        $this->constraints      = $constraints;
+        $this->level            = $level;
     }
     /**
      * User controlled way to define a sub-property causing
@@ -46,6 +48,14 @@ class AssertionFailedException extends \Exception
     public function getProperty()
     {
         return $this->propertyPath ? $this->propertyPath : 'General Error';
+    }
+
+    /**
+     * @return string
+     */
+    public function getLevel()
+    {
+        return $this->level ? $this->level : 'critical';
     }
 
     /**
