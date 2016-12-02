@@ -22,6 +22,7 @@ function Assert($value, $throwValidationError=false)
  * @param string $name
  * @param int    $code
  * @param string $error
+ * @param string $level
  * @return Assert
  */
 function Validate($value, $name='', $code=0, $error='', $level=Assert::WARNING)

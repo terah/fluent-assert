@@ -1,10 +1,9 @@
 <?php
 
 
-require_once 'vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 use function Terah\Assert\Assert;
-use function Terah\Assert\Validate;
 
 use Assert as Beberlei;
 
