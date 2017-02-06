@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Terah\Assert;
 
@@ -531,6 +531,20 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
+    public function unsignedInt($message=null, $propertyPath=null)
+    {
+        $message = $message ?: $this->overrideError;
+        $message = $message ?: 'Value "%s" is not an integer id.';
+
+        return $this->int($message, $propertyPath)->range(0, PHP_INT_MAX);
+    }
+
+    /**
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function flag($message = null, $propertyPath = null)
     {
         $message = $message ?: $this->overrideError;
@@ -753,7 +767,7 @@ class Assert
         {
             return $this;
         }
-        if ( !is_scalar($this->value) )
+        if ( ! is_scalar($this->value) )
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
