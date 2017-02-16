@@ -19,7 +19,16 @@ class AssertionFailedException extends \Exception
     private $constraints;
     private $level;
 
-    public function __construct($message, $code, $propertyPath = null, $value, array $constraints = [], $level='critical')
+    /**
+     * AssertionFailedException constructor.
+     * @param string $message
+     * @param int $code
+     * @param string $propertyPath
+     * @param $value
+     * @param array $constraints
+     * @param string $level
+     */
+    public function __construct(string $message, int $code, string $propertyPath = null, $value, array $constraints=[], string $level='critical')
     {
         parent::__construct($message, $code);
         $this->propertyPath     = $propertyPath;
@@ -36,16 +45,17 @@ class AssertionFailedException extends \Exception
      *
      * @return string
      */
-    public function getPropertyPath()
+    public function getPropertyPath() : string
     {
         $calling_location = $this->getCallingFileAndLine();
+
         return $this->propertyPath . ' in ' .$calling_location;
     }
 
     /**
      * @return null|string
      */
-    public function getProperty()
+    public function getProperty() : string
     {
         return $this->propertyPath ? $this->propertyPath : 'General Error';
     }
@@ -53,7 +63,7 @@ class AssertionFailedException extends \Exception
     /**
      * @return string
      */
-    public function getLevel()
+    public function getLevel() : string
     {
         return $this->level ? $this->level : 'critical';
     }
@@ -61,7 +71,7 @@ class AssertionFailedException extends \Exception
     /**
      * @return string
      */
-    protected function getCallingFileAndLine()
+    protected function getCallingFileAndLine() : string
     {
         foreach ( $this->getTrace() as $trace )
         {
@@ -77,6 +87,7 @@ class AssertionFailedException extends \Exception
             }
             return "{$trace->file}:{$trace->line}";
         }
+
         return '';
     }
 
@@ -99,23 +110,43 @@ class AssertionFailedException extends \Exception
         return $this->constraints;
     }
 
-    public static function afterLast($needle, $haystack, $return_original=false)
+    /**
+     * @param string $needle
+     * @param string $haystack
+     * @param bool $return_original
+     * @return string
+     */
+    public static function afterLast(string $needle, string $haystack, bool $return_original=false) : string
     {
-        if ( ! is_bool(static::strrevpos($haystack, $needle)) )
+        if ( static::strrevpos($haystack, $needle) !== -1 )
         {
             return mb_substr($haystack, static::strrevpos($haystack, $needle) + mb_strlen($needle));
         }
+
         return $return_original ? $haystack : '';
     }
 
-    public static function strrevpos($string, $needle)
+    /**
+     * @param string $string
+     * @param string $needle
+     * @return int
+     */
+    public static function strrevpos(string $string, string $needle) : int
     {
         $revStr = mb_strpos(strrev($string), strrev($needle));
-        return $revStr === false ? false : mb_strlen($string) - $revStr - mb_strlen($needle);
+
+        return $revStr === false ? -1 : mb_strlen($string) - $revStr - mb_strlen($needle);
     }
 
-    public static function beforeLast($needle, $haystack)
+    /**
+     * @param string $needle
+     * @param string $haystack
+     * @return string
+     */
+    public static function beforeLast(string $needle, string $haystack) : string
     {
-        return mb_substr($haystack, 0, static::strrevpos($haystack, $needle));
+        $position   = static::strrevpos($haystack, $needle);
+
+        return $position === -1 ? '' : mb_substr($haystack, 0, static::strrevpos($haystack, $needle));
     }
 }

@@ -941,7 +941,7 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         try {
             (new Assert(0))->range(10, 20);
 
-            $this->fail('Exception expected');
+            static::fail('Exception expected');
         } catch (AssertionFailedException $e) {
             $this->assertEquals(0, $e->getValue());
             $this->assertEquals(array('min' => 10, 'max' => 20), $e->getConstraints());
