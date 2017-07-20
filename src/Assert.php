@@ -90,6 +90,7 @@ class Assert
     const INVALID_GREATER_THAN_OR_EQ    = 311;
     const INVALID_LESS_THAN_OR_EQ       = 312;
     const INVALID_IP_ADDRESS            = 313;
+    const INVALID_AUS_MOBILE            = 314;
 
     const EMERGENCY                     = 'emergency';
     const ALERT                         = 'alert';
@@ -2112,6 +2113,37 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
+    public function ausMobile($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        try
+        {
+            $this->regex('/^04[0-9]{8})$/', $message, $propertyPath);
+        }
+        catch ( AssertionFailedException $e )
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message
+                    ?: 'Value "%s" is not an australian mobile number.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_AUS_MOBILE, $propertyPath);
+        }
+        return $this;
+    }
+
+    /**
+     * Assert that value is alphanumeric.
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
     public function alnum($message = null, $propertyPath = null)
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
@@ -2158,6 +2190,7 @@ class Assert
             );
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRUE, $propertyPath);
         }
+
         return $this;
     }
 

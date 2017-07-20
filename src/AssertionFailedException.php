@@ -18,6 +18,7 @@ class AssertionFailedException extends \Exception
     private $value;
     private $constraints;
     private $level;
+    private $location;
 
     /**
      * AssertionFailedException constructor.
@@ -35,7 +36,20 @@ class AssertionFailedException extends \Exception
         $this->value            = $value;
         $this->constraints      = $constraints;
         $this->level            = $level;
+        foreach ( $this->getTrace() as $point )
+        {
+            if ( $this->location )
+            {
+                continue;
+            }
+            $class = $point['class'] ?: '';
+            if ( $class !== 'Terah\\Assert\\Assert' )
+            {
+                $this->location = (object)$point;
+            }
+        }
     }
+
     /**
      * User controlled way to define a sub-property causing
      * the failure of a currently asserted objects.
@@ -89,6 +103,14 @@ class AssertionFailedException extends \Exception
         }
 
         return '';
+    }
+
+    /**
+     * @return object
+     */
+    public function getLocation()
+    {
+        return $this->location;
     }
 
     /**
