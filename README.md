@@ -79,6 +79,7 @@ use Terah\Assert\Assert;
 (new Assert($value))->implementsInterface($interfaceName, $message = null, $propertyPath = null);
 (new Assert($value))->isJsonString($message = null, $propertyPath = null);
 (new Assert($value))->uuid($message = null, $propertyPath = null);
+(new Assert($value))->username($message = null, $propertyPath = null);
 (new Assert($value))->count($count, $message = null, $propertyPath = null);
 (new Assert($value))->choicesNotEmpty(array $choices, $message = null, $propertyPath = null);
 (new Assert($value))->methodExists($object, $message = null, $propertyPath = null);
