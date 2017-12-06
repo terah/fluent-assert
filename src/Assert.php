@@ -1331,7 +1331,7 @@ class Assert
     public function nonEmptyString($message = null, $propertyPath = null)
     {
         $message = $message ?: 'Value "%s" is not a non-empty string.';
-        return $this->integer($message, $propertyPath)->notEmpty($message, $propertyPath);
+        return $this->string($message, $propertyPath)->notEmpty($message, $propertyPath);
     }
 
     /**
