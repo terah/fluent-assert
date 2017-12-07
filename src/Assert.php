@@ -60,7 +60,7 @@ class Assert
     const INVALID_TRAVERSABLE           = 44;
     const INVALID_ARRAY_ACCESSIBLE      = 45;
     const INVALID_KEY_ISSET             = 46;
-    const INVALID_USERNAME              = 47;
+    const INVALID_SAMACCOUNTNAME             = 47;
     const INVALID_DIRECTORY             = 101;
     const INVALID_FILE                  = 102;
     const INVALID_READABLE              = 103;
@@ -2393,7 +2393,7 @@ class Assert
         return $this;
     }
     /**
-     * Assert that the given string is a valid username (in line with Active directory sAMAccountName restrictions for users)
+     * Assert that the given string is a valid samAccountName (in line with Active directory sAMAccountName restrictions for users)
      *
      * From: https://social.technet.microsoft.com/wiki/contents/articles/11216.active-directory-requirements-for-creating-objects.aspx#Objects_with_sAMAccountName_Attribute
      *      The schema allows 256 characters in sAMAccountName values. However, the system limits sAMAccountName to 20 characters for user objects and 16 characters for computer objects.
@@ -2405,7 +2405,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function username($message = null, $propertyPath = null)
+    public function samAccountName($message = null, $propertyPath = null)
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2415,10 +2415,10 @@ class Assert
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
-                $message ?: 'Value "%s" is not a valid username.',
+                $message ?: 'Value "%s" is not a valid samAccountName.',
                 $this->stringify($this->value)
             );
-            throw $this->createException($message, $this->overrideCode ?: self::INVALID_USERNAME, $propertyPath);
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_SAMACCOUNTNAME, $propertyPath);
         }
         return $this;
     }
