@@ -60,7 +60,8 @@ class Assert
     const INVALID_TRAVERSABLE           = 44;
     const INVALID_ARRAY_ACCESSIBLE      = 45;
     const INVALID_KEY_ISSET             = 46;
-    const INVALID_SAMACCOUNTNAME             = 47;
+    const INVALID_SAMACCOUNTNAME        = 47;
+    const INVALID_USERPRINCIPALNAME     = 48;
     const INVALID_DIRECTORY             = 101;
     const INVALID_FILE                  = 102;
     const INVALID_READABLE              = 103;
@@ -2422,6 +2423,35 @@ class Assert
         }
         return $this;
     }
+
+    /**
+     * Assert that the given string is a valid userPrincipalName
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function userPrincipalName($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        try {
+            $this->email($message, $propertyPath);
+        } catch (AssertionFailedException $e) {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message
+                    ?: 'Value "%s" is not a valid userPrincipalName.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_USERPRINCIPALNAME, $propertyPath);
+        }
+        return $this;
+    }
+
     /**
      * Assert that the count of countable is equal to count.
      *
