@@ -469,6 +469,17 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("123hello+world@email.provider.com"))->email();
     }
 
+    public function testInvalidUserPrincipalName()
+    {
+        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_USERPRINCIPALNAME);
+        (new Assert("johncitizen"))->userPrincipalName();
+    }
+
+    public function testValidUserPrincipalName()
+    {
+        (new Assert("johncitizen@email.provider.com"))->userPrincipalName();
+    }
+
     /**
      * @dataProvider dataInvalidUrl
      */
@@ -762,6 +773,34 @@ class AssertTest extends \PHPUnit_Framework_TestCase
             'error in json string' => array('{invalid json encoded string}'),
         );
     }
+
+
+    public static function dataInvalidSamAccountName()
+    {
+        return array(
+            array('johncitizen12345678999999999999'),
+            array('johncitizen@something.com'),
+            array('john,citizen'),
+            array('john:citizen')
+        );
+    }
+
+    /**
+     * @dataProvider dataInvalidSamAccountName
+     */
+    public function testInvalidSamAccountName($nonSamAccountName)
+    {
+        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_FLOAT);
+        (new Assert($nonSamAccountName))->samAccountName();
+    }
+
+    public function testValidSamAccountName()
+    {
+        (new Assert(john.citizen))->samAccountName();
+        (new Assert(jcitiz))->samAccountName();
+        (new Assert(jcitiz123))->samAccountName();
+    }
+
 
     /**
      * @dataProvider providesValidUuids
