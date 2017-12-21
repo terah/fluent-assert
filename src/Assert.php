@@ -60,6 +60,8 @@ class Assert
     const INVALID_TRAVERSABLE           = 44;
     const INVALID_ARRAY_ACCESSIBLE      = 45;
     const INVALID_KEY_ISSET             = 46;
+    const INVALID_SAMACCOUNTNAME        = 47;
+    const INVALID_USERPRINCIPALNAME     = 48;
     const INVALID_DIRECTORY             = 101;
     const INVALID_FILE                  = 102;
     const INVALID_READABLE              = 103;
@@ -2388,6 +2390,64 @@ class Assert
                 $this->stringify($this->value)
             );
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_UUID, $propertyPath);
+        }
+        return $this;
+    }
+    /**
+     * Assert that the given string is a valid samAccountName (in line with Active directory sAMAccountName restrictions for users)
+     *
+     * From: https://social.technet.microsoft.com/wiki/contents/articles/11216.active-directory-requirements-for-creating-objects.aspx#Objects_with_sAMAccountName_Attribute
+     *      The schema allows 256 characters in sAMAccountName values. However, the system limits sAMAccountName to 20 characters for user objects and 16 characters for computer objects.
+     *      The following characters are not allowed in sAMAccountName values: " [ ] : ; | = + * ? < > / \ ,
+     *      you cannot logon to a domain using a sAMAccountName that includes the "@" character. If a user has a sAMAccountName with this character, they must logon using their userPrincipalName (UPN).
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function samAccountName($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( !preg_match('/^([a-z0-9]{4,20})$/', $this->value) )
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message ?: 'Value "%s" is not a valid samAccountName.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_SAMACCOUNTNAME, $propertyPath);
+        }
+        return $this;
+    }
+
+    /**
+     * Assert that the given string is a valid userPrincipalName
+     *
+     * @param string|null $message
+     * @param string|null $propertyPath
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function userPrincipalName($message = null, $propertyPath = null)
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        try {
+            $this->email($message, $propertyPath);
+        } catch (AssertionFailedException $e) {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message
+                    ?: 'Value "%s" is not a valid userPrincipalName.',
+                $this->stringify($this->value)
+            );
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_USERPRINCIPALNAME, $propertyPath);
         }
         return $this;
     }
