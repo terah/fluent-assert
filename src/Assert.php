@@ -156,6 +156,7 @@ class Assert
         {
             try
             {
+
                 $validator->__invoke();
             }
             catch ( AssertionFailedException $e )
@@ -175,7 +176,7 @@ class Assert
      * @param string $level
      * @return Assert
      */
-    public static function that($value, $fieldName='', $code=0, $error='', $level=Assert::WARNING)
+    public static function that($value, string $fieldName='', $code=0, $error='', $level=Assert::WARNING)
     {
         $assert = new static($value);
         if ( $fieldName )
@@ -214,6 +215,7 @@ class Assert
     public function value($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
@@ -226,6 +228,7 @@ class Assert
     public function nullOr($nullOr = true)
     {
         $this->nullOr = $nullOr;
+
         return $this;
     }
 
@@ -238,6 +241,7 @@ class Assert
     public function emptyOr($emptyOr = true)
     {
         $this->emptyOr = $emptyOr;
+
         return $this;
     }
 
@@ -250,6 +254,7 @@ class Assert
     public function all($all = true)
     {
         $this->all = $all;
+
         return $this;
     }
 
@@ -265,10 +270,10 @@ class Assert
      * @param string $level
      * @return AssertionFailedException
      */
-    protected function createException($message, $code, $fieldName, array $constraints = [], $level=null)
+    protected function createException($message, $code, string $fieldName, array $constraints = [], $level=null)
     {
         $exceptionClass = $this->exceptionClass;
-        $fieldName      = is_null($fieldName) ? $this->fieldName : $fieldName;
+        $fieldName      = empty($fieldName) ? $this->fieldName : $fieldName;
         $level          = is_null($level) ? $this->level : $level;
 
         return new $exceptionClass($message, $code, $fieldName, $this->value, $constraints, $level, $this->propertyPath);
@@ -281,6 +286,7 @@ class Assert
     public function setExceptionClass($exceptionClass)
     {
         $this->exceptionClass = $exceptionClass;
+
         return $this;
     }
 
@@ -288,9 +294,10 @@ class Assert
      * @param int $code
      * @return Assert
      */
-    public function code($code)
+    public function code(int $code) : Assert
     {
         $this->overrideCode = $code;
+
         return $this;
     }
 
@@ -298,9 +305,10 @@ class Assert
      * @param string $fieldName
      * @return Assert
      */
-    public function fieldName($fieldName)
+    public function fieldName(string $fieldName) : Assert
     {
         $this->fieldName = $fieldName;
+
         return $this;
     }
 
@@ -311,6 +319,7 @@ class Assert
     public function level($level)
     {
         $this->level = $level;
+
         return $this;
     }
 
@@ -321,6 +330,7 @@ class Assert
     public function error($error)
     {
         $this->overrideError = $error;
+
         return $this;
     }
 
@@ -337,6 +347,7 @@ class Assert
     public function propertyPath($propertyPath)
     {
         $this->propertyPath = $propertyPath;
+
         return $this;
     }
 
@@ -349,7 +360,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function eq($value2, $message = null, $fieldName = null)
+    public function eq($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -363,8 +374,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -377,7 +390,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function greaterThan($value2, $message = null, $fieldName = null)
+    public function greaterThan($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -391,8 +404,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -405,7 +420,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function greaterThanOrEq($value2, $message = null, $fieldName = null)
+    public function greaterThanOrEq($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -419,8 +434,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_EQ, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -433,7 +450,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function lessThan($value2, $message = null, $fieldName = null)
+    public function lessThan($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -447,8 +464,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_LESS_THAN, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -461,7 +480,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function lessThanOrEq($value2, $message = null, $fieldName = null)
+    public function lessThanOrEq($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -475,8 +494,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_LESS_THAN_OR_EQ, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -489,7 +510,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function same($value2, $message = null, $fieldName = null)
+    public function same($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -503,8 +524,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_SAME, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -517,7 +540,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEq($value2, $message = null, $fieldName = null)
+    public function notEq($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -531,8 +554,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_EQ, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -544,7 +569,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function isCallable($message = null, $fieldName = null)
+    public function isCallable(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -557,8 +582,10 @@ class Assert
                 $message ?: 'Value "%s" is not callable.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_EQ, $fieldName);
         }
+
         return $this;
     }
 
@@ -571,7 +598,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notSame($value2, $message = null, $fieldName = null)
+    public function notSame($value2, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -585,8 +612,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($value2)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_SAME, $fieldName, ['expected' => $value2]);
         }
+
         return $this;
     }
 
@@ -598,10 +627,11 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function id($message = null, $fieldName = null)
+    public function id(string $message='', string $fieldName='')
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not an integer id.';
+
         return $this->nonEmptyInt($message, $fieldName)->range(1, PHP_INT_MAX, $message, $fieldName);
     }
 
@@ -628,10 +658,11 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function flag($message = null, $fieldName = null)
+    public function flag(string $message='', string $fieldName='')
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a 0 or 1.';
+
         return $this->range(0, 1, $message, $fieldName);
     }
 
@@ -643,10 +674,11 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function status($message = null, $fieldName = null)
+    public function status(string $message='', string $fieldName='')
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a valid status.';
+
         return $this->integer($message, $fieldName)->inArray([-1, 0, 1]);
     }
 
@@ -658,7 +690,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nullOrId($message = null, $fieldName = null)
+    public function nullOrId(string $message='', string $fieldName='')
     {
         return $this->nullOr()->id($message, $fieldName);
     }
@@ -671,7 +703,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function allIds($message = null, $fieldName = null)
+    public function allIds(string $message='', string $fieldName='')
     {
         return $this->all()->id($message, $fieldName);
     }
@@ -684,7 +716,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function int($message = null, $fieldName = null)
+    public function int(string $message='', string $fieldName='')
     {
         return $this->integer($message, $fieldName);
     }
@@ -697,7 +729,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integer($message = null, $fieldName = null)
+    public function integer(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -710,8 +742,10 @@ class Assert
                 $message ?: 'Value "%s" is not an integer.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_INTEGER, $fieldName);
         }
+
         return $this;
     }
 
@@ -723,7 +757,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function float($message = null, $fieldName = null)
+    public function float(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -736,8 +770,10 @@ class Assert
                 $message ?: 'Value "%s" is not a float.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_FLOAT, $fieldName);
         }
+
         return $this;
     }
 
@@ -749,7 +785,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function digit($message = null, $fieldName = null)
+    public function digit(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -762,8 +798,10 @@ class Assert
                 $message ?: 'Value "%s" is not a digit.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_DIGIT, $fieldName);
         }
+
         return $this;
     }
 
@@ -775,7 +813,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function date($message = null, $fieldName = null)
+    public function date(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -789,8 +827,10 @@ class Assert
                 $message ?: 'Value "%s" is not a date.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_DATE, $fieldName);
         }
+
         return $this;
     }
 
@@ -802,7 +842,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integerish($message = null, $fieldName = null)
+    public function integerish(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -815,8 +855,10 @@ class Assert
                 $message ?: 'Value "%s" is not an integer or a number castable to integer.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_INTEGERISH, $fieldName);
         }
+
         return $this;
     }
 
@@ -828,7 +870,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function boolean($message = null, $fieldName = null)
+    public function boolean(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -841,8 +883,10 @@ class Assert
                 $message ?: 'Value "%s" is not a boolean.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_BOOLEAN, $fieldName);
         }
+
         return $this;
     }
 
@@ -854,7 +898,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function scalar($message = null, $fieldName = null)
+    public function scalar(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -867,8 +911,10 @@ class Assert
                 $message ?: 'Value "%s" is not a scalar.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_SCALAR, $fieldName);
         }
+
         return $this;
     }
 
@@ -880,7 +926,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmpty($message = null, $fieldName = null)
+    public function notEmpty(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -893,8 +939,10 @@ class Assert
                 $message ?: 'Value "%s" is empty, but non empty value was expected.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::VALUE_EMPTY, $fieldName);
         }
+
         return $this;
     }
 
@@ -906,7 +954,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function noContent($message = null, $fieldName = null)
+    public function noContent(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -919,8 +967,10 @@ class Assert
                 $message ?: 'Value "%s" is not empty, but empty value was expected.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::VALUE_NOT_EMPTY, $fieldName);
         }
+
         return $this;
     }
 
@@ -932,7 +982,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notNull($message = null, $fieldName = null)
+    public function notNull(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -945,8 +995,10 @@ class Assert
                 $message ?: 'Value "%s" is null, but non null value was expected.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::VALUE_NULL, $fieldName);
         }
+
         return $this;
     }
 
@@ -958,7 +1010,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function string($message = null, $fieldName = null)
+    public function string(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -972,8 +1024,10 @@ class Assert
                 $this->stringify($this->value),
                 gettype($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING, $fieldName);
         }
+
         return $this;
     }
 
@@ -1000,8 +1054,10 @@ class Assert
                 $message ?: 'Value "%s" does not match expression.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_REGEX, $fieldName, ['pattern' => $pattern]);
         }
+
         return $this;
     }
 
@@ -1013,7 +1069,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function ipAddress($message = null, $fieldName = null)
+    public function ipAddress(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1028,8 +1084,10 @@ class Assert
                 $message ?: 'Value "%s" was expected to be a valid IP Address',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_IP_ADDRESS, $fieldName);
         }
+
         return $this;
     }
 
@@ -1042,7 +1100,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function notRegex($pattern, $message = null, $fieldName = null)
+    public function notRegex($pattern, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1056,8 +1114,10 @@ class Assert
                 $message ?: 'Value "%s" does not match expression.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_REGEX, $fieldName, ['pattern' => $pattern]);
         }
+
         return $this;
     }
 
@@ -1071,7 +1131,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function length($length, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function length($length, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1088,8 +1148,10 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['length' => $length, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_LENGTH, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1104,7 +1166,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function minLength($minLength, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function minLength($minLength, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1122,8 +1184,10 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN_LENGTH, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1138,7 +1202,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function maxLength($maxLength, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function maxLength($maxLength, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1155,8 +1219,10 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX_LENGTH, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1171,7 +1237,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function betweenLength($minLength, $maxLength, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function betweenLength($minLength, $maxLength, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1189,6 +1255,7 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['min_length' => $minLength, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN_LENGTH, $fieldName, $constraints);
         }
         if ( mb_strlen($this->value, $encoding) > $maxLength )
@@ -1201,8 +1268,10 @@ class Assert
                 mb_strlen($this->value, $encoding)
             );
             $constraints = ['max_length' => $maxLength, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX_LENGTH, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1216,7 +1285,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function startsWith($needle, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function startsWith($needle, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1232,8 +1301,10 @@ class Assert
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_START, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1247,7 +1318,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function endsWith($needle, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function endsWith($needle, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1264,8 +1335,10 @@ class Assert
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_END, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1279,7 +1352,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function contains($needle, $message = null, $fieldName = null, $encoding = 'utf8')
+    public function contains($needle, string $message='', string $fieldName='', $encoding = 'utf8')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1295,8 +1368,10 @@ class Assert
                 $this->stringify($needle)
             );
             $constraints = ['needle' => $needle, 'encoding' => $encoding];
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_STRING_CONTAINS, $fieldName, $constraints);
         }
+
         return $this;
     }
 
@@ -1309,7 +1384,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function choice(array $choices, $message = null, $fieldName = null)
+    public function choice(array $choices, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1323,8 +1398,10 @@ class Assert
                 $this->stringify($this->value),
                 implode(", ", array_map('Terah\Assert\Assert::stringify', $choices))
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_CHOICE, $fieldName, ['choices' => $choices]);
         }
+
         return $this;
     }
 
@@ -1337,13 +1414,14 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function inArray(array $choices, $message = null, $fieldName = null)
+    public function inArray(array $choices, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
             return $this;
         }
         $this->choice($choices, $message, $fieldName);
+
         return $this;
     }
 
@@ -1355,7 +1433,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function numeric($message = null, $fieldName = null)
+    public function numeric(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1368,8 +1446,10 @@ class Assert
                 $message ?: 'Value "%s" is not numeric.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NUMERIC, $fieldName);
         }
+
         return $this;
     }
 
@@ -1381,9 +1461,10 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyArray($message = null, $fieldName = null)
+    public function nonEmptyArray(string $message='', string $fieldName='')
     {
         $message = $message ?: 'Value "%s" is not a non-empty array.';
+
         return $this->isArray($message, $fieldName)->notEmpty($message, $fieldName);
     }
 
@@ -1395,9 +1476,10 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyInt($message = null, $fieldName = null)
+    public function nonEmptyInt(string $message='', string $fieldName='')
     {
         $message = $message ?: 'Value "%s" is not a non-empty integer.';
+
         return $this->integer($message, $fieldName)->notEmpty($message, $fieldName);
     }
 
@@ -1409,9 +1491,10 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyString($message = null, $fieldName = null)
+    public function nonEmptyString(string $message='', string $fieldName='')
     {
         $message = $message ?: 'Value "%s" is not a non-empty string.';
+
         return $this->string($message, $fieldName)->notEmpty($message, $fieldName);
     }
 
@@ -1423,7 +1506,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArray($message = null, $fieldName = null)
+    public function isArray(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1436,8 +1519,10 @@ class Assert
                 $message ?: 'Value "%s" is not an array.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_ARRAY, $fieldName);
         }
+
         return $this;
     }
 
@@ -1449,7 +1534,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isTraversable($message = null, $fieldName = null)
+    public function isTraversable(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1462,8 +1547,10 @@ class Assert
                 $message ?: 'Value "%s" is not an array and does not implement Traversable.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRAVERSABLE, $fieldName);
         }
+
         return $this;
     }
 
@@ -1475,7 +1562,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArrayAccessible($message = null, $fieldName = null)
+    public function isArrayAccessible(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1488,8 +1575,10 @@ class Assert
                 $message ?: 'Value "%s" is not an array and does not implement ArrayAccess.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_ARRAY_ACCESSIBLE, $fieldName);
         }
+
         return $this;
     }
 
@@ -1502,7 +1591,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyExists($key, $message = null, $fieldName = null)
+    public function keyExists($key, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1516,8 +1605,10 @@ class Assert
                 $message ?: 'Array does not contain an element with key "%s"',
                 $this->stringify($key)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEY_EXISTS, $fieldName, ['key' => $key]);
         }
+
         return $this;
     }
 
@@ -1530,7 +1621,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keysExist($keys, $message = null, $fieldName = null)
+    public function keysExist($keys, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1549,6 +1640,7 @@ class Assert
                 throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEYS_EXIST, $fieldName, ['key' => $key]);
             }
         }
+
         return $this;
     }
 
@@ -1561,7 +1653,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertyExists($key, $message = null, $fieldName = null)
+    public function propertyExists($key, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1575,8 +1667,10 @@ class Assert
                     'Object does not contain a property with key "%s"',
                     $this->stringify($key)
                 );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_PROPERTY_EXISTS, $fieldName, ['key' => $key]);
         }
+
         return $this;
     }
 
@@ -1589,7 +1683,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertiesExist(array $keys, $message = null, $fieldName = null)
+    public function propertiesExist(array $keys, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1609,6 +1703,7 @@ class Assert
                 throw $this->createException($message, $this->overrideCode ?: self::INVALID_PROPERTIES_EXIST, $fieldName, ['key' => $key]);
             }
         }
+
         return $this;
     }
 
@@ -1620,7 +1715,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function utf8($message = null, $fieldName = null)
+    public function utf8(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1634,8 +1729,10 @@ class Assert
                     'Value "%s" was expected to be a valid UTF8 string',
                     $this->stringify($this->value)
                 );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_UTF8, $fieldName);
         }
+
         return $this;
     }
 
@@ -1648,7 +1745,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function ascii($message = null, $fieldName = null)
+    public function ascii(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1662,8 +1759,10 @@ class Assert
                     'Value "%s" was expected to be a valid ASCII string',
                     $this->stringify($this->value)
                 );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_ASCII, $fieldName);
         }
+
         return $this;
     }
 
@@ -1677,7 +1776,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyIsset($key, $message = null, $fieldName = null)
+    public function keyIsset($key, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1691,8 +1790,10 @@ class Assert
                 $message ?: 'The element with key "%s" was not found',
                 $this->stringify($key)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_KEY_ISSET, $fieldName, ['key' => $key]);
         }
+
         return $this;
     }
 
@@ -1706,7 +1807,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmptyKey($key, $message = null, $fieldName = null)
+    public function notEmptyKey($key, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1714,6 +1815,7 @@ class Assert
         }
         $this->keyIsset($key, $message, $fieldName);
         (new Assert($this->value[$key]))->setExceptionClass($this->exceptionClass)->notEmpty($message, $fieldName);
+
         return $this;
     }
 
@@ -1725,7 +1827,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notBlank($message = null, $fieldName = null)
+    public function notBlank(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1738,8 +1840,10 @@ class Assert
                 $message ?: 'Value "%s" is blank, but was expected to contain a value.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_BLANK, $fieldName);
         }
+
         return $this;
     }
 
@@ -1752,7 +1856,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isInstanceOf($className, $message = null, $fieldName = null)
+    public function isInstanceOf($className, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1766,8 +1870,10 @@ class Assert
                 $this->stringify($this->value),
                 $className
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_INSTANCE_OF, $fieldName, ['class' => $className]);
         }
+
         return $this;
     }
 
@@ -1780,7 +1886,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notIsInstanceOf($className, $message = null, $fieldName = null)
+    public function notIsInstanceOf($className, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1794,8 +1900,10 @@ class Assert
                 $this->stringify($this->value),
                 $className
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_INSTANCE_OF, $fieldName, ['class' => $className]);
         }
+
         return $this;
     }
 
@@ -1808,7 +1916,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function subclassOf($className, $message = null, $fieldName = null)
+    public function subclassOf($className, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1822,8 +1930,10 @@ class Assert
                 $this->stringify($this->value),
                 $className
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_SUBCLASS_OF, $fieldName, ['class' => $className]);
         }
+
         return $this;
     }
 
@@ -1837,7 +1947,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function range($minValue, $maxValue, $message = null, $fieldName = null)
+    public function range($minValue, $maxValue, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1853,11 +1963,13 @@ class Assert
                 $this->stringify($minValue),
                 $this->stringify($maxValue)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_RANGE, $fieldName, [
                 'min' => $minValue,
                 'max' => $maxValue
             ]);
         }
+
         return $this;
     }
 
@@ -1870,7 +1982,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function min($minValue, $message = null, $fieldName = null)
+    public function min($minValue, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1885,8 +1997,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($minValue)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MIN, $fieldName, ['min' => $minValue]);
         }
+
         return $this;
     }
 
@@ -1899,7 +2013,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function max($maxValue, $message = null, $fieldName = null)
+    public function max($maxValue, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1914,8 +2028,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($maxValue)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_MAX, $fieldName, ['max' => $maxValue]);
         }
+
         return $this;
     }
 
@@ -1927,7 +2043,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function file($message = null, $fieldName = null)
+    public function file(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1942,8 +2058,10 @@ class Assert
                 $message ?: 'File "%s" was expected to exist.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_FILE, $fieldName);
         }
+
         return $this;
     }
 
@@ -1955,7 +2073,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function fileOrDirectoryExists($message = null, $fieldName = null)
+    public function fileOrDirectoryExists(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1970,8 +2088,10 @@ class Assert
                 $message ?: 'File or directory "%s" was expected to exist.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_FILE_OR_DIR, $fieldName);
         }
+
         return $this;
     }
 
@@ -1983,7 +2103,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function directory($message = null, $fieldName = null)
+    public function directory(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1997,8 +2117,10 @@ class Assert
                 $message ?: 'Path "%s" was expected to be a directory.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_DIRECTORY, $fieldName);
         }
+
         return $this;
     }
 
@@ -2010,7 +2132,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function readable($message = null, $fieldName = null)
+    public function readable(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2024,8 +2146,10 @@ class Assert
                 $message ?: 'Path "%s" was expected to be readable.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_READABLE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2037,7 +2161,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function writeable($message = null, $fieldName = null)
+    public function writeable(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2051,8 +2175,10 @@ class Assert
                 $message ?: 'Path "%s" was expected to be writeable.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_WRITEABLE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2064,7 +2190,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function email($message = null, $fieldName = null)
+    public function email(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2078,6 +2204,7 @@ class Assert
                 $message ?: 'Value "%s" was expected to be a valid e-mail address.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_EMAIL, $fieldName);
         }
         else
@@ -2094,6 +2221,7 @@ class Assert
                 throw $this->createException($message, $this->overrideCode ?: self::INVALID_EMAIL, $fieldName);
             }
         }
+
         return $this;
     }
 
@@ -2105,9 +2233,10 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function emailPrefix($message = null, $fieldName = null)
+    public function emailPrefix(string $message='', string $fieldName='')
     {
         $this->value($this->value . '@example.com');
+
         return $this->email($message, $fieldName);
     }
 
@@ -2125,7 +2254,7 @@ class Assert
      * @link https://github.com/symfony/Validator/blob/master/Constraints/UrlValidator.php
      * @link https://github.com/symfony/Validator/blob/master/Constraints/Url.php
      */
-    public function url($message = null, $fieldName = null)
+    public function url(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2155,8 +2284,10 @@ class Assert
                 $message ?: 'Value "%s" was expected to be a valid URL starting with http or https',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_URL, $fieldName);
         }
+
         return $this;
     }
 
@@ -2171,7 +2302,7 @@ class Assert
      * @throws AssertionFailedException
      *
      */
-    public function domainName($message = null, $fieldName = null)
+    public function domainName(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2186,8 +2317,10 @@ class Assert
                 $message ?: 'Value "%s" was expected to be a valid domain name',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_DOMAIN_NAME, $fieldName);
         }
+
         return $this;
     }
 
@@ -2199,7 +2332,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function ausMobile($message = null, $fieldName = null)
+    public function ausMobile(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2217,8 +2350,10 @@ class Assert
                     ?: 'Value "%s" is not an australian mobile number.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_AUS_MOBILE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2230,7 +2365,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function alnum($message = null, $fieldName = null)
+    public function alnum(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2248,8 +2383,10 @@ class Assert
                     ?: 'Value "%s" is not alphanumeric, starting with letters and containing only letters and numbers.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_ALNUM, $fieldName);
         }
+
         return $this;
     }
 
@@ -2261,7 +2398,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function true($message = null, $fieldName = null)
+    public function true(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2274,6 +2411,7 @@ class Assert
                 $message ?: 'Value "%s" is not TRUE.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRUE, $fieldName);
         }
 
@@ -2288,7 +2426,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function truthy($message = null, $fieldName = null)
+    public function truthy(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2301,8 +2439,10 @@ class Assert
                 $message ?: 'Value "%s" is not truthy.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_TRUE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2314,7 +2454,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function false($message = null, $fieldName = null)
+    public function false(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2327,8 +2467,10 @@ class Assert
                 $message ?: 'Value "%s" is not FALSE.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_FALSE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2340,7 +2482,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notFalse($message = null, $fieldName = null)
+    public function notFalse(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2353,8 +2495,10 @@ class Assert
                 $message ?: 'Value "%s" is not FALSE.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_NOT_FALSE, $fieldName);
         }
+
         return $this;
     }
 
@@ -2366,7 +2510,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function classExists($message = null, $fieldName = null)
+    public function classExists(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2379,21 +2523,22 @@ class Assert
                 $message ?: 'Class "%s" does not exist.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_CLASS, $fieldName);
         }
+
         return $this;
     }
 
     /**
-     * Assert that the class implements the interface
-     *
-     * @param string      $interfaceName
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return Assert
+     * @param      $interfaceName
+     * @param null $message
+     * @param null $fieldName
+     * @return $this
      * @throws AssertionFailedException
+     * @throws \ReflectionException
      */
-    public function implementsInterface($interfaceName, $message = null, $fieldName = null)
+    public function implementsInterface($interfaceName, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2408,8 +2553,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($interfaceName)
             );
+
             throw $this->createException($message, self::INTERFACE_NOT_IMPLEMENTED, $fieldName, ['interface' => $interfaceName]);
         }
+
         return $this;
     }
 
@@ -2427,7 +2574,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isJsonString($message = null, $fieldName = null)
+    public function isJsonString(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2440,8 +2587,10 @@ class Assert
                 $message ?: 'Value "%s" is not a valid JSON string.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_JSON_STRING, $fieldName);
         }
+
         return $this;
     }
 
@@ -2455,7 +2604,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function uuid($message = null, $fieldName = null)
+    public function uuid(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2473,8 +2622,10 @@ class Assert
                 $message ?: 'Value "%s" is not a valid UUID.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_UUID, $fieldName);
         }
+
         return $this;
     }
     /**
@@ -2493,7 +2644,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function samAccountName($message = null, $fieldName = null)
+    public function samAccountName(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2506,8 +2657,10 @@ class Assert
                 $message ?: 'Value "%s" is not a valid samAccountName.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_SAMACCOUNTNAME, $fieldName);
         }
+
         return $this;
     }
 
@@ -2519,7 +2672,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function userPrincipalName($message = null, $fieldName = null)
+    public function userPrincipalName(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2537,8 +2690,10 @@ class Assert
                     ?: 'Value "%s" is not a valid userPrincipalName.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_USERPRINCIPALNAME, $fieldName);
         }
+
         return $this;
     }
 
@@ -2551,7 +2706,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function count($count, $message = null, $fieldName = null)
+    public function count($count, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2565,8 +2720,10 @@ class Assert
                 $this->stringify($this->value),
                 $this->stringify($count)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_COUNT, $fieldName, ['count' => $count]);
         }
+
         return $this;
     }
 
@@ -2595,6 +2752,7 @@ class Assert
             }
             return true;
         }
+
         return ( $this->nullOr && is_null($this->value) ) || ( $this->emptyOr && empty($this->value) ) ? true : false;
     }
 
@@ -2607,7 +2765,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function choicesNotEmpty(array $choices, $message = null, $fieldName = null)
+    public function choicesNotEmpty(array $choices, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2618,6 +2776,7 @@ class Assert
         {
             $this->notEmptyKey($choice, $message, $fieldName);
         }
+
         return $this;
     }
 
@@ -2630,7 +2789,7 @@ class Assert
      * @returns Assert
      * @throws AssertionFailedException
      */
-    public function methodExists($object, $message = null, $fieldName = null)
+    public function methodExists($object, string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2644,8 +2803,10 @@ class Assert
                 $message ?: 'Expected "%s" does not a exist in provided object.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_METHOD, $fieldName);
         }
+
         return $this;
     }
 
@@ -2657,7 +2818,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function isObject($message = null, $fieldName = null)
+    public function isObject(string $message='', string $fieldName='')
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2670,8 +2831,10 @@ class Assert
                 $message ?: 'Provided "%s" is not a valid object.',
                 $this->stringify($this->value)
             );
+
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_OBJECT, $fieldName);
         }
+
         return $this;
     }
 
@@ -2712,6 +2875,7 @@ class Assert
         {
             return '<NULL>';
         }
+
         return 'unknown';
     }
 }
