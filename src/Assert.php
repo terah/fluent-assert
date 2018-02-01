@@ -168,28 +168,6 @@ class Assert
     }
 
     /**
-     * @param \Closure[] $validators
-     * @return array
-     */
-    public static function runValidators(array $validators) : array
-    {
-        $errors = [];
-        foreach ( $validators as $fieldName => $validator )
-        {
-            try
-            {
-                $validator->__invoke();
-            }
-            catch ( AssertionFailedException $e )
-            {
-                $errors[$fieldName]     = $e->getMessage();
-            }
-        }
-
-        return $errors;
-    }
-    
-    /**
      * @param        $value
      * @param string $fieldName
      * @param int    $code
@@ -1245,7 +1223,7 @@ class Assert
             return $this;
         }
         $this->string($message, $fieldName);
-        if ( mb_strpos($this->value, $needle, null, $encoding) !== 0 )
+        if ( mb_strpos($this->value, $needle, 0, $encoding) !== 0 )
         {
             $message = $message ?: $this->overrideError;
             $message     = sprintf(
@@ -1277,7 +1255,7 @@ class Assert
         }
         $this->string($message, $fieldName);
         $stringPosition = mb_strlen($this->value, $encoding) - mb_strlen($needle, $encoding);
-        if ( mb_strripos($this->value, $needle, null, $encoding) !== $stringPosition )
+        if ( mb_strripos($this->value, $needle, 0 , $encoding) !== $stringPosition )
         {
             $message = $message ?: $this->overrideError;
             $message     = sprintf(
@@ -1308,7 +1286,7 @@ class Assert
             return $this;
         }
         $this->string($message, $fieldName);
-        if ( mb_strpos($this->value, $needle, null, $encoding) === false )
+        if ( mb_strpos($this->value, $needle, 0, $encoding) === false )
         {
             $message = $message ?: $this->overrideError;
             $message     = sprintf(

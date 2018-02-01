@@ -54,7 +54,7 @@ class AssertionFailedException extends \Exception
             {
                 continue;
             }
-            $class = $point['class'] ?: '';
+            $class = $point['class'] ??0?: '';
             if ( $class !== 'Terah\\Assert\\Assert' )
             {
                 $this->location = (object)$point;

@@ -2,11 +2,24 @@
 
 namespace Terah\Assert\Test;
 
+use PHPUnit\Framework\TestCase;
 use Terah\Assert\Assert;
 use Terah\Assert\AssertionFailedException;
 
-class AssertTest extends \PHPUnit_Framework_TestCase
+
+class AssertTest extends TestCase
 {
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidFloat()
+    {
+        (new Assert(1.0))->float();
+        (new Assert(0.1))->float();
+        (new Assert(-1.1))->float();
+    }
+
     public static function dataInvalidFloat()
     {
         return array(
@@ -20,19 +33,22 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidFloat
+     * @dataProvider                dataInvalidFloat
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_FLOAT
      */
     public function testInvalidFloat($nonFloat)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_FLOAT);
         (new Assert($nonFloat))->float();
     }
 
-    public function testValidFloat()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidInteger()
     {
-        (new Assert(1.0))->float();
-        (new Assert(0.1))->float();
-        (new Assert(-1.1))->float();
+        (new Assert(10))->integer();
+        (new Assert(0))->integer();
     }
 
     public static function dataInvalidInteger()
@@ -49,20 +65,18 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidInteger
+     * @dataProvider                dataInvalidInteger
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_INTEGER
      */
     public function testInvalidInteger($nonInteger)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_INTEGER);
         (new Assert($nonInteger))->integer();
     }
 
-    public function testValidInteger()
-    {
-        (new Assert(10))->integer();
-        (new Assert(0))->integer();
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidIntegerish()
     {
         (new Assert(10))->integerish();
@@ -81,38 +95,62 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidIntegerish
+     * @dataProvider                dataInvalidIntegerish
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_INTEGERISH
      */
     public function testInvalidIntegerish($nonInteger)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_INTEGERISH);
         (new Assert($nonInteger))->integerish();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidBoolean()
     {
         (new Assert(true))->boolean();
         (new Assert(false))->boolean();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_BOOLEAN
+     */
     public function testInvalidBoolean()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_BOOLEAN);
         (new Assert(1))->boolean();
     }
 
-    public function testInvalidScalar()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_SCALAR);
-        (new Assert(new \stdClass))->scalar();
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidScalar()
     {
         (new Assert("foo"))->scalar();
         (new Assert(52))->scalar();
         (new Assert(12.34))->scalar();
         (new Assert(false))->scalar();
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_SCALAR
+     */
+    public function testInvalidScalar()
+    {
+        (new Assert(new \stdClass))->scalar();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidNotEmpty()
+    {
+        (new Assert("test"))->notEmpty();
+        (new Assert(1))->notEmpty();
+        (new Assert(true))->notEmpty();
+        (new Assert(array("foo")))->notEmpty();
     }
 
     public static function dataInvalidNotEmpty()
@@ -127,23 +165,19 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidNotEmpty
+     * @dataProvider                dataInvalidNotEmpty
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::VALUE_EMPTY
      */
     public function testInvalidNotEmpty($value)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::VALUE_EMPTY);
         (new Assert($value))->notEmpty();
     }
 
-    public function testNotEmpty()
-    {
-        (new Assert("test"))->notEmpty();
-        (new Assert(1))->notEmpty();
-        (new Assert(true))->notEmpty();
-        (new Assert(array("foo")))->notEmpty();
-    }
-
-    public function testEmpty()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidEmpty()
     {
         (new Assert(""))->noContent();
         (new Assert(0))->noContent();
@@ -163,15 +197,19 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidEmpty
+     * @dataProvider                dataInvalidEmpty
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::VALUE_NOT_EMPTY
      */
     public function testInvalidEmpty($value)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::VALUE_NOT_EMPTY);
         (new Assert($value))->noContent();
     }
 
-    public function testNotNull()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidNotNull()
     {
         (new Assert("1"))->notNull();
         (new Assert(1))->notNull();
@@ -180,25 +218,22 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert(false))->notNull();
     }
 
+    /**
+    * @expectedException           Terah\Assert\AssertionFailedException
+    * @expectedExceptionCode       Terah\Assert\Assert::VALUE_NULL
+    */
     public function testInvalidNotNull()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::VALUE_NULL);
         (new Assert(null))->notNull();
     }
 
-    public function testString()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidString()
     {
         (new Assert("test-string"))->string();
         (new Assert(""))->string();
-    }
-
-    /**
-     * @dataProvider dataInvalidString
-     */
-    public function testInvalidString($invalidString)
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING);
-        (new Assert($invalidString))->string();
     }
 
     public static function dataInvalidString()
@@ -213,24 +248,37 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider                dataInvalidString
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING
+     */
+    public function testInvalidString($invalidString)
+    {
+        (new Assert($invalidString))->string();
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_REGEX
+     */
     public function testInvalidRegex()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_REGEX);
         (new Assert("foo"))->regex("(bar)");
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING
+     */
     public function testInvalidRegexValueNotString()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING);
         (new Assert(array("foo")))->regex("(bar)");
     }
 
-    public function testInvalidMinLength()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MIN_LENGTH);
-        (new Assert("foo"))->minLength(4);
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidMinLength()
     {
         (new Assert("foo"))->minLength(3);
@@ -240,12 +288,18 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("址址"))->minLength(2);
     }
 
-    public function testInvalidMaxLength()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MIN_LENGTH
+     */
+    public function testInvalidMinLength()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MAX_LENGTH);
-        (new Assert("foo"))->maxLength(2);
+        (new Assert("foo"))->minLength(4);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidMaxLength()
     {
         (new Assert("foo"))->maxLength(10);
@@ -254,36 +308,45 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("址址"))->maxLength(2);
     }
 
-    public function testInvalidBetweenLengthMin()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MAX_LENGTH
+     */
+    public function testInvalidMaxLength()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MIN_LENGTH);
-        (new Assert("foo"))->betweenLength(4, 100);
+        (new Assert("foo"))->maxLength(2);
     }
 
-    public function testInvalidBetweenLengthMax()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MAX_LENGTH);
-        (new Assert("foo"))->betweenLength(0, 2);
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidBetweenLength()
     {
         (new Assert("foo"))->betweenLength(0, 3);
         (new Assert("址址"))->betweenLength(2, 2);
     }
 
-    public function testInvalidStartsWith()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MIN_LENGTH
+     */
+    public function testInvalidBetweenLengthMin()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING_START);
-        (new Assert("foo"))->startsWith("bar");
+        (new Assert("foo"))->betweenLength(4, 100);
     }
 
-    public function testInvalidStartsWithDueToWrongEncoding()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MAX_LENGTH
+     */
+    public function testInvalidBetweenLengthMax()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING_START);
-        (new Assert("址"))->startsWith("址址", null, null, 'ASCII');
+        (new Assert("foo"))->betweenLength(0, 2);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidStartsWith()
     {
         (new Assert("foo"))->startsWith("foo");
@@ -292,18 +355,27 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("址foo"))->startsWith("址");
     }
 
-    public function testInvalidEndsWith()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING_START
+     */
+    public function testInvalidStartsWith()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING_END);
-        (new Assert("foo"))->endsWith("bar");
+        (new Assert("foo"))->startsWith("bar");
     }
 
-    public function testInvalidEndsWithDueToWrongEncoding()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING_START
+     */
+    public function testInvalidStartsWithDueToWrongEncoding()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING_END);
-        (new Assert("址"))->endsWith("址址", null, null, 'ASCII');
+        (new Assert("址"))->startsWith("址址", null, null, 'ASCII');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidEndsWith()
     {
         (new Assert("foo"))->endsWith("foo");
@@ -312,51 +384,103 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("foo址"))->endsWith("址");
     }
 
-    public function testInvalidContains()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING_END
+     */
+    public function testInvalidEndsWith()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_STRING_CONTAINS);
-        (new Assert("foo"))->contains("bar");
+        (new Assert("foo"))->endsWith("bar");
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING_END
+     */
+    public function testInvalidEndsWithDueToWrongEncoding()
+    {
+        (new Assert("址"))->endsWith("址址", null, null, 'ASCII');
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidContains()
     {
         (new Assert("foo"))->contains("foo");
         (new Assert("foo"))->contains("oo");
     }
 
-    public function testInvalidChoice()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_STRING_CONTAINS
+     */
+    public function testInvalidContains()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_CHOICE);
-        (new Assert("foo"))->choice(array("bar", "baz"));
+        (new Assert("foo"))->contains("bar");
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidChoice()
     {
         (new Assert("foo"))->choice(array("foo"));
     }
 
-    public function testInvalidInArray()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_CHOICE
+     */
+    public function testInvalidChoice()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_CHOICE);
-        (new Assert("bar"))->inArray(array("baz"));
+        (new Assert("foo"))->choice(array("bar", "baz"));
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidInArray()
     {
         (new Assert("foo"))->inArray(array("foo"));
     }
 
-    public function testInvalidNumeric()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_CHOICE
+     */
+    public function testInvalidInArray()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NUMERIC);
-        (new Assert("foo"))->numeric();
+        (new Assert("bar"))->inArray(array("baz"));
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidNumeric()
     {
         (new Assert("1"))->numeric();
         (new Assert(1))->numeric();
         (new Assert(1.23))->numeric();
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_NUMERIC
+     */
+    public function testInvalidNumeric()
+    {
+        (new Assert("foo"))->numeric();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidArray()
+    {
+        (new Assert(array()))->isArray();
+        (new Assert(array(1,2,3)))->isArray();
+        (new Assert(array(array(),array())))->isArray();
     }
 
     public static function dataInvalidArray()
@@ -373,83 +497,103 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidArray
+     * @dataProvider                dataInvalidArray
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_ARRAY
      */
     public function testInvalidArray($value)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_ARRAY);
         (new Assert($value))->isArray();
     }
 
-    public function testValidArray()
-    {
-        (new Assert(array()))->isArray();
-        (new Assert(array(1,2,3)))->isArray();
-        (new Assert(array(array(),array())))->isArray();
-    }
-
-    public function testInvalidKeyExists()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_KEY_EXISTS);
-        (new Assert(array("foo" => "bar")))->keyExists("baz");
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidKeyExists()
     {
         (new Assert(array("foo" => "bar")))->keyExists("foo");
     }
 
-    public function testInvalidNotBlank()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_KEY_EXISTS
+     */
+    public function testInvalidKeyExists()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NOT_BLANK);
-        (new Assert(""))->notBlank();
+        (new Assert(array("foo" => "bar")))->keyExists("baz");
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidNotBlank()
     {
         (new Assert("foo"))->notBlank();
     }
 
-    public function testInvalidNotInstanceOf()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_NOT_BLANK
+     */
+    public function testInvalidNotBlank()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NOT_INSTANCE_OF);
-        (new Assert(new \stdClass))->notIsInstanceOf('stdClass');
+        (new Assert(""))->notBlank();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidNotIsInstanceOf()
     {
         (new Assert(new \stdClass))->notIsInstanceOf('PDO');
     }
 
-    public function testInvalidInstanceOf()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_NOT_INSTANCE_OF
+     */
+    public function testInvalidNotInstanceOf()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_INSTANCE_OF);
-        (new Assert(new \stdClass))->isInstanceOf('PDO');
+        (new Assert(new \stdClass))->notIsInstanceOf('stdClass');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidInstanceOf()
     {
         (new Assert(new \stdClass))->isInstanceOf('stdClass');
     }
 
-    public function testInvalidSubclassOf()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_INSTANCE_OF
+     */
+    public function testInvalidInstanceOf()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_SUBCLASS_OF);
-        (new Assert(new \stdClass))->subclassOf('PDO');
+        (new Assert(new \stdClass))->isInstanceOf('PDO');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidSubclassOf()
     {
         (new Assert(new ChildStdClass))->subclassOf('stdClass');
     }
 
-    public function testInvalidRange()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_SUBCLASS_OF
+     */
+    public function testInvalidSubclassOf()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_RANGE);
-        (new Assert(1))->range(2, 3);
-        (new Assert(1.5))->range(2, 3);
+        (new Assert(new \stdClass))->subclassOf('PDO');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidRange()
     {
         (new Assert(1))->range(1, 2);
@@ -458,75 +602,96 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert(2.5))->range(2.25, 2.75);
     }
 
-    public function testInvalidEmail()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_RANGE
+     */
+    public function testInvalidRange()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EMAIL);
-        (new Assert("foo"))->email();
+        (new Assert(1))->range(2, 3);
+        (new Assert(1.5))->range(2, 3);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidEmail()
     {
         (new Assert("123hello+world@email.provider.com"))->email();
     }
 
-    public function testInvalidUserPrincipalName()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_EMAIL
+     */
+    public function testInvalidEmail()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_USERPRINCIPALNAME);
-        (new Assert("johncitizen"))->userPrincipalName();
+        (new Assert("foo"))->email();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidUserPrincipalName()
     {
         (new Assert("johncitizen@email.provider.com"))->userPrincipalName();
     }
 
     /**
-     * @dataProvider dataInvalidUrl
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_USERPRINCIPALNAME
      */
-    public function testInvalidUrl($url)
+    public function testInvalidUserPrincipalName()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_URL);
-        (new Assert('foo'))->url($url);
+        (new Assert("johncitizen"))->userPrincipalName();
     }
 
-    public static function dataInvalidUrl()
+    public static function dataValidUrl()
     {
         return array(
-            'null value' => array(""),
-            'empty string' => array(" "),
-            'no scheme' => array("url.de"),
-            'unsupported scheme' => array("git://url.de"),
-            'Http with query (no / between tld und ?)' => array("http://example.org?do=something"),
-            'Http with query and port (no / between port und ?)' => array("http://example.org:8080?do=something"),
+            'straight with Http'            => array("http://example.org"),
+            'Http with path'                => array("http://example.org/do/something"),
+            'Http with query'               => array("http://example.org/index.php?do=something"),
+            'Http with port'                => array("http://example.org:8080"),
+            'Http with all possibilities'   => array("http://example.org:8080/do/something/index.php?do=something"),
+            'straight with Https'           => array("https://example.org"),
         );
     }
 
     /**
-     * @dataProvider dataValidUrl
+     * @dataProvider                dataValidUrl
+     * @doesNotPerformAssertions
      */
     public function testValidUrl($url)
     {
         (new Assert($url))->url();
     }
 
-    public static function dataValidUrl()
+    public static function dataInvalidUrl()
     {
         return array(
-            'straight with Http' => array("http://example.org"),
-            'Http with path' => array("http://example.org/do/something"),
-            'Http with query' => array("http://example.org/index.php?do=something"),
-            'Http with port' => array("http://example.org:8080"),
-            'Http with all possibilities' => array("http://example.org:8080/do/something/index.php?do=something"),
-            'straight with Https' => array("https://example.org"),
+            'null value'                    => array(""),
+            'empty string'                  => array(" "),
+            'no scheme'                     => array("url.de"),
+            'unsupported scheme'            => array("git://url.de"),
+            'Http with query (no / between tld und ?)'              => array("http://example.org?do=something"),
+            'Http with query and port (no / between port und ?)'    => array("http://example.org:8080?do=something"),
         );
     }
 
-    public function testInvalidDigit()
+    /**
+     * @dataProvider                dataInvalidUrl
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_URL
+     */
+    public function testInvalidUrl($url)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_DIGIT);
-        (new Assert(-1))->digit();
+        (new Assert('foo'))->url($url);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidDigit()
     {
         (new Assert(1))->digit();
@@ -534,6 +699,18 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("0"))->digit();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_DIGIT
+     */
+    public function testInvalidDigit()
+    {
+        (new Assert(-1))->digit();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidAlnum()
     {
         (new Assert("a"))->alnum();
@@ -542,112 +719,208 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         (new Assert("a1b2c3"))->alnum();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_ALNUM
+     */
     public function testInvalidAlnum()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_ALNUM);
         (new Assert("1a"))->alnum();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidTrue()
     {
         (new Assert(1 == 1))->true();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_TRUE
+     */
     public function testInvalidTrue()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_TRUE);
         (new Assert(false))->true();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidFalse()
     {
         (new Assert(1 == 0))->false();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_FALSE
+     */
     public function testInvalidFalse()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_FALSE);
         (new Assert(true))->false();
     }
 
-    public function testInvalidClass()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_CLASS);
-        (new Assert("Foo"))->classExists();
-    }
-
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidClass()
     {
         (new Assert("\\Exception"))->classExists();
     }
 
-    public function testSame()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_CLASS
+     */
+    public function testInvalidClass()
+    {
+        (new Assert("Foo"))->classExists();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidSame()
     {
         (new Assert(1))->same(1);
         (new Assert("foo"))->same("foo");
         (new Assert($obj = new \stdClass()))->same($obj);
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_SAME);
+
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_SAME
+     */
+    public function testInvalidSame()
+    {
         (new Assert(new \stdClass()))->same(new \stdClass());
     }
 
-    public function testEq()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidEq()
     {
         (new Assert(1))->eq("1");
         (new Assert("foo"))->eq(true);
         (new Assert($obj = new \stdClass()))->eq($obj);
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_EQ
+     */
+    public function testInvalidEq()
+    {
         (new Assert("2"))->eq(1);
     }
 
-    public function testNotEq()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidNotEq()
     {
         (new Assert("1"))->notEq(false);
         (new Assert(new \stdClass()))->notEq(array());
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NOT_EQ);
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_NOT_EQ
+     */
+    public function testInvalidNotEq()
+    {
         (new Assert("1"))->notEq(1);
     }
 
-    public function testNotSame()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidNotSame()
     {
         (new Assert("1"))->notSame(2);
         (new Assert(new \stdClass()))->notSame(array());
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_NOT_SAME);
+
+    }
+
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_NOT_SAME
+     */
+    public function testInvalidNotSame()
+    {
         (new Assert(1))->notSame(1);
     }
 
-    public function testMin()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidMin()
     {
         (new Assert(1))->min(1);
         (new Assert(2))->min(1);
         (new Assert(2.5))->min(1);
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MIN);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MIN
+     */
+    public function testInvalidMin()
+    {
         (new Assert(0))->min(1);
     }
 
-    public function testMax()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidMax()
     {
         (new Assert(1))->max(1);
         (new Assert(0.5))->max(1);
         (new Assert(0))->max(1);
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_MAX);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_MAX
+     */
+    public function testInvalidMax()
+    {
         (new Assert(2))->max(1);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testNullOr()
     {
         (new Assert(null))->nullOr()->max(1);
         (new Assert(null))->nullOr()->max(2);
     }
 
-    public function testLength()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidLength()
     {
         (new Assert("asdf"))->length(4);
         (new Assert(""))->length(0);
     }
 
-    public static function dataLengthUtf8Characters()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_LENGTH
+     */
+    public function testInvalidLength()
+    {
+        (new Assert("asdf"))->length(3);
+    }
+
+    public static function dataValidLengthUtf8Characters()
     {
         return array(
             array("址", 1),
@@ -656,98 +929,147 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataLengthUtf8Characters
+     * @dataProvider dataValidLengthUtf8Characters
+     * @doesNotPerformAssertions
      */
-    public function testLenghtUtf8Characters($value, $expected)
+    public function testValidLengthUtf8Characters($value, $expected)
     {
         (new Assert($value))->length($expected);
     }
 
-    public function testLengthFailed()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_LENGTH
+     */
+    public function testInvalidLengthForWrongEncoding()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_LENGTH);
-        (new Assert("asdf"))->length(3);
-    }
-
-    public function testLengthFailedForWrongEncoding()
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_LENGTH);
         (new Assert("址"))->length(1, null, null, 'ASCII');
     }
 
-    public function testLengthValidForGivenEncoding()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidLengthForGivenEncoding()
     {
         (new Assert("址"))->length(1, null, null, 'utf8');
     }
 
-    public function testFile()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidFile()
     {
         (new Assert(__FILE__))->file();
     }
 
-    public function testFileWithEmptyFilename()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::VALUE_EMPTY
+     */
+    public function testInvalidFileForEmptyFilename()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::VALUE_EMPTY);
         (new Assert(""))->file();
     }
 
-    public function testFileDoesNotExists()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_FILE
+     */
+    public function testInvalidFileForDoesNotExist()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_FILE);
         (new Assert(__DIR__ . '/does-not-exists'))->file();
     }
 
-    public function testDirectory()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidDirectory()
     {
         (new Assert(__DIR__))->directory();
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_DIRECTORY);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_DIRECTORY
+     */
+    public function testInvalidDirectory()
+    {
         (new Assert(__DIR__ . '/does-not-exist'))->directory();
     }
 
-    public function testReadable()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidReadable()
     {
         (new Assert(__FILE__))->readable();
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_READABLE);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_READABLE
+     */
+    public function testInvalidReadable()
+    {
         (new Assert(__DIR__ . '/does-not-exist'))->readable();
     }
 
-    public function testWriteable()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidWriteable()
     {
         (new Assert(sys_get_temp_dir()))->writeable();
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_WRITEABLE);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_WRITEABLE
+     */
+    public function testInvalidWriteable()
+    {
         (new Assert(__DIR__ . '/does-not-exist'))->writeable();
     }
 
-    public function testImplementsInterface()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidImplementsInterface()
     {
         (new Assert('\ArrayIterator'))->implementsInterface('\Traversable');
+    }
 
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INTERFACE_NOT_IMPLEMENTED);
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INTERFACE_NOT_IMPLEMENTED
+     */
+    public function testInvalidImplementsInterface()
+    {
         (new Assert('\Exception'))->implementsInterface('\Traversable');
     }
 
-    public function testImplementsInterfaceWithClassObject()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidImplementsInterfaceWithClassObject()
     {
         $class = new \ArrayObject();
 
         (new Assert($class))->implementsInterface('\Traversable');
-
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INTERFACE_NOT_IMPLEMENTED);
-        (new Assert($class))->implementsInterface('\SplObserver');
     }
 
     /**
-     * @dataProvider isJsonStringDataprovider
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INTERFACE_NOT_IMPLEMENTED
      */
-    public function testIsJsonString($content)
+    public function testInvalidImplementsInterfaceWithClassObject()
     {
-        (new Assert($content))->isJsonString();
+        $class = new \ArrayObject();
+
+        (new Assert($class))->implementsInterface('\SplObserver');
     }
 
-    public static function isJsonStringDataprovider()
+    public static function dataValidIsJsonString()
     {
         return array(
             '»null« value' => array(json_encode(null)),
@@ -758,15 +1080,15 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider isJsonStringInvalidStringDataprovider
+     * @dataProvider                dataValidIsJsonString
+     * @doesNotPerformAssertions
      */
-    public function testIsJsonStringExpectingException($invalidString)
+    public function testValidIsJsonString($content)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_JSON_STRING);
-        (new Assert($invalidString))->isJsonString();
+        (new Assert($content))->isJsonString();
     }
 
-    public static function isJsonStringInvalidStringDataprovider()
+    public static function dataInvalidIsJsonString()
     {
         return array(
             'no json string' => array('invalid json encoded string'),
@@ -774,52 +1096,47 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider                dataInvalidIsJsonString
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_JSON_STRING
+     */
+    public function testInvalidIsJsonString($invalidString)
+    {
+        (new Assert($invalidString))->isJsonString();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidSamAccountName()
+    {
+        (new Assert('johncitizen'))->samAccountName();
+        (new Assert('jcitiz'))->samAccountName();
+        (new Assert('jcitiz123'))->samAccountName();
+    }
 
     public static function dataInvalidSamAccountName()
     {
         return array(
             array('johncitizen12345678999999999999'),
             array('johncitizen@something.com'),
-            array('john,citizen'),
-            array('john:citizen')
+            array('john.citizen'),
+            array('citizen,john')
         );
     }
 
     /**
-     * @dataProvider dataInvalidSamAccountName
+     * @dataProvider                dataInvalidSamAccountName
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_SAMACCOUNTNAME
      */
     public function testInvalidSamAccountName($nonSamAccountName)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_FLOAT);
         (new Assert($nonSamAccountName))->samAccountName();
     }
 
-    public function testValidSamAccountName()
-    {
-        (new Assert(john.citizen))->samAccountName();
-        (new Assert(jcitiz))->samAccountName();
-        (new Assert(jcitiz123))->samAccountName();
-    }
-
-
-    /**
-     * @dataProvider providesValidUuids
-     */
-    public function testValidUuids($uuid)
-    {
-        (new Assert($uuid))->uuid();
-    }
-
-    /**
-     * @dataProvider providesInvalidUuids
-     */
-    public function testInvalidUuids($uuid)
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException');
-        (new Assert($uuid))->uuid();
-    }
-
-    public static function providesValidUuids()
+    public static function dataValidUuids()
     {
         return array(
             array('ff6f8cb0-c57d-11e1-9b21-0800200c9a66'),
@@ -831,7 +1148,16 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public static function providesInvalidUuids()
+    /**
+     * @dataProvider                dataValidUuids
+     * @doesNotPerformAssertions
+     */
+    public function testValidUuids($uuid)
+    {
+        (new Assert($uuid))->uuid();
+    }
+
+    public static function dataInvalidUuids()
     {
         return array(
             array('zf6f8cb0-c57d-11e1-9b21-0800200c9a66'),
@@ -842,21 +1168,25 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider                dataInvalidUuids
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_UUID
+     */
+    public function testInvalidUuids($uuid)
+    {
+        (new Assert($uuid))->uuid();
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidNotEmptyKey()
     {
         (new Assert(array('keyExists' => 'notEmpty')))->notEmptyKey('keyExists');
     }
 
-    /**
-     * @dataProvider invalidNotEmptyKeyDataprovider
-     */
-    public function testInvalidNotEmptyKey($invalidArray, $key)
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException');
-        (new Assert($invalidArray))->notEmptyKey($key);
-    }
-
-    public static function invalidNotEmptyKeyDataprovider()
+    public static function dataInvalidNotEmptyKey()
     {
         return array(
             'empty'          => array(array('keyExists' => ''), 'keyExists'),
@@ -864,35 +1194,60 @@ class AssertTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider                dataInvalidNotEmptyKey
+     * @expectedException           Terah\Assert\AssertionFailedException
+     */
+    public function testInvalidNotEmptyKey($invalidArray, $key)
+    {
+        (new Assert($invalidArray))->notEmptyKey($key);
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testAllWithSimpleAssertion()
     {
         (new Assert(array(true, true)))->all()->true();
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_TRUE
+     */
     public function testAllWithSimpleAssertionThrowsExceptionOnElementThatFailsAssertion()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_TRUE);
         (new Assert(array(true, false)))->all()->true();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testAllWithComplexAssertion()
     {
         (new Assert(array(new \stdClass, new \stdClass)))->all()->isInstanceOf('stdClass');
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_INSTANCE_OF
+     */
     public function testAllWithComplexAssertionThrowsExceptionOnElementThatFailsAssertion()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', 'Assertion failed', Assert::INVALID_INSTANCE_OF);
-
         (new Assert(array(new \stdClass, new \stdClass)))->all()->isInstanceOf('PDO', 'Assertion failed', 'foos');
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     */
     public function testAllWithNoValueThrows()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException');
         (new Assert(null))->all()->true();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testValidCount()
     {
         (new Assert(array('Hi')))->count(1);
@@ -908,68 +1263,107 @@ class AssertTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider dataInvalidCount
+     * @dataProvider                dataInvalidCount
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_COUNT
      */
     public function testInvalidCount($countable, $count)
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_COUNT);
         (new Assert($countable))->count($count);
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testChoicesNotEmpty()
     {
         (new Assert(array('tux' => 'linux', 'Gnu' => 'dolphin')))->choicesNotEmpty(array('tux'));
     }
 
-    /**
-     * @dataProvider invalidChoicesProvider
-     */
-    public function testChoicesNotEmptyExpectingException($values, $choices, $exceptionCode)
-    {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, $exceptionCode);
-        (new Assert($values))->choicesNotEmpty($choices);
-    }
-
-    public function invalidChoicesProvider()
+    public function dataInvalidChoicesForValueEmpty()
     {
         return array(
-            'empty values' => array(array(), array('tux'), Assert::VALUE_EMPTY),
-            'empty recodes in $values' => array(array('tux' => ''), array('tux'), Assert::VALUE_EMPTY),
-            'choice not found in values' => array(array('tux' => ''), array('invalidChoice'), Assert::INVALID_KEY_ISSET),
+            'empty values' => array(array(), array('tux')),
+            'empty recodes in $values' => array(array('tux' => ''), array('tux'))
         );
     }
 
-    public function testIsObject()
+    /**
+     * @dataProvider                dataInvalidChoicesForValueEmpty
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::VALUE_EMPTY
+     */
+    public function testInvalidChoicesNotEmptyForValueEmpty($values, $choices)
+    {
+        (new Assert($values))->choicesNotEmpty($choices);
+    }
+
+
+    public function dataInvalidChoicesForInvalidKeySet()
+    {
+        return array(
+            'choice not found in values' => array(array('tux' => ''), array('invalidChoice'), Assert::INVALID_KEY_ISSET)
+        );
+    }
+
+    /**
+     * @dataProvider                dataInvalidChoicesForInvalidKeySet
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_KEY_ISSET
+     */
+    public function testInvalidChoicesNotEmptyForInvalidKeySet($values, $choices)
+    {
+        (new Assert($values))->choicesNotEmpty($choices);
+    }
+
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidIsObject()
     {
         (new Assert(new \stdClass))->isObject();
     }
-
-    public function testIsObjectExpectingException()
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_OBJECT
+     */
+    public function testInvalidIsObject()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_OBJECT);
         (new Assert('notAnObject'))->isObject();
     }
 
-    public function testMethodExists()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidMethodExists()
     {
         (new Assert('methodExists'))->methodExists(new Assert(null));
     }
 
-    public function testChaining()
+    /**
+     * @doesNotPerformAssertions
+     */
+    public function testValidChaining()
     {
         (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(1);
         (new Assert(array(1,1,1,1,1,1,)))->allIds()->integerish()->numeric()->notNull()->eq(1);
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_EQ
+     */
     public function testChainingFails()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
         (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(2);
     }
 
+    /**
+     * @expectedException           Terah\Assert\AssertionFailedException
+     * @expectedExceptionCode       Terah\Assert\Assert::INVALID_EQ
+     */
     public function testAllChainingFails()
     {
-        $this->setExpectedException('Terah\Assert\AssertionFailedException', null, Assert::INVALID_EQ);
         (new Assert(array(1,1,1,1,1,2,)))->all()->id()->integerish()->numeric()->notNull()->eq(1);
     }
     /**
