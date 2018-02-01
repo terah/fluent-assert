@@ -140,6 +140,29 @@ class Assert
     {
         $this->value($value);
     }
+    
+    
+    /**
+     * @param \Closure[] $validators
+     * @return array
+     */
+    public static function runValidators(array $validators) : array
+    {
+        $errors = [];
+        foreach ( $validators as $fieldName => $validator )
+        {
+            try
+            {
+                $validator->__invoke();
+            }
+            catch ( AssertionFailedException $e )
+            {
+                $errors[$fieldName]     = $e->getMessage();
+            }
+        }
+
+        return $errors;
+    }
 
     /**
      * @param        $value
