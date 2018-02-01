@@ -1,27 +1,38 @@
 <?php declare(strict_types=1);
 
 namespace Terah\Assert;
+
+    /**
+     * Assert
+     *
+     * LICENSE
+     *
+     * This source file is subject to the new BSD license that is bundled
+     * with this package in the file LICENSE.txt.
+     * If you did not receive a copy of the license and are unable to
+     * obtain it through the world-wide-web, please send an email
+     * to terry@terah.com.au so I can send you a copy immediately.
+     */
+
 /**
- * Assert
+ * AssertionFailedException
  *
- * LICENSE
+ * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @author Terry Cullen <terry@terah.com.au>
  *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to kontakt@beberlei.de so I can send you a copy immediately.
  */
 class AssertionFailedException extends \Exception
 {
-    private $propertyPath;
+    private $fieldName;
     private $value;
     private $constraints;
     private $level;
+    private $propertyPath;
     private $location;
 
     /**
      * AssertionFailedException constructor.
+     *
      * @param string $message
      * @param int $code
      * @param string $propertyPath
@@ -29,13 +40,14 @@ class AssertionFailedException extends \Exception
      * @param array $constraints
      * @param string $level
      */
-    public function __construct(string $message, int $code, string $propertyPath = null, $value, array $constraints=[], string $level='critical')
+    public function __construct(string $message, int $code, string $fieldName = null, $value, array $constraints=[], string $level='critical', string $propertyPath = null)
     {
         parent::__construct($message, $code);
-        $this->propertyPath     = $propertyPath;
+        $this->fieldName        = $fieldName;
         $this->value            = $value;
         $this->constraints      = $constraints;
         $this->level            = $level;
+        $this->propertyPath     = $propertyPath;
         foreach ( $this->getTrace() as $point )
         {
             if ( $this->location )
@@ -51,6 +63,46 @@ class AssertionFailedException extends \Exception
     }
 
     /**
+     * Get the field name that was set for the assertion object.
+     *
+     * @return string
+     */
+    public function getFieldName() : string
+    {
+        return $this->fieldName;
+    }
+
+    /**
+     * Get the value that caused the assertion to fail.
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Get the constraints that applied to the failed assertion.
+     *
+     * @return array
+     */
+    public function getConstraints()
+    {
+        return $this->constraints;
+    }
+
+    /**
+     * Get the error level.
+     *
+     * @return string
+     */
+    public function getLevel() : string
+    {
+        return $this->level ? $this->level : 'critical';
+    }
+
+    /**
      * User controlled way to define a sub-property causing
      * the failure of a currently asserted objects.
      *
@@ -61,28 +113,23 @@ class AssertionFailedException extends \Exception
      */
     public function getPropertyPath() : string
     {
-        $calling_location = $this->getCallingFileAndLine();
-
-        return $this->propertyPath . ' in ' .$calling_location;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getProperty() : string
-    {
         return $this->propertyPath ? $this->propertyPath : 'General Error';
     }
 
     /**
-     * @return string
+     * Get the propertyPath, combined with the calling file and line location.
+     *
+     * @return null|string
      */
-    public function getLevel() : string
+    public function getPropertyPathAndCallingLocation() : string
     {
-        return $this->level ? $this->level : 'critical';
+        return $this->getPropertyPath() . ' in ' . $this->getCallingFileAndLine();
     }
 
     /**
+     * Get the calling file and line from where the failing assertion
+     * was called.
+     *
      * @return string
      */
     protected function getCallingFileAndLine() : string
@@ -106,30 +153,14 @@ class AssertionFailedException extends \Exception
     }
 
     /**
+     * Get the trace location of where the failing assertion
+     * was called.
+     *
      * @return object
      */
     public function getLocation()
     {
         return $this->location;
-    }
-
-    /**
-     * Get the value that caused the assertion to fail.
-     *
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-    /**
-     * Get the constraints that applied to the failed assertion.
-     *
-     * @return array
-     */
-    public function getConstraints()
-    {
-        return $this->constraints;
     }
 
     /**
