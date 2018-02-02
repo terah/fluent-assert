@@ -370,7 +370,7 @@ class AssertTest extends TestCase
      */
     public function testInvalidStartsWithDueToWrongEncoding()
     {
-        (new Assert("址"))->startsWith("址址", null, null, 'ASCII');
+        (new Assert("址"))->startsWith("址址", '', '', 'ASCII');
     }
 
     /**
@@ -399,7 +399,7 @@ class AssertTest extends TestCase
      */
     public function testInvalidEndsWithDueToWrongEncoding()
     {
-        (new Assert("址"))->endsWith("址址", null, null, 'ASCII');
+        (new Assert("址"))->endsWith("址址", '', '', 'ASCII');
     }
 
     /**
@@ -943,7 +943,7 @@ class AssertTest extends TestCase
      */
     public function testInvalidLengthForWrongEncoding()
     {
-        (new Assert("址"))->length(1, null, null, 'ASCII');
+        (new Assert("址"))->length(1, '', '', 'ASCII');
     }
 
     /**
@@ -951,7 +951,7 @@ class AssertTest extends TestCase
      */
     public function testValidLengthForGivenEncoding()
     {
-        (new Assert("址"))->length(1, null, null, 'utf8');
+        (new Assert("址"))->length(1, '', '', 'utf8');
     }
 
     /**

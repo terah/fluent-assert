@@ -34,13 +34,13 @@ class AssertionFailedException extends \Exception
      * AssertionFailedException constructor.
      *
      * @param string $message
-     * @param int $code
+     * @param int    $code
      * @param string $propertyPath
-     * @param $value
-     * @param array $constraints
+     * @param        $value
+     * @param array  $constraints
      * @param string $level
      */
-    public function __construct(string $message, int $code, string $fieldName='', $value, array $constraints=[], string $level='critical', string $propertyPath = null)
+    public function __construct(string $message, int $code, string $fieldName = '', $value, array $constraints=[], string $level='critical', string $propertyPath = '')
     {
         parent::__construct($message, $code);
         $this->fieldName        = $fieldName;
@@ -87,7 +87,7 @@ class AssertionFailedException extends \Exception
      *
      * @return array
      */
-    public function getConstraints()
+    public function getConstraints() : array
     {
         return $this->constraints;
     }
@@ -119,7 +119,7 @@ class AssertionFailedException extends \Exception
     /**
      * Get the propertyPath, combined with the calling file and line location.
      *
-     * @return null|string
+     * @return string
      */
     public function getPropertyPathAndCallingLocation() : string
     {
@@ -158,7 +158,7 @@ class AssertionFailedException extends \Exception
      *
      * @return object
      */
-    public function getLocation()
+    public function getLocation() : object
     {
         return $this->location;
     }
