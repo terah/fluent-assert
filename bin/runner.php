@@ -1,16 +1,12 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
-use Terah\Assert\Logger;
 use Terah\Assert\Tester;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 class TestRunner
 {
-    /** @var Logger $logger */
-    static $logger      = null;
-
     public static function run()
     {
         $fileName       = (string)static::getArg(1, getcwd());
@@ -20,13 +16,13 @@ class TestRunner
         $tests          = static::getTestFiles($fileName, $recursive);
         if ( empty($tests) )
         {
-            static::getLogger()->error("No test files found/specified");
+            Tester::getLogger()->error("No test files found/specified");
 
             exit(1);
         }
         foreach ( $tests as $fileName )
         {
-            static::getLogger()->debug("Loading test file {$fileName}");
+            Tester::getLogger()->debug("Loading test file {$fileName}");
             require($fileName);
             Tester::run($suite, $test);
         }
@@ -47,7 +43,7 @@ class TestRunner
         }
         if ( ! file_exists($fileName) )
         {
-            static::getLogger()->error("{$fileName} does not exist; exiting");
+            Tester::getLogger()->error("{$fileName} does not exist; exiting");
 
             exit(1);
         }
@@ -55,11 +51,15 @@ class TestRunner
         if ( is_dir($fileName) )
         {
             $iterator       = new \DirectoryIterator($fileName);
-            $iterator       = $recursive ? new RecursiveIteratorIterator($iterator) : $iterator;
+            if ( $recursive )
+            {
+                $iterator       = new \RecursiveDirectoryIterator($fileName);
+                $iterator       = $recursive ? new RecursiveIteratorIterator($iterator) : $iterator;
+            }
             $testFiles      = [];
             foreach ( $iterator as $fileInfo )
             {
-                if ( preg_match("#(tests?)#i", $fileInfo->getBasename()) )
+                if ( preg_match('/Suite.php$/', $fileInfo->getBasename()) )
                 {
                     $testFiles[] = $fileInfo->getPathname();
                 }
@@ -69,25 +69,12 @@ class TestRunner
         }
         if ( ! is_file($fileName) )
         {
-            static::getLogger()->error("{$fileName} is not a file; exiting");
+            Tester::getLogger()->error("{$fileName} is not a file; exiting");
 
             exit(1);
         }
 
         return [$fileName];
-    }
-
-    /**
-     * @return Logger
-     */
-    public static function getLogger() : Logger
-    {
-        if ( ! static::$logger )
-        {
-            static::$logger = new Logger();
-        }
-
-        static::$logger;
     }
 
     /**

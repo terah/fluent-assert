@@ -40,7 +40,7 @@ class AssertionFailedException extends \Exception
      * @param array $constraints
      * @param string $level
      */
-    public function __construct(string $message, int $code, string string $fieldName='', $value, array $constraints=[], string $level='critical', string $propertyPath = null)
+    public function __construct(string $message, int $code, string $fieldName='', $value, array $constraints=[], string $level='critical', string $propertyPath = null)
     {
         parent::__construct($message, $code);
         $this->fieldName        = $fieldName;

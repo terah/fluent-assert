@@ -14,6 +14,17 @@ class Tester
     /** @var Suite[]  */
     protected static $suites        = [];
 
+    /** @var Logger $logger */
+    public static $logger           = null;
+
+    /**
+     * @return bool
+     */
+    public static function init() : bool
+    {
+        return true;
+    }
+
     /**
      * @param string $suiteName
      * @return Suite
@@ -36,7 +47,7 @@ class Tester
      * @return Suite
      * @throws AssertionFailedException
      */
-    public static function test(string $testName, Closure $test, string $suiteName='', string $successMessage='', int $exceptionCode=null, string $exceptionClass='') : Suite
+    public static function test(string $testName, Closure $test, string $suiteName='', string $successMessage='', int $exceptionCode=0, string $exceptionClass='') : Suite
     {
         Assert::that($successMessage)->notEmpty();
         Assert::that($test)->isCallable();
@@ -61,6 +72,19 @@ class Tester
         {
             $suite->run($testName);
         }
+    }
+
+    /**
+     * @return Logger
+     */
+    public static function getLogger() : Logger
+    {
+        if ( ! static::$logger )
+        {
+            static::$logger = new Logger();
+        }
+
+        return static::$logger;
     }
 
     /**
@@ -98,15 +122,16 @@ class Suite
     {
         foreach ( $this->tests as $test => $testCase )
         {
+            $testName   = $testCase->getTestName();
             if ( $filter && $test !== $filter )
             {
                 continue;
             }
             try
             {
-                $this->getLogger()->info("[{$test}] - Starting...");
+                $this->getLogger()->info("[{$testName}] - Starting...");
                 $testCase->runTest($this);
-                $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
+                $this->getLogger()->info("[{$testName}] - " . $testCase->getSuccessMessage());
             }
             catch ( \Exception $e )
             {
@@ -146,7 +171,7 @@ class Suite
      * @return Suite
      * @throws AssertionFailedException
      */
-    public function test(string $testName, Closure $test, string $successMessage='', int $exceptionCode=null, string $exceptionClass='') : Suite
+    public function test(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='') : Suite
     {
         $this->tests[]  = new Test($testName, $test, $successMessage, $exceptionCode, $exceptionClass);
 
@@ -230,7 +255,7 @@ class Test
      * @param string   $exceptionClass
      * @throws AssertionFailedException
      */
-    public function __construct(string $testName, Closure $test, string $successMessage='', int $exceptionCode=null, string $exceptionClass='')
+    public function __construct(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='')
     {
         $this->setTestName($testName);
         $this->setTest($test);
