@@ -115,13 +115,13 @@ class Assert
     /** @var bool */
     protected $all                      = false;
 
-    /** @var null|string */
-    protected $fieldName                = null;
+    /** @var 'string */
+    protected $fieldName                = '';
 
-    /** @var null|string */
-    protected $propertyPath             = null;
+    /** @var 'string */
+    protected $propertyPath             = '';
 
-    /** @var null|string */
+    /** @var 'string */
     protected $level                    = 'critical';
 
     /** @var int */
@@ -176,7 +176,7 @@ class Assert
      * @param string $level
      * @return Assert
      */
-    public static function that($value, string $fieldName='', $code=0, $error='', $level=Assert::WARNING)
+    public static function that($value, string $fieldName = '', int $code=0, string $error='', string $level=Assert::WARNING) : Assert
     {
         $assert = new static($value);
         if ( $fieldName )
@@ -203,7 +203,7 @@ class Assert
      * @param mixed $value
      * @return Assert
      */
-    public function reset($value)
+    public function reset($value) : Assert
     {
         return $this->all(false)->nullOr(false)->value($value);
     }
@@ -212,7 +212,7 @@ class Assert
      * @param mixed $value
      * @return Assert
      */
-    public function value($value)
+    public function value($value) : Assert
     {
         $this->value = $value;
 
@@ -225,7 +225,7 @@ class Assert
      * @param bool $nullOr
      * @return Assert
      */
-    public function nullOr($nullOr = true)
+    public function nullOr(bool $nullOr = true) : Assert
     {
         $this->nullOr = $nullOr;
 
@@ -238,7 +238,7 @@ class Assert
      * @param bool $emptyOr
      * @return Assert
      */
-    public function emptyOr($emptyOr = true)
+    public function emptyOr(bool $emptyOr = true) : Assert
     {
         $this->emptyOr = $emptyOr;
 
@@ -251,7 +251,7 @@ class Assert
      * @param bool $all
      * @return Assert
      */
-    public function all($all = true)
+    public function all(bool $all = true) : Assert
     {
         $this->all = $all;
 
@@ -270,20 +270,20 @@ class Assert
      * @param string $level
      * @return AssertionFailedException
      */
-    protected function createException($message, $code, string $fieldName, array $constraints = [], $level=null)
+    protected function createException(string $message, int $code, string $fieldName, array $constraints = [], string $level = '') : AssertionFailedException
     {
         $exceptionClass = $this->exceptionClass;
         $fieldName      = empty($fieldName) ? $this->fieldName : $fieldName;
-        $level          = is_null($level) ? $this->level : $level;
+        $level          = empty($level) ? $this->level : $level;
 
         return new $exceptionClass($message, $code, $fieldName, $this->value, $constraints, $level, $this->propertyPath);
     }
 
     /**
-     * @param $exceptionClass
+     * @param string $exceptionClass
      * @return Assert
      */
-    public function setExceptionClass($exceptionClass)
+    public function setExceptionClass(string $exceptionClass) : Assert
     {
         $this->exceptionClass = $exceptionClass;
 
@@ -313,10 +313,10 @@ class Assert
     }
 
     /**
-     * @param int $level
+     * @param string $level
      * @return Assert
      */
-    public function level($level)
+    public function level(string $level) : Assert
     {
         $this->level = $level;
 
@@ -327,7 +327,7 @@ class Assert
      * @param string $error
      * @return Assert
      */
-    public function error($error)
+    public function error($error) : Assert
     {
         $this->overrideError = $error;
 
@@ -344,7 +344,7 @@ class Assert
      * @param string $propertyPath
      * @return Assert
      */
-    public function propertyPath($propertyPath)
+    public function propertyPath(string $propertyPath) : Assert
     {
         $this->propertyPath = $propertyPath;
 
@@ -354,13 +354,13 @@ class Assert
     /**
      * Assert that value is equal to a provided value (using == ).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function eq($value2, string $message='', string $fieldName='')
+    public function eq($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -384,13 +384,13 @@ class Assert
     /**
      * Assert that value is greater than a provided value (exclusive).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function greaterThan($value2, string $message='', string $fieldName='')
+    public function greaterThan($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -414,13 +414,13 @@ class Assert
     /**
      * Assert that value is greater than or equal to a provided value (inclusive).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function greaterThanOrEq($value2, string $message='', string $fieldName='')
+    public function greaterThanOrEq($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -444,13 +444,13 @@ class Assert
     /**
      * Assert that value is less than a provided value (exclusive).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function lessThan($value2, string $message='', string $fieldName='')
+    public function lessThan($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -474,13 +474,13 @@ class Assert
     /**
      * Assert that value is less than or equal to a provided value (inclusive).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function lessThanOrEq($value2, string $message='', string $fieldName='')
+    public function lessThanOrEq($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -504,13 +504,13 @@ class Assert
     /**
      * Assert that value is the same as a provided value (using === ).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function same($value2, string $message='', string $fieldName='')
+    public function same($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -534,13 +534,13 @@ class Assert
     /**
      * Assert that value is not equal to a provided value (using == ).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEq($value2, string $message='', string $fieldName='')
+    public function notEq($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -564,12 +564,12 @@ class Assert
     /**
      * Assert that value can be called as a function (using is_callable()).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function isCallable(string $message='', string $fieldName='')
+    public function isCallable(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -592,13 +592,13 @@ class Assert
     /**
      * Assert that value is not the same as a provided value (using === ).
      *
-     * @param mixed       $value2
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $value2
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notSame($value2, string $message='', string $fieldName='')
+    public function notSame($value2, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -622,12 +622,12 @@ class Assert
     /**
      * Assert that value is a valid ID (non-empty, non-zero, valid integer).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function id(string $message='', string $fieldName='')
+    public function id(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not an integer id.';
@@ -637,12 +637,12 @@ class Assert
 
     /**
      * Assert that value is a unsigned int (non-empty valid integer, can be zero).
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function unsignedInt($message=null, $fieldName=null)
+    public function unsignedInt(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not an integer id.';
@@ -653,12 +653,12 @@ class Assert
     /**
      * Assert that value is a valid flag (0 or 1).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function flag(string $message='', string $fieldName='')
+    public function flag(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a 0 or 1.';
@@ -669,12 +669,12 @@ class Assert
     /**
      * Assert that value is a valid status (-1, 0, or 1).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function status(string $message='', string $fieldName='')
+    public function status(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a valid status.';
@@ -685,12 +685,12 @@ class Assert
     /**
      * Assert that value is null or a valid ID.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nullOrId(string $message='', string $fieldName='')
+    public function nullOrId(string $message = '', string $fieldName = '') : Assert
     {
         return $this->nullOr()->id($message, $fieldName);
     }
@@ -698,12 +698,12 @@ class Assert
     /**
      * Assert that values are all valid IDs.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function allIds(string $message='', string $fieldName='')
+    public function allIds(string $message = '', string $fieldName = '') : Assert
     {
         return $this->all()->id($message, $fieldName);
     }
@@ -711,12 +711,12 @@ class Assert
     /**
      * Alias of {@see integer()}.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function int(string $message='', string $fieldName='')
+    public function int(string $message = '', string $fieldName = '') : Assert
     {
         return $this->integer($message, $fieldName);
     }
@@ -724,12 +724,12 @@ class Assert
     /**
      * Assert that value is a valid PHP integer.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integer(string $message='', string $fieldName='')
+    public function integer(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -752,12 +752,12 @@ class Assert
     /**
      * Assert that value is a valid PHP float.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function float(string $message='', string $fieldName='')
+    public function float(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -780,12 +780,12 @@ class Assert
     /**
      * Assert that value (integer or integer'ish) is a digit.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function digit(string $message='', string $fieldName='')
+    public function digit(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -808,12 +808,12 @@ class Assert
     /**
      * Assert that value is a valid date.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function date(string $message='', string $fieldName='')
+    public function date(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -837,12 +837,12 @@ class Assert
     /**
      * Assert that value is a PHP integer'ish.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function integerish(string $message='', string $fieldName='')
+    public function integerish(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -865,12 +865,12 @@ class Assert
     /**
      * Assert that value is a valid PHP boolean.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function boolean(string $message='', string $fieldName='')
+    public function boolean(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -893,12 +893,12 @@ class Assert
     /**
      * Assert that value is a valid PHP scalar.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function scalar(string $message='', string $fieldName='')
+    public function scalar(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -921,12 +921,12 @@ class Assert
     /**
      * Assert that value is not empty.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmpty(string $message='', string $fieldName='')
+    public function notEmpty(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -949,12 +949,12 @@ class Assert
     /**
      * Assert that value is empty.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function noContent(string $message='', string $fieldName='')
+    public function noContent(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -977,12 +977,12 @@ class Assert
     /**
      * Assert that value is not null.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notNull(string $message='', string $fieldName='')
+    public function notNull(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1005,12 +1005,12 @@ class Assert
     /**
      * Assert that value is a string
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function string(string $message='', string $fieldName='')
+    public function string(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1034,13 +1034,13 @@ class Assert
     /**
      * Assert that value matches a provided Regex.
      *
-     * @param string      $pattern
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $pattern
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function regex($pattern, $message=null, $fieldName=null)
+    public function regex(string $pattern, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1065,11 +1065,11 @@ class Assert
      * Assert that value is a valid IP address.
      *
      * @param string $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function ipAddress(string $message='', string $fieldName='')
+    public function ipAddress(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1095,12 +1095,12 @@ class Assert
      * Assert that value does not match a provided Regex.
      *
      * @param string $pattern
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function notRegex($pattern, string $message='', string $fieldName='')
+    public function notRegex(string $pattern, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1124,14 +1124,14 @@ class Assert
     /**
      * Assert that value is a string and has a character count which is equal to a given length.
      *
-     * @param int         $length
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param int    $length
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function length($length, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function length(int $length, string $message = '', string $fieldName = '', $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1159,14 +1159,14 @@ class Assert
      * Assert that value is a string and has a character count which is
      * greater than or equal to a given lower limit ($minLength chars).
      *
-     * @param int         $minLength
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param int    $minLength
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function minLength($minLength, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function minLength(int $minLength, string $message = '', string $fieldName = '', $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1195,14 +1195,14 @@ class Assert
      * Assert that value is a string and has a character count which is
      * less than or equal to given upper limit ($maxLength chars).
      *
-     * @param integer     $maxLength
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param int    $maxLength
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function maxLength($maxLength, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function maxLength(int $maxLength, string $message = '', string $fieldName = '', $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1229,15 +1229,15 @@ class Assert
     /**
      * Assert that value has a length between min,max lengths (inclusive).
      *
-     * @param integer     $minLength
-     * @param integer     $maxLength
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param int    $minLength
+     * @param int    $maxLength
+     * @param string $message
+     * @param string $fieldName
      * @param string      $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function betweenLength($minLength, $maxLength, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function betweenLength(int $minLength, int $maxLength, string $message = '', string $fieldName = '', $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1278,14 +1278,14 @@ class Assert
     /**
      * Assert that value starts with a sequence of chars.
      *
-     * @param string      $needle
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param string $needle
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function startsWith($needle, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function startsWith(string $needle, string $message = '', string $fieldName = '', string $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1311,14 +1311,14 @@ class Assert
     /**
      * Assert that value ends with a sequence of chars.
      *
-     * @param string      $needle
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param string $needle
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function endsWith($needle, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function endsWith(string $needle, string $message = '', string $fieldName = '', string $encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1345,14 +1345,14 @@ class Assert
     /**
      * Assert that value contains a sequence of chars.
      *
-     * @param string      $needle
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @param string      $encoding
+     * @param string $needle
+     * @param string $message
+     * @param string $fieldName
+     * @param string $encoding
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function contains($needle, string $message='', string $fieldName='', $encoding = 'utf8')
+    public function contains(string $needle, string $message = '', string $fieldName = '', string$encoding = 'utf8') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1378,13 +1378,13 @@ class Assert
     /**
      * Assert that value is in an array of choices.
      *
-     * @param array       $choices
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param array  $choices
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function choice(array $choices, string $message='', string $fieldName='')
+    public function choice(array $choices, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1408,13 +1408,13 @@ class Assert
     /**
      * Alias of {@see choice()}
      *
-     * @param array       $choices
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param array  $choices
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function inArray(array $choices, string $message='', string $fieldName='')
+    public function inArray(array $choices, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1428,12 +1428,12 @@ class Assert
     /**
      * Assert that value is numeric.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function numeric(string $message='', string $fieldName='')
+    public function numeric(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1456,12 +1456,12 @@ class Assert
     /**
      * Assert that value is a non-empty array.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyArray(string $message='', string $fieldName='')
+    public function nonEmptyArray(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: 'Value "%s" is not a non-empty array.';
 
@@ -1471,12 +1471,12 @@ class Assert
     /**
      * Assert that value is a non-empty int.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyInt(string $message='', string $fieldName='')
+    public function nonEmptyInt(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: 'Value "%s" is not a non-empty integer.';
 
@@ -1486,12 +1486,12 @@ class Assert
     /**
      * Assert that value is a non-empty string.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function nonEmptyString(string $message='', string $fieldName='')
+    public function nonEmptyString(string $message = '', string $fieldName = '') : Assert
     {
         $message = $message ?: 'Value "%s" is not a non-empty string.';
 
@@ -1501,12 +1501,12 @@ class Assert
     /**
      * Assert that value is an array.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArray(string $message='', string $fieldName='')
+    public function isArray(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1529,12 +1529,12 @@ class Assert
     /**
      * Assert that value is an array or a traversable object.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isTraversable(string $message='', string $fieldName='')
+    public function isTraversable(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1557,12 +1557,12 @@ class Assert
     /**
      * Assert that value is an array or an array-accessible object.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isArrayAccessible(string $message='', string $fieldName='')
+    public function isArrayAccessible(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1586,12 +1586,12 @@ class Assert
      * Assert that key exists in the values array.
      *
      * @param string|integer $key
-     * @param string|null    $message
-     * @param string|null    $fieldName
+     * @param string         $message
+     * @param string         $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyExists($key, string $message='', string $fieldName='')
+    public function keyExists($key, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1615,13 +1615,13 @@ class Assert
     /**
      * Assert that keys exist in the values array.
      *
-     * @param array       $keys
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param array  $keys
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keysExist($keys, string $message='', string $fieldName='')
+    public function keysExist(array $keys, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1653,7 +1653,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertyExists($key, string $message='', string $fieldName='')
+    public function propertyExists($key, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1677,13 +1677,13 @@ class Assert
     /**
      * Assert that properties (keys) exist in the values array.
      *
-     * @param array       $keys
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param array  $keys
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function propertiesExist(array $keys, string $message='', string $fieldName='')
+    public function propertiesExist(array $keys, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1710,12 +1710,12 @@ class Assert
     /**
      * Assert that value is valid utf8.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function utf8(string $message='', string $fieldName='')
+    public function utf8(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1740,12 +1740,12 @@ class Assert
     /**
      * Assert that value is valid ascii.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function ascii(string $message='', string $fieldName='')
+    public function ascii(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1776,7 +1776,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function keyIsset($key, string $message='', string $fieldName='')
+    public function keyIsset($key, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1807,7 +1807,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notEmptyKey($key, string $message='', string $fieldName='')
+    public function notEmptyKey($key, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1822,12 +1822,12 @@ class Assert
     /**
      * Assert that value is not blank.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notBlank(string $message='', string $fieldName='')
+    public function notBlank(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1850,13 +1850,13 @@ class Assert
     /**
      * Assert that value is an instance of a given class-name.
      *
-     * @param string      $className
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $className
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isInstanceOf($className, string $message='', string $fieldName='')
+    public function isInstanceOf(string $className, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1880,13 +1880,13 @@ class Assert
     /**
      * Assert that value is not an instance of given class-name.
      *
-     * @param string      $className
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $className
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notIsInstanceOf($className, string $message='', string $fieldName='')
+    public function notIsInstanceOf(string $className, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1910,13 +1910,13 @@ class Assert
     /**
      * Assert that value is a subclass of given class-name.
      *
-     * @param string      $className
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $className
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function subclassOf($className, string $message='', string $fieldName='')
+    public function subclassOf(string $className, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1940,14 +1940,14 @@ class Assert
     /**
      * Assert that value is within a range of numbers (inclusive).
      *
-     * @param integer     $minValue
-     * @param integer     $maxValue
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param float    $minValue
+     * @param float    $maxValue
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function range($minValue, $maxValue, string $message='', string $fieldName='')
+    public function range(float $minValue, float $maxValue, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1976,13 +1976,13 @@ class Assert
     /**
      * Assert that value is larger or equal to a given lower limit.
      *
-     * @param mixed       $minValue
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param int    $minValue
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function min($minValue, string $message='', string $fieldName='')
+    public function min(int $minValue, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2007,13 +2007,13 @@ class Assert
     /**
      * Assert that value is smaller than or equal to a given upper limit.
      *
-     * @param mixed       $maxValue
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param int    $maxValue
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function max($maxValue, string $message='', string $fieldName='')
+    public function max(int $maxValue, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2038,12 +2038,12 @@ class Assert
     /**
      * Assert that value is a file that exists.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function file(string $message='', string $fieldName='')
+    public function file(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2068,12 +2068,12 @@ class Assert
     /**
      * Assert that value is a file or directory that exists.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function fileOrDirectoryExists(string $message='', string $fieldName='')
+    public function fileOrDirectoryExists(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2098,12 +2098,12 @@ class Assert
     /**
      * Assert that value is a directory that exists.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function directory(string $message='', string $fieldName='')
+    public function directory(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2127,12 +2127,12 @@ class Assert
     /**
      * Assert that value is something readable.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function readable(string $message='', string $fieldName='')
+    public function readable(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2156,12 +2156,12 @@ class Assert
     /**
      * Assert that value is something writeable.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function writeable(string $message='', string $fieldName='')
+    public function writeable(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2185,12 +2185,12 @@ class Assert
     /**
      * Assert that value is a valid email address (using input_filter/FILTER_VALIDATE_EMAIL).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function email(string $message='', string $fieldName='')
+    public function email(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2228,12 +2228,12 @@ class Assert
     /**
      * Assert that value is a valid email prefix.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function emailPrefix(string $message='', string $fieldName='')
+    public function emailPrefix(string $message = '', string $fieldName = '') : Assert
     {
         $this->value($this->value . '@example.com');
 
@@ -2245,8 +2245,8 @@ class Assert
      *
      * This code snipped was taken from the Symfony project and modified to the special demands of this method.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      *
@@ -2254,7 +2254,7 @@ class Assert
      * @link https://github.com/symfony/Validator/blob/master/Constraints/UrlValidator.php
      * @link https://github.com/symfony/Validator/blob/master/Constraints/Url.php
      */
-    public function url(string $message='', string $fieldName='')
+    public function url(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2296,13 +2296,13 @@ class Assert
      *
      * This code snipped was taken from the Symfony project and modified to the special demands of this method.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      *
      */
-    public function domainName(string $message='', string $fieldName='')
+    public function domainName(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2327,12 +2327,12 @@ class Assert
     /**
      * Assert that value is alphanumeric.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function ausMobile(string $message='', string $fieldName='')
+    public function ausMobile(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2360,12 +2360,12 @@ class Assert
     /**
      * Assert that value is alphanumeric.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function alnum(string $message='', string $fieldName='')
+    public function alnum(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2393,12 +2393,12 @@ class Assert
     /**
      * Assert that value is boolean True.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function true(string $message='', string $fieldName='')
+    public function true(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2421,12 +2421,12 @@ class Assert
     /**
      * Assert that value is boolean True.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function truthy(string $message='', string $fieldName='')
+    public function truthy(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2449,12 +2449,12 @@ class Assert
     /**
      * Assert that value is boolean False.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function false(string $message='', string $fieldName='')
+    public function false(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2477,12 +2477,12 @@ class Assert
     /**
      * Assert that value is not boolean False.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function notFalse(string $message='', string $fieldName='')
+    public function notFalse(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2505,12 +2505,12 @@ class Assert
     /**
      * Assert that the class exists.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function classExists(string $message='', string $fieldName='')
+    public function classExists(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2531,14 +2531,14 @@ class Assert
     }
 
     /**
-     * @param      $interfaceName
-     * @param null $message
-     * @param null $fieldName
-     * @return $this
+     * @param string $interfaceName
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      * @throws \ReflectionException
      */
-    public function implementsInterface($interfaceName, string $message='', string $fieldName='')
+    public function implementsInterface(string $interfaceName, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2569,12 +2569,12 @@ class Assert
      * content afterwards, just to decode and check for yourself instead
      * of using this assertion.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isJsonString(string $message='', string $fieldName='')
+    public function isJsonString(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2599,12 +2599,12 @@ class Assert
      *
      * Uses code from {@link https://github.com/ramsey/uuid} that is MIT licensed.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function uuid(string $message='', string $fieldName='')
+    public function uuid(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2639,12 +2639,12 @@ class Assert
      *      You cannot logon to a domain using a sAMAccountName that includes the "@" character. If a user has a
      *      sAMAccountName with this character, they must logon using their userPrincipalName (UPN).
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function samAccountName(string $message='', string $fieldName='')
+    public function samAccountName(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2667,12 +2667,12 @@ class Assert
     /**
      * Assert that value is a valid userPrincipalName.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function userPrincipalName(string $message='', string $fieldName='')
+    public function userPrincipalName(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2700,13 +2700,13 @@ class Assert
     /**
      * Assert that the count of countable is equal to count.
      *
-     * @param int         $count
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param int    $count
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function count($count, string $message='', string $fieldName='')
+    public function count(int $count, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2733,7 +2733,7 @@ class Assert
      * @return bool
      * @throws AssertionFailedException
      */
-    protected function doAllOrNullOr($func, $args)
+    protected function doAllOrNullOr($func, $args) : bool
     {
         if ( $this->nullOr && is_null($this->value) )
         {
@@ -2759,13 +2759,13 @@ class Assert
     /**
      * Assert if values array has every choice as key and that this choice has content.
      *
-     * @param array $choices
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param array  $choices
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function choicesNotEmpty(array $choices, string $message='', string $fieldName='')
+    public function choicesNotEmpty(array $choices, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2783,13 +2783,13 @@ class Assert
     /**
      * Assert that the named method is defined in the provided object.
      *
-     * @param mixed $object
-     * @param string|null $message
-     * @param string|null $fieldName
+     * @param mixed  $object
+     * @param string $message
+     * @param string $fieldName
      * @returns Assert
      * @throws AssertionFailedException
      */
-    public function methodExists($object, string $message='', string $fieldName='')
+    public function methodExists($object, string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2813,12 +2813,12 @@ class Assert
     /**
      * Assert that value is an object.
      *
-     * @param string|null $message
-     * @param string|null $fieldName
-     * @return $this
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
      * @throws AssertionFailedException
      */
-    public function isObject(string $message='', string $fieldName='')
+    public function isObject(string $message = '', string $fieldName = '') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -2844,7 +2844,7 @@ class Assert
      * @param $value
      * @return string
      */
-    private function stringify($value)
+    private function stringify($value) : string
     {
         if ( is_bool($value) )
         {
