@@ -84,6 +84,6 @@ function Validate($value, $fieldName='', $code=0, $error='', $level=Assert::WARN
         $assert->level($level);
     }
 
-    $assert->setExceptionClass('Terah\Assert\ValidationFailedException');
+    $assert->setExceptionClass(ValidationFailedException::class);
     return $assert;
 }

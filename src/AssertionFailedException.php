@@ -40,7 +40,7 @@ class AssertionFailedException extends \Exception
      * @param array  $constraints
      * @param string $level
      */
-    public function __construct(string $message, int $code, string $fieldName = '', $value, array $constraints=[], string $level='critical', string $propertyPath = '')
+    public function __construct(string $message, int $code, string $fieldName='', $value, array $constraints=[], string $level='critical', string $propertyPath='')
     {
         parent::__construct($message, $code);
         $this->fieldName        = $fieldName;
@@ -55,7 +55,7 @@ class AssertionFailedException extends \Exception
                 continue;
             }
             $class = $point['class'] ??0?: '';
-            if ( $class !== 'Terah\\Assert\\Assert' )
+            if ( $class !== Assert::class )
             {
                 $this->location = (object)$point;
             }
@@ -166,17 +166,17 @@ class AssertionFailedException extends \Exception
     /**
      * @param string $needle
      * @param string $haystack
-     * @param bool $return_original
+     * @param bool $returnOriginal
      * @return string
      */
-    public static function afterLast(string $needle, string $haystack, bool $return_original=false) : string
+    public static function afterLast(string $needle, string $haystack, bool $returnOriginal=false) : string
     {
         if ( static::strrevpos($haystack, $needle) !== -1 )
         {
             return mb_substr($haystack, static::strrevpos($haystack, $needle) + mb_strlen($needle));
         }
 
-        return $return_original ? $haystack : '';
+        return $returnOriginal ? $haystack : '';
     }
 
     /**

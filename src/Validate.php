@@ -29,5 +29,5 @@ class Validate extends Assert
      *
      * @var string
      */
-    protected $exceptionClass           = 'Terah\Assert\ValidationFailedException';
+    protected $exceptionClass           = ValidationFailedException::class;
 }

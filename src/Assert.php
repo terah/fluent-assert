@@ -134,7 +134,7 @@ class Assert
      *
      * @var string
      */
-    protected $exceptionClass           = 'Terah\Assert\AssertionFailedException';
+    protected $exceptionClass           = AssertionFailedException::class;
 
     /**
      * @param mixed $value

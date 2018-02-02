@@ -6,6 +6,7 @@ use Terah\Assert\Assert;
 use Terah\Assert\AssertionFailedException;
 use Terah\Assert\Tester;
 use Terah\Assert\Suite;
+use Terah\Assert\ValidationFailedException;
 
 Tester::suite('AssertSuite')
 
@@ -85,11 +86,6 @@ Tester::suite('AssertSuite')
         'ff6f8cb0-c57da-51e1-9b21-0800200c9a66',
         'af6f8cb-c57d-11e1-9b21-0800200c9a66',
         '3f6f8cb0-c57d-11e1-9b21-0800200c9a6',
-    ])
-
-    ->fixture('InvalidNotEmptyKey', [
-        'empty'                                                 => [['keyExists' => ''], 'keyExists'],
-        'key not exists'                                        => [['key' => 'notEmpty'], 'keyNotExists']
     ])
 
     ->fixture('InvalidCount', [
@@ -819,7 +815,11 @@ Tester::suite('AssertSuite')
 
     ->test('testInvalidNotEmptyKey', function(Suite $suite) {
 
-        foreach ( $suite->getFixture('InvalidNotEmptyKey') as $key => $value )
+        $tests                  = [
+            'testKey'               => ['testKey'   => 'I am not empty'],
+            'testKey2'              => ['testKey2'  => ['I am not empty', 'I am not empty']],
+        ];
+        foreach ( $tests as $key => $value )
         {
             (new Assert($value))->notEmptyKey($key);
         }
@@ -846,13 +846,12 @@ Tester::suite('AssertSuite')
         (new Assert([new \stdClass, new \stdClass]))->all()->isInstanceOf('PDO', 'Assertion failed', 'foos');
 
     }, '', Assert::INVALID_INSTANCE_OF, AssertionFailedException::class)
-    /**
 
-     */
     ->test('testAllWithNoValueThrows', function(Suite $suite) {
 
         (new Assert(null))->all()->true();
-    })
+
+    }, '', Assert::INVALID_TRAVERSABLE, AssertionFailedException::class)
 
     ->test('testValidCount', function(Suite $suite) {
 
@@ -876,21 +875,28 @@ Tester::suite('AssertSuite')
 
     ->test('testInvalidChoicesNotEmptyForValueEmpty', function(Suite $suite) {
 
-        foreach ( $suite->getFixture('InvalidChoicesForValueEmpty') as $key => $value )
+        $tests = array(
+            'choice not found in values' => array(array('tux' => ''), array('invalidChoice'), Assert::INVALID_KEY_ISSET)
+        );
+        foreach ( $tests as $key => $value )
         {
             (new Assert($key))->choicesNotEmpty($value);
         }
 
-    }, '', Assert::VALUE_EMPTY, AssertionFailedException::class)
+    }, '', Assert::INVALID_ARRAY_ACCESSIBLE, AssertionFailedException::class)
 
     ->test('testInvalidChoicesNotEmptyForInvalidKeySet', function(Suite $suite) {
 
-        foreach ( $suite->getFixture('InvalidChoicesForValueEmpty') as $key => $value )
+        $test =  array(
+            'empty values' => array(array(), array('tux')),
+            'empty recodes in $values' => array(array('tux' => ''), array('tux'))
+        );
+        foreach ( $test as $key => $value )
         {
             (new Assert($key))->choicesNotEmpty($value);
         }
 
-    }, '', Assert::INVALID_KEY_ISSET, AssertionFailedException::class)
+    }, '', Assert::INVALID_ARRAY_ACCESSIBLE, AssertionFailedException::class)
 
     ->test('testValidIsObject', function(Suite $suite) {
 
@@ -926,14 +932,11 @@ Tester::suite('AssertSuite')
 
     }, '', Assert::INVALID_EQ, AssertionFailedException::class)
 
-//    ->test('it_passes_values_and_constraints_to_exception', function(Suite $suite) {
-//
-//        try {
-//            (new Assert(0))->range(10, 20);
-//
-//            static::fail('Exception expected');
-//        } catch (AssertionFailedException $e) {
-//            $this->assertEquals(0, $e->getValue());
-//            $this->assertEquals(array('min' => 10, 'max' => 20), $e->getConstraints());
-//        })    })}
-;
+
+    ->test('testDifferentExceptionError', function(Suite $suite) {
+
+        (new Assert(1))->setExceptionClass(ValidationFailedException::class)->eq(2);
+
+    }, '', Assert::INVALID_EQ, ValidationFailedException::class)
+
+    ;
