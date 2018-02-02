@@ -101,6 +101,198 @@ class Tester
 
         return static::$suites[$suiteName];
     }
+
+
+    /**
+     * @param string $inputFile
+     * @param string $outputPath
+     * @return bool
+     */
+    public static function generateTest(string $inputFile, string $outputPath) : bool
+    {
+        //Assert::that($inputFile)->classExists();
+        $declaredClasses    = get_declared_classes();
+        require $inputFile; //one or more classes in file, contains class class1, class2, etc...
+
+        $className          = array_values(array_diff_key(get_declared_classes(), $declaredClasses));
+
+        $reflectionClass    = new \ReflectionClass($className[0]);
+        $publicMethods      = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $fullClassName      = $reflectionClass->getName();
+        $className          = $reflectionClass->getShortName();
+        $namespace          = $reflectionClass->getNamespaceName();
+        $constructorParams  = '';
+        foreach ( $publicMethods as $method )
+        {
+            if ( $method->isConstructor() )
+            {
+                $constructorParams  = static::getMethodParams($method);
+            }
+        }
+        $objectInit         = "new {$fullClassName}({$constructorParams})";
+        $output             = [];
+        $output[]           = <<<PHP
+<?php declare(strict_types=1);
+
+namespace {$namespace}\Test;
+
+use Terah\Assert\Assert;
+use Terah\Assert\Tester;
+use Terah\Assert\Suite;
+
+Tester::suite('AssertSuite')
+
+    ->fixture('testSubject', {$objectInit})
+PHP;
+
+        foreach ( $publicMethods as $method )
+        {
+            $methodName         = $method->getName();
+            $methodParams       = static::getMethodParams($method);
+            $testName           = 'test' . ucfirst($methodName);
+            $successArgs        = static::getMethodArgs($method);
+            $failArgs           = static::getMethodArgs($method, '    ');
+            $returnVal          = static::getReturnVal($method);
+            $methodSignature    = "\$suite->getFixture('testSubject')->{$methodName}({$methodParams})";
+
+            if ( $method->isStatic() )
+            {
+                $methodSignature = "{$className}::{$methodName}({$methodParams})";
+            }
+
+            $output[] = <<<PHP
+            
+    ->test('{$testName}Success', function(Suite \$suite) {
+
+        {$successArgs}
+        \$actual                         = {$methodSignature};
+        \$expected                       = {$returnVal};
+
+        Assert::that(\$actual))->eq(\$expected, 'The method ({$methodName}) did not produce the correct output');
+    })
+    
+    ->test('{$testName}Failure', function(Suite \$suite) {
+
+        {$failArgs}
+        \$actual                         = {$methodSignature};
+        \$expected                       = {$returnVal};
+
+        Assert::that(\$actual))->eq(\$expected, 'The method ({$methodName}) did not produce the correct output');
+        
+    }, '', Assert::INVALID_INTEGER, AssertionFailedException::class)
+PHP;
+
+        }
+
+        $output[] = "    ;";
+
+        return static::createDirectoriesAndSaveFile($outputPath, implode("\n", $output));
+    }
+
+
+    /**
+     * @param string    $filePath
+     * @param string    $data
+     * @param int $flags
+     * @param int $dirMode
+     * @return bool
+     */
+    protected static function createDirectoriesAndSaveFile(string $filePath, $data, $flags=0, $dirMode=0755) : bool
+    {
+        static::createParentDirectories($filePath, $dirMode);
+        Assert::that(file_put_contents($filePath, $data, $flags))->notFalse("Failed to put contents in file ({$filePath})");
+
+        return true;
+    }
+
+    /**
+     * @param string $filePath
+     * @param int $mode
+     * @return bool
+     */
+    protected static function createParentDirectories(string $filePath, $mode=0755) : bool
+    {
+        $directoryPath  = preg_match('/.*\//', $filePath);
+        Assert::that($filePath)
+            ->notEmpty("Failed to identify path ({$directoryPath}) to create")
+            ->notEq(DIRECTORY_SEPARATOR, "Failed to identify path ({$directoryPath}) to create");
+        if ( file_exists($directoryPath) )
+        {
+            Assert::that(is_dir($directoryPath))->notFalse("Failed to create parent directories.. files exists and is not a directory({$directoryPath})");
+
+            return true;
+        }
+        Assert::that(mkdir($directoryPath, $mode, true))->notFalse("Failed to create parent directories ({$directoryPath})");
+        Assert::that($directoryPath)->directory();
+
+        return true;
+    }
+
+    /**
+     * @param \ReflectionMethod $method
+     * @return string
+     */
+    protected static function getMethodParams(\ReflectionMethod $method) : string
+    {
+        $output = [];
+        foreach ( $method->getParameters() as $param )
+        {
+            $output[] = '$' . $param->getName();
+        }
+
+        return implode(', ', $output);
+    }
+
+    /**
+     * @param \ReflectionMethod $method
+     * @param string $extraPadding
+     * @return string
+     */
+    protected static function getMethodArgs(\ReflectionMethod $method, string $extraPadding='') : string
+    {
+        $output     = [];
+        $params     = $method->getParameters();
+        foreach ( $params as $param )
+        {
+            $type       = $param->hasType() ? $param->getType()->_toString() : '';
+            $paramDef   = str_pad('$' . $param->getName(), 32, ' ') . '= ';
+            $paramDef   .= static::getDefaultValue($type);
+            $output[]   = $paramDef . ';';
+        }
+
+        return implode("\n        {$extraPadding}", $output);
+    }
+
+    /**
+     * @param \ReflectionMethod $method
+     * @return string
+     */
+    protected static function getReturnVal(\ReflectionMethod $method) : string
+    {
+
+        $returnType = $method->hasReturnType() ? $method->getReturnType()->_toString() : '';
+
+        return static::getDefaultValue($returnType);
+    }
+
+    /**
+     * @param string $type
+     * @param string $default
+     * @return string
+     */
+    protected static function getDefaultValue(string $type='', string $default='null') : string
+    {
+        $typeMap    = [
+            'int'           => "0",
+            'float'         => "0.0",
+            'string'        => "''",
+            'bool'          => "false",
+            'stdClass'      => "new stdClass",
+            'array'         => "[]",
+        ];
+
+        return $typeMap[$type] ?? $default;
+    }
 }
 
 
@@ -226,6 +418,7 @@ class Suite
 
         return $this->logger;
     }
+
 }
 
 class Test
@@ -278,7 +471,7 @@ class Test
      */
     public function setTestName(string $testName) : Test
     {
-        Assert($testName)->notEmpty();
+        Assert::that($testName)->notEmpty();
 
         $this->testName = $testName;
 

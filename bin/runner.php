@@ -13,6 +13,25 @@ class TestRunner
         $suite          = (string)static::getArg('suite', '');
         $test           = (string)static::getArg('test', '');
         $recursive      = (bool)static::getArg('recursive', true);
+        $generate       = (string)static::getArg('generate', '');
+        $output         = (string)static::getArg('output', '');
+        if ( $generate )
+        {
+            static::generate($generate, $output);
+        }
+
+        static::runTests($fileName, $suite, $test, $recursive);
+    }
+
+    public static function generate(string $generate, string $output)
+    {
+        Tester::generateTest($generate, $output);
+
+        exit(0);
+    }
+
+    public static function runTests(string $fileName, string $suite, string $test, bool $recursive)
+    {
         $tests          = static::getTestFiles($fileName, $recursive);
         if ( empty($tests) )
         {
@@ -35,7 +54,7 @@ class TestRunner
      * @param bool   $recursive
      * @return array
      */
-    public static function getTestFiles(string $fileName='', bool $recursive=false) : array
+    protected static function getTestFiles(string $fileName='', bool $recursive=false) : array
     {
         if ( empty($fileName) )
         {
@@ -127,7 +146,7 @@ class TestRunner
      * @param array $argv
      * @return array
      */
-    public static function parseArgs(array $argv=[]) : array
+    protected static function parseArgs(array $argv=[]) : array
     {
         $argv = $argv ?: ! empty($_SERVER['argv']) ? $_SERVER['argv'] : [];
         array_shift($argv);
