@@ -115,13 +115,13 @@ class Assert
     /** @var bool */
     protected $all                      = false;
 
-    /** @var 'string */
+    /** @var string */
     protected $fieldName                = '';
 
-    /** @var 'string */
+    /** @var string */
     protected $propertyPath             = '';
 
-    /** @var 'string */
+    /** @var string */
     protected $level                    = 'critical';
 
     /** @var int */
