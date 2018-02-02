@@ -44,8 +44,8 @@ Tester::suite('AssertSuite')
         'empty recodes in $values'                              => [['tux' => ''], ['tux']]
     ])
     ->fixture('ValidLengthUtf8Characters', [
-        ['址', 1],
-        ['ل', 1],
+        '址'                                                    => 1,
+        'ل'                                                     => 1,
     ])
 
     ->fixture('InvalidArray', [null, false, "test", 1, 1.23, new \stdClass, fopen('php://memory', 'r'), 0])
@@ -450,7 +450,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidSubclassOf', function(Suite $suite) {
 
-        (new Assert(new ChildStdClass))->subclassOf('stdClass');
+        (new Assert(new class extends \stdClass{}))->subclassOf('stdClass');
     })
 
     ->test('testInvalidSubclassOf', function(Suite $suite) {
@@ -857,14 +857,14 @@ Tester::suite('AssertSuite')
     ->test('testValidCount', function(Suite $suite) {
 
         (new Assert(array('Hi')))->count(1);
-        (new Assert(new OneCountable()))->count(1);
+        (new Assert(new class implements \Countable {public function count(){return 1;}}))->count(1);
     })
 
     ->test('testInvalidCount', function(Suite $suite) {
 
         foreach ( $suite->getFixture('InvalidCount') as $key => $value )
         {
-            (new Assert($key))->count($value);
+            (new Assert($value))->count($key);
         }
 
     }, '', Assert::INVALID_COUNT, AssertionFailedException::class)
