@@ -306,6 +306,9 @@ class Suite
 
     /** @var Logger */
     protected $logger       = null;
+    
+    /** @var int **/
+    protected $failedCount  = 0;
 
     /**
      * @param string $filter
@@ -334,24 +337,32 @@ class Suite
                 if ( ! $expectedClass &&  ! $expectedCode )
                 {
                     $this->getLogger()->error($e->getMessage(), [compact('testName'), $e]);
+                    $this->failedCount++;
 
                     continue;
                 }
                 if ( $expectedCode && $expectedCode !== $code )
                 {
                     $this->getLogger()->error("Exception code({$code}) was expected to be ({$expectedCode})", [compact('testName'), $e]);
-
+                    $this->failedCount++;
+                    
                     continue;
                 }
                 if ( $expectedClass && $expectedClass !== $exception )
                 {
                     $this->getLogger()->error("Exception class({$exception}) was expected to be ({$expectedClass})", [compact('testName'), $e]);
-
+                    $this->failedCount++;
+                    
                     continue;
                 }
                 $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
             }
         }
+    }
+    
+    public function failedCount() : int
+    {
+        return $this->failedCount;
     }
 
     /**
