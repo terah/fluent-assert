@@ -59,9 +59,12 @@ class Tester
     /**
      * @param string $suiteName
      * @param string $testName
+     * @return array
      */
-    public static function run(string $suiteName='', string $testName='')
+    public static function run(string $suiteName='', string $testName='') : array
     {
+        $totalFailed    = 0;
+        $totalTests     = 0;
         $suites         = static::$suites;
         if ( ! empty($suiteName) )
         {
@@ -70,8 +73,11 @@ class Tester
         }
         foreach ( $suites as $suite )
         {
-            $suite->run($testName);
+            $totalFailed    += $suite->run($testName);
+            $totalTests     += $suite->totalTestsCount();
         }
+        
+        return compact('totalFailed', 'totalTests');
     }
 
     /**
@@ -309,11 +315,12 @@ class Suite
     
     /** @var int **/
     protected $failedCount  = 0;
-
+    
     /**
      * @param string $filter
+     * @return int
      */
-    public function run(string $filter='')
+    public function run(string $filter='') : int
     {
         foreach ( $this->tests as $test => $testCase )
         {
@@ -358,9 +365,22 @@ class Suite
                 $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
             }
         }
+        
+        return $this->failedTestsCount();
     }
     
-    public function failedCount() : int
+    /**
+     * @return int
+     */  
+    public function totalTestsCount() : int
+    {
+        return count($this->tests);
+    }
+        
+    /**
+     * @return int
+     */  
+    public function failedTestsCount() : int
     {
         return $this->failedCount;
     }
