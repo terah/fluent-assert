@@ -15,6 +15,7 @@
             "role": "Developer"
         }
     ],
+    "bin": ["bin/tester"],
     "require": {
         "php" : ">=7.0"
     },
