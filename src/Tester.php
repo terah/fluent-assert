@@ -116,7 +116,6 @@ class Tester
      */
     public static function generateTest(string $inputFile, string $outputPath) : bool
     {
-        //Assert::that($inputFile)->classExists();
         $declaredClasses    = get_declared_classes();
         require $inputFile; //one or more classes in file, contains class class1, class2, etc...
 

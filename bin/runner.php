@@ -30,8 +30,16 @@ class TestRunner
         exit(0);
     }
 
+    /**
+     * @param string $fileName
+     * @param string $suite
+     * @param string $test
+     * @param bool   $recursive
+     */
     public static function runTests(string $fileName, string $suite, string $test, bool $recursive)
     {
+        $totalFailed    = 0;
+        $totalTests     = 0;
         $tests          = static::getTestFiles($fileName, $recursive);
         if ( empty($tests) )
         {
@@ -43,8 +51,17 @@ class TestRunner
         {
             Tester::getLogger()->debug("Loading test file {$fileName}");
             require($fileName);
-            Tester::run($suite, $test);
+            $results        = Tester::run($suite, $test);
+            $totalFailed    += $results['totalFailed'];
+            $totalTests     += $results['totalTests'];
         }
+        if ( $totalFailed )
+        {
+            Tester::getLogger()->error("Tests failed - {$totalFailed} of {$totalTests} tests have failed.");
+
+            exit(1);
+        }
+        Tester::getLogger()->info("Tests succeeded - {$totalTests} tests have passed.");
 
         exit(0);
     }

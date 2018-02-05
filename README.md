@@ -111,8 +111,11 @@ use Terah\Assert\Assert;
 ## Testing
 
 ``` bash
-$ phpunit
+$ bin/runner.php tests/
+
 ```
+
+Please see tests/AssertSuite.php for example of writing tests
 
 ## Contributing
 
