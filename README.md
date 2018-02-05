@@ -111,7 +111,7 @@ use Terah\Assert\Assert;
 ## Testing
 
 ``` bash
-$ bin/runner.php tests/
+$ bin/tester tests/
 
 ```
 
