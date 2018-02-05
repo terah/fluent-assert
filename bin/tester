@@ -3,7 +3,14 @@
 
 use Terah\Assert\Tester;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+foreach ( ['/../vendor/autoload.php', '/../../../autoload.php', '/../autoload.php'] as $file )
+{
+    if ( is_file(__DIR__ . $file) )
+    {
+        require_once(__DIR__ . $file);
+        break;
+    }
+}
 
 class TestRunner
 {
