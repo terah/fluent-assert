@@ -313,6 +313,18 @@ class Assert
     }
 
     /**
+     * @deprecated
+     * @param string $fieldName
+     * @return Assert
+     */
+    public function name(string $fieldName) : Assert
+    {
+        $this->fieldName = $fieldName;
+
+        return $this;
+    }
+
+    /**
      * @param string $level
      * @return Assert
      */
