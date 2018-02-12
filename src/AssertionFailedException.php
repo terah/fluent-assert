@@ -2,17 +2,17 @@
 
 namespace Terah\Assert;
 
-    /**
-     * Assert
-     *
-     * LICENSE
-     *
-     * This source file is subject to the new BSD license that is bundled
-     * with this package in the file LICENSE.txt.
-     * If you did not receive a copy of the license and are unable to
-     * obtain it through the world-wide-web, please send an email
-     * to terry@terah.com.au so I can send you a copy immediately.
-     */
+/**
+ * Assert
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to terry@terah.com.au so I can send you a copy immediately.
+ */
 
 /**
  * AssertionFailedException
@@ -35,12 +35,13 @@ class AssertionFailedException extends \Exception
      *
      * @param string $message
      * @param int    $code
-     * @param string $propertyPath
+     * @param string $fieldName
      * @param        $value
      * @param array  $constraints
      * @param string $level
+     * @param string $propertyPath
      */
-    public function __construct(string $message, int $code, string $fieldName='', $value, array $constraints=[], string $level='critical', string $propertyPath='')
+    public function __construct(string $message, int $code, string $fieldName='', $value='', array $constraints=[], string $level='critical', string $propertyPath='')
     {
         parent::__construct($message, $code);
         $this->fieldName        = $fieldName;

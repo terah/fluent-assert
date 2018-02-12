@@ -2,17 +2,17 @@
 
 namespace Terah\Assert;
 
-    /**
-     * Assert
-     *
-     * LICENSE
-     *
-     * This source file is subject to the new BSD license that is bundled
-     * with this package in the file LICENSE.txt.
-     * If you did not receive a copy of the license and are unable to
-     * obtain it through the world-wide-web, please send an email
-     * to terry@terah.com.au so I can send you a copy immediately.
-     */
+/**
+ * Assert
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to terry@terah.com.au so I can send you a copy immediately.
+ */
 
 /**
  * Assert and Validate functions
@@ -31,7 +31,7 @@ namespace Terah\Assert;
  * @param string $level
  * @return Assert
  */
-function Assert($value, $fieldName='', $code=0, $error='', $level=Assert::WARNING)
+function Assert($value, string $fieldName='', int $code=0, string $error='', string $level=Assert::WARNING)
 {
     $assert = new Assert($value);
     if ( $fieldName )
@@ -64,7 +64,7 @@ function Assert($value, $fieldName='', $code=0, $error='', $level=Assert::WARNIN
  * @param string $level
  * @return Assert
  */
-function Validate($value, $fieldName='', $code=0, $error='', $level=Assert::WARNING)
+function Validate($value, string $fieldName='', int $code=0, string $error='', string $level=Assert::WARNING)
 {
     $assert = new Assert($value);
     if ( $fieldName )
@@ -84,6 +84,5 @@ function Validate($value, $fieldName='', $code=0, $error='', $level=Assert::WARN
         $assert->level($level);
     }
 
-    $assert->setExceptionClass(ValidationFailedException::class);
-    return $assert;
+    return $assert->setExceptionClass(ValidationFailedException::class);
 }

@@ -339,7 +339,7 @@ class Assert
      * @param string $error
      * @return Assert
      */
-    public function error($error) : Assert
+    public function error(string $error) : Assert
     {
         $this->overrideError = $error;
 
