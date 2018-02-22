@@ -2742,8 +2742,8 @@ class Assert
      *
      * Uses code from {@link https://github.com/ramsey/uuid} that is MIT licensed.
      *
-     * @param string|null $message
-     * @param string|null $propertyPath
+     * @param string $message
+     * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
      */

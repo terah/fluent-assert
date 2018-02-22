@@ -178,7 +178,7 @@ Tester::suite('AssertSuite')
         (new Assert("test"))->notEmpty();
         (new Assert(1))->notEmpty();
         (new Assert(true))->notEmpty();
-        (new Assert(array("foo")))->notEmpty();
+        (new Assert(['foo']))->notEmpty();
     })
 
     ->test('testInvalidNotEmpty', function(Suite $suite) {
@@ -245,7 +245,7 @@ Tester::suite('AssertSuite')
 
     ->test('testInvalidRegexValueNotString', function(Suite $suite) {
 
-        (new Assert(array("foo")))->regex("(bar)");
+        (new Assert(['foo']))->regex("(bar)");
 
     }, '', Assert::INVALID_STRING, AssertionFailedException::class)
 
@@ -350,24 +350,24 @@ Tester::suite('AssertSuite')
     
     ->test('testValidChoice', function(Suite $suite) {
 
-        (new Assert("foo"))->choice(array("foo"));
+        (new Assert("foo"))->choice(['foo']);
     })
 
     ->test('testInvalidChoice', function(Suite $suite) {
 
-        (new Assert("foo"))->choice(array("bar", "baz"));
+        (new Assert("foo"))->choice(["bar", "baz"]);
     
     }, '', Assert::INVALID_CHOICE, AssertionFailedException::class)
 
 
     ->test('testValidInArray', function(Suite $suite) {
 
-        (new Assert("foo"))->inArray(array("foo"));
+        (new Assert("foo"))->inArray(['foo']);
     })
 
     ->test('testInvalidInArray', function(Suite $suite) {
 
-        (new Assert("bar"))->inArray(array("baz"));
+        (new Assert("bar"))->inArray(["baz"]);
     
     }, '', Assert::INVALID_CHOICE, AssertionFailedException::class)
 
@@ -387,8 +387,8 @@ Tester::suite('AssertSuite')
     ->test('testValidArray', function(Suite $suite) {
 
         (new Assert([]))->isArray();
-        (new Assert(array(1,2,3)))->isArray();
-        (new Assert(array([],[])))->isArray();
+        (new Assert([1,2,3]))->isArray();
+        (new Assert([[],[]]))->isArray();
     })
 
     ->test('testInvalidArray', function(Suite $suite) {
@@ -402,12 +402,12 @@ Tester::suite('AssertSuite')
 
     ->test('testValidKeyExists', function(Suite $suite) {
 
-        (new Assert(array("foo" => "bar")))->keyExists("foo");
+        (new Assert(["foo" => "bar"]))->keyExists("foo");
     })
 
     ->test('testInvalidKeyExists', function(Suite $suite) {
 
-        (new Assert(array("foo" => "bar")))->keyExists("baz");
+        (new Assert(["foo" => "bar"]))->keyExists("baz");
     
     }, '', Assert::INVALID_KEY_EXISTS, AssertionFailedException::class)
 
@@ -810,7 +810,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidNotEmptyKey', function(Suite $suite) {
 
-        (new Assert(array('keyExists' => 'notEmpty')))->notEmptyKey('keyExists');
+        (new Assert(['keyExists' => 'notEmpty']))->notEmptyKey('keyExists');
     })
 
     ->test('testInvalidNotEmptyKey', function(Suite $suite) {
@@ -827,7 +827,7 @@ Tester::suite('AssertSuite')
 
     ->test('testAllWithSimpleAssertion', function(Suite $suite) {
 
-        (new Assert(array(true, true)))->all()->true();
+        (new Assert([true, true]))->all()->true();
     })
 
     ->test('testAllWithSimpleAssertionThrowsExceptionOnElementThatFailsAssertion', function(Suite $suite) {
@@ -855,7 +855,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidCount', function(Suite $suite) {
 
-        (new Assert(array('Hi')))->count(1);
+        (new Assert(['Hi']))->count(1);
         (new Assert(new class implements \Countable {public function count(){return 1;}}))->count(1);
     })
 
@@ -870,14 +870,14 @@ Tester::suite('AssertSuite')
 
     ->test('testChoicesNotEmpty', function(Suite $suite) {
 
-        (new Assert(array('tux' => 'linux', 'Gnu' => 'dolphin')))->choicesNotEmpty(array('tux'));
+        (new Assert(['tux' => 'linux', 'Gnu' => 'dolphin']))->choicesNotEmpty(['tux']);
     })
 
     ->test('testInvalidChoicesNotEmptyForValueEmpty', function(Suite $suite) {
 
-        $tests = array(
-            'choice not found in values' => array(array('tux' => ''), array('invalidChoice'), Assert::INVALID_KEY_ISSET)
-        );
+        $tests = [
+            'choice not found in values' => [['tux' => ''], ['invalidChoice'], Assert::INVALID_KEY_ISSET]
+        ];
         foreach ( $tests as $key => $value )
         {
             (new Assert($key))->choicesNotEmpty($value);
@@ -887,10 +887,10 @@ Tester::suite('AssertSuite')
 
     ->test('testInvalidChoicesNotEmptyForInvalidKeySet', function(Suite $suite) {
 
-        $test =  array(
-            'empty values' => array(array(), array('tux')),
-            'empty recodes in $values' => array(array('tux' => ''), array('tux'))
-        );
+        $test =  [
+            'empty values' => [[], ['tux']],
+            'empty recodes in $values' => [['tux' => ''], ['tux']]
+        ];
         foreach ( $test as $key => $value )
         {
             (new Assert($key))->choicesNotEmpty($value);
@@ -917,7 +917,7 @@ Tester::suite('AssertSuite')
     ->test('testValidChaining', function(Suite $suite) {
 
         (new Assert(1))->integer()->integerish()->numeric()->notNull()->eq(1);
-        (new Assert(array(1,1,1,1,1,1,)))->allIds()->integerish()->numeric()->notNull()->eq(1);
+        (new Assert([1,1,1,1,1,1,]))->allIds()->integerish()->numeric()->notNull()->eq(1);
     })
 
     ->test('testChainingFails', function(Suite $suite) {
@@ -928,7 +928,7 @@ Tester::suite('AssertSuite')
 
     ->test('testAllChainingFails', function(Suite $suite) {
 
-        (new Assert(array(1,1,1,1,1,2,)))->all()->id()->integerish()->numeric()->notNull()->eq(1);
+        (new Assert([1,1,1,1,1,2,]))->all()->id()->integerish()->numeric()->notNull()->eq(1);
 
     }, '', Assert::INVALID_EQ, AssertionFailedException::class)
 
