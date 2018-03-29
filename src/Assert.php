@@ -831,6 +831,10 @@ class Assert
         {
             return $this;
         }
+        if ( $this->value instanceof \DateTime )
+        {
+            return $this;
+        }
         $this->notEmpty($message, $fieldName);
         if ( strtotime($this->value) === false )
         {
