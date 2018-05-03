@@ -157,7 +157,7 @@ class AssertionFailedException extends \Exception
      *
      * @return object
      */
-    public function getLocation() : object
+    public function getLocation() : \stdClass
     {
         return $this->location;
     }

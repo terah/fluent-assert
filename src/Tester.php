@@ -26,15 +26,15 @@ class Tester
     }
 
     /**
-     * @param string $suiteName
+     * @param string $name
      * @return Suite
      */
-    public static function suite(string $suiteName='') : Suite
+    public static function suite(string $name='') : Suite
     {
-        $suiteName                  = $suiteName ?: static::$currentSuite;
-        static::$suites[$suiteName] = new Suite();
+        $name                   = $name ?: static::$currentSuite;
+        static::$suites[$name]  = new Suite();
 
-        return static::$suites[$suiteName];
+        return static::$suites[$name];
     }
 
     /**
@@ -44,16 +44,17 @@ class Tester
      * @param string   $successMessage
      * @param int|null $exceptionCode
      * @param string   $exceptionClass
+     * @param string   $exceptionMsg
      * @return Suite
      * @throws AssertionFailedException
      */
-    public static function test(string $testName, Closure $test, string $suiteName='', string $successMessage='', int $exceptionCode=0, string $exceptionClass='') : Suite
+    public static function test(string $testName, Closure $test, string $suiteName='', string $successMessage='', int $exceptionCode=0, string $exceptionClass='', string $exceptionMsg='') : Suite
     {
         Assert::that($successMessage)->notEmpty();
         Assert::that($test)->isCallable();
         Assert::that($suiteName)->notEmpty();
 
-        return static::suite($suiteName)->test($testName, $test, $successMessage, $exceptionCode, $exceptionClass);
+        return static::suite($suiteName)->test($testName, $test, $successMessage, $exceptionCode, $exceptionClass, $exceptionMsg);
     }
 
     /**
@@ -63,20 +64,20 @@ class Tester
      */
     public static function run(string $suiteName='', string $testName='') : array
     {
-        $totalFailed    = 0;
-        $totalTests     = 0;
-        $suites         = static::$suites;
+        $totalFailed            = 0;
+        $totalTests             = 0;
+        $suites                 = static::$suites;
         if ( ! empty($suiteName) )
         {
             Assert::that($suites)->keyExists($suiteName, "The test suite ({$suiteName}) has not been loaded");
-            $suites         = [$suites[$suiteName]];
+            $suites                 = [$suites[$suiteName]];
         }
         foreach ( $suites as $suite )
         {
-            $totalFailed    += $suite->run($testName);
-            $totalTests     += $suite->totalTestsCount();
+            $totalFailed            += $suite->run($testName);
+            $totalTests             += $suite->totalTestsCount();
         }
-        
+
         return compact('totalFailed', 'totalTests');
     }
 
@@ -189,7 +190,7 @@ PHP;
 
         }
 
-        $output[] = "    ;";
+        $output[]               = "    ;";
 
         return static::createDirectoriesAndSaveFile($outputPath, implode("\n", $output));
     }
@@ -217,7 +218,7 @@ PHP;
      */
     protected static function createParentDirectories(string $filePath, $mode=0755) : bool
     {
-        $directoryPath  = preg_match('/.*\//', $filePath);
+        $directoryPath          = preg_match('/.*\//', $filePath);
         Assert::that($filePath)
             ->notEmpty("Failed to identify path ({$directoryPath}) to create")
             ->notEq(DIRECTORY_SEPARATOR, "Failed to identify path ({$directoryPath}) to create");
@@ -239,10 +240,10 @@ PHP;
      */
     protected static function getMethodParams(\ReflectionMethod $method) : string
     {
-        $output = [];
+        $output                 = [];
         foreach ( $method->getParameters() as $param )
         {
-            $output[] = '$' . $param->getName();
+            $output[]               = '$' . $param->getName();
         }
 
         return implode(', ', $output);
@@ -255,14 +256,14 @@ PHP;
      */
     protected static function getMethodArgs(\ReflectionMethod $method, string $extraPadding='') : string
     {
-        $output     = [];
-        $params     = $method->getParameters();
+        $output                 = [];
+        $params                 = $method->getParameters();
         foreach ( $params as $param )
         {
-            $type       = $param->hasType() ? $param->getType()->_toString() : '';
-            $paramDef   = str_pad('$' . $param->getName(), 32, ' ') . '= ';
-            $paramDef   .= static::getDefaultValue($type);
-            $output[]   = $paramDef . ';';
+            $type                   = $param->hasType() ? $param->getType()->_toString() : '';
+            $paramDef               = str_pad('$' . $param->getName(), 32, ' ') . '= ';
+            $paramDef               .= static::getDefaultValue($type);
+            $output[]               = $paramDef . ';';
         }
 
         return implode("\n        {$extraPadding}", $output);
@@ -274,8 +275,7 @@ PHP;
      */
     protected static function getReturnVal(\ReflectionMethod $method) : string
     {
-
-        $returnType = $method->hasReturnType() ? $method->getReturnType()->_toString() : '';
+        $returnType             = $method->hasReturnType() ? $method->getReturnType()->_toString() : '';
 
         return static::getDefaultValue($returnType);
     }
@@ -303,6 +303,12 @@ PHP;
 
 class Suite
 {
+    /** @var Closure[] */
+    protected $setUps       = [];
+
+    /** @var Closure[] */
+    protected $tearDowns    = [];
+
     /** @var Test[] */
     protected $tests        = [];
 
@@ -311,10 +317,10 @@ class Suite
 
     /** @var Logger */
     protected $logger       = null;
-    
+
     /** @var int **/
     protected $failedCount  = 0;
-    
+
     /**
      * @param string $filter
      * @return int
@@ -323,23 +329,33 @@ class Suite
     {
         foreach ( $this->tests as $test => $testCase )
         {
-            $testName   = $testCase->getTestName();
-            if ( $filter && $test !== $filter )
+            $testName           = $testCase->getTestName();
+            if ( $filter && $testName !== $filter )
             {
                 continue;
             }
             try
             {
                 $this->getLogger()->info("[{$testName}] - Starting...");
+                foreach ( $this->setUps as $idx => $closure )
+                {
+                    $closure->__invoke($this);
+                }
                 $testCase->runTest($this);
+                foreach ( $this->tearDowns as $idx => $closure )
+                {
+                    $closure->__invoke($this);
+                }
                 $this->getLogger()->info("[{$testName}] - " . $testCase->getSuccessMessage());
             }
             catch ( \Exception $e )
             {
-                $expectedCode       = $testCase->getExceptionCode();
-                $expectedClass      = $testCase->getExceptionType();
-                $code               = $e->getCode();
-                $exception          = get_class($e);
+                $expectedCode           = $testCase->getExceptionCode();
+                $expectedClass          = $testCase->getExceptionType();
+                $expectedMsg            = $testCase->getExceptionMsg();
+                $code                   = $e->getCode();
+                $message                = $e->getMessage();
+                $exception              = get_class($e);
                 if ( ! $expectedClass &&  ! $expectedCode )
                 {
                     $this->getLogger()->error($e->getMessage(), [compact('testName'), $e]);
@@ -351,37 +367,66 @@ class Suite
                 {
                     $this->getLogger()->error("Exception code({$code}) was expected to be ({$expectedCode})", [compact('testName'), $e]);
                     $this->failedCount++;
-                    
+
+                    continue;
+                }
+                if ( $expectedMsg && $expectedMsg !== $message )
+                {
+                    $this->getLogger()->error("Exception message({$message}) was expected to be ({$expectedMsg})", [compact('testName'), $e]);
+                    $this->failedCount++;
+
                     continue;
                 }
                 if ( $expectedClass && $expectedClass !== $exception )
                 {
                     $this->getLogger()->error("Exception class({$exception}) was expected to be ({$expectedClass})", [compact('testName'), $e]);
                     $this->failedCount++;
-                    
+
                     continue;
                 }
                 $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
             }
         }
-        
+
         return $this->failedTestsCount();
     }
-    
+
     /**
      * @return int
-     */  
+     */
     public function totalTestsCount() : int
     {
         return count($this->tests);
     }
-        
+
     /**
      * @return int
-     */  
+     */
     public function failedTestsCount() : int
     {
         return $this->failedCount;
+    }
+
+    /**
+     * @param Closure $callback
+     * @return Suite
+     */
+    public function setUp(Closure $callback) : Suite
+    {
+        $this->setUps[]         = $callback;
+
+        return $this;
+    }
+
+    /**
+     * @param Closure $callback
+     * @return Suite
+     */
+    public function tearDown(Closure $callback) : Suite
+    {
+        $this->tearDowns[]      = $callback;
+
+        return $this;
     }
 
     /**
@@ -393,9 +438,9 @@ class Suite
      * @return Suite
      * @throws AssertionFailedException
      */
-    public function test(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='') : Suite
+    public function test(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='', string $exceptionMsg='') : Suite
     {
-        $this->tests[]  = new Test($testName, $test, $successMessage, $exceptionCode, $exceptionClass);
+        $this->tests[]          = new Test($testName, $test, $successMessage, $exceptionCode, $exceptionClass, $exceptionMsg);
 
         return $this;
     }
@@ -421,9 +466,24 @@ class Suite
     {
         Assert::that($this->fixtures)->keyExists($fixtureName, "The fixture ({$fixtureName}) does not exist.");
 
+        if ( is_callable($this->fixtures[$fixtureName]) )
+        {
+            $this->fixtures[$fixtureName]   = $this->fixtures[$fixtureName]->__invoke($this);
+        }
+
         return $this->fixtures[$fixtureName];
     }
 
+    /**
+     * @param Closure $callback
+     * @return $this
+     */
+    public function execute(Closure $callback)
+    {
+        $callback->__invoke($this);
+
+        return $this;
+    }
 
     /**
      * @param Logger $logger
@@ -431,7 +491,7 @@ class Suite
      */
     public function setLogger(Logger $logger) : Suite
     {
-        $this->logger = $logger;
+        $this->logger           = $logger;
 
         return $this;
     }
@@ -443,7 +503,7 @@ class Suite
     {
         if ( ! $this->logger )
         {
-            $this->logger = new Logger();
+            $this->logger           = new Logger();
         }
 
         return $this->logger;
@@ -468,23 +528,28 @@ class Test
     /** @var int */
     public $exceptionCode   = null;
 
+    /** @var string */
+    public $exceptionMsg    = null;
+
     /**
      * Test constructor.
      *
-     * @param string   $testName
-     * @param Closure  $test
-     * @param string   $successMessage
-     * @param int|null $exceptionCode
-     * @param string   $exceptionClass
+     * @param string  $testName
+     * @param Closure $test
+     * @param string  $successMessage
+     * @param int     $exceptionCode
+     * @param string  $exceptionClass
+     * @param string  $exceptionMsg
      * @throws AssertionFailedException
      */
-    public function __construct(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='')
+    public function __construct(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='', string $exceptionMsg='')
     {
         $this->setTestName($testName);
         $this->setTest($test);
         $this->setSuccessMessage($successMessage);
         $this->setExceptionCode($exceptionCode);
         $this->setExceptionType($exceptionClass);
+        $this->setExceptionMsg($exceptionMsg);
     }
 
     /**
@@ -503,7 +568,7 @@ class Test
     {
         Assert::that($testName)->notEmpty();
 
-        $this->testName = $testName;
+        $this->testName         = $testName;
 
         return $this;
     }
@@ -528,7 +593,7 @@ class Test
      */
     public function setSuccessMessage(string $successMessage) : Test
     {
-        $this->successMessage = $successMessage;
+        $this->successMessage   = $successMessage;
 
         return $this;
     }
@@ -547,7 +612,7 @@ class Test
      */
     public function setTest(Closure $test) : Test
     {
-        $this->test = $test;
+        $this->test             = $test;
 
         return $this;
     }
@@ -566,7 +631,26 @@ class Test
      */
     public function setExceptionType(string $exceptionType) : Test
     {
-        $this->exceptionType = $exceptionType;
+        $this->exceptionType    = $exceptionType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExceptionMsg() : string
+    {
+        return $this->exceptionMsg;
+    }
+
+    /**
+     * @param string $exceptionMsg
+     * @return Test
+     */
+    public function setExceptionMsg(string $exceptionMsg) : Test
+    {
+        $this->exceptionMsg     = $exceptionMsg;
 
         return $this;
     }
@@ -585,7 +669,7 @@ class Test
      */
     public function setExceptionCode(int $exceptionCode) : Test
     {
-        $this->exceptionCode = $exceptionCode;
+        $this->exceptionCode    = $exceptionCode;
 
         return $this;
     }
@@ -931,12 +1015,12 @@ class Logger
      * Log messages to resource
      *
      * @param mixed          $level    The level of the log message
-     * @param string|object  $message  If an object is passed it must implement __toString()
+     * @param string         $message  If an object is passed it must implement __toString()
      * @param array          $context  Placeholders to be substituted in the message
      */
     public function log($level, $message, array $context=[])
     {
-        $level = isset(static::$logLevels[$level]) ? $level : self::INFO;
+        $level                  = isset(static::$logLevels[$level]) ? $level : self::INFO;
         list($logLevel, $fore, $back, $style) = static::$logLevels[$level];
         unset($style);
         if ( $logLevel > $this->level )
@@ -945,13 +1029,13 @@ class Logger
         }
         if ( is_callable($this->formatter) )
         {
-            $message = $this->formatter->__invoke(static::$logLevels[$level][4], $message, $context);
+            $message                = $this->formatter->__invoke(static::$logLevels[$level][4], $message, $context);
         }
         else
         {
-            $message = $this->formatMessage($level, $message, $context);
+            $message                = $this->formatMessage($level, $message, $context);
         }
-        $this->lastLogEntry = $message;
+        $this->lastLogEntry     = $message;
         $this->write($this->colourize($message, $fore, $back) . PHP_EOL);
     }
 

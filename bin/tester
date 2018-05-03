@@ -45,9 +45,9 @@ class TestRunner
      */
     public static function runTests(string $fileName, string $suite, string $test, bool $recursive)
     {
-        $totalFailed    = 0;
-        $totalTests     = 0;
-        $tests          = static::getTestFiles($fileName, $recursive);
+        $totalFailed            = 0;
+        $totalTests             = 0;
+        $tests                  = static::getTestFiles($fileName, $recursive);
         if ( empty($tests) )
         {
             Tester::getLogger()->error("No test files found/specified");
@@ -90,16 +90,16 @@ class TestRunner
 
             exit(1);
         }
-        $fileName   = realpath($fileName);
+        $fileName               = realpath($fileName);
         if ( is_dir($fileName) )
         {
-            $iterator       = new \DirectoryIterator($fileName);
+            $iterator               = new \DirectoryIterator($fileName);
             if ( $recursive )
             {
-                $iterator       = new \RecursiveDirectoryIterator($fileName);
-                $iterator       = $recursive ? new RecursiveIteratorIterator($iterator) : $iterator;
+                $iterator               = new \RecursiveDirectoryIterator($fileName);
+                $iterator               = $recursive ? new RecursiveIteratorIterator($iterator) : $iterator;
             }
-            $testFiles      = [];
+            $testFiles              = [];
             foreach ( $iterator as $fileInfo )
             {
                 if ( preg_match('/Suite.php$/', $fileInfo->getBasename()) )

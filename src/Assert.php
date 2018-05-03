@@ -831,11 +831,11 @@ class Assert
         {
             return $this;
         }
+        $this->notEmpty($message, $fieldName);
         if ( $this->value instanceof \DateTime )
         {
             return $this;
         }
-        $this->notEmpty($message, $fieldName);
         if ( strtotime($this->value) === false )
         {
             $message = $message ?: $this->overrideError;
@@ -2857,10 +2857,10 @@ class Assert
     /**
      * Assert that the named method is defined in the provided object.
      *
-     * @param mixed  $object
+     * @param mixed $object
      * @param string $message
      * @param string $fieldName
-     * @returns Assert
+     * @return Assert
      * @throws AssertionFailedException
      */
     public function methodExists($object, string $message='', string $fieldName='') : Assert
