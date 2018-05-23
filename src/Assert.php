@@ -2369,11 +2369,11 @@ class Assert
     }
 
     /**
-     * Assert that value is alphanumeric.
+     * Assert that string is Australian Mobile Number
      *
      * @param string $message
      * @param string $fieldName
-     * @return Assert
+     * @return $this
      * @throws AssertionFailedException
      */
     public function ausMobile(string $message='', string $fieldName='') : Assert
@@ -2382,11 +2382,8 @@ class Assert
         {
             return $this;
         }
-        try
-        {
-            $this->regex('/^04([0-9]{8})$/', $message, $fieldName);
-        }
-        catch ( AssertionFailedException $e )
+        $this->string($message, $fieldName);
+        if ( ! static::isAusMobile($this->value) )
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
@@ -2399,6 +2396,15 @@ class Assert
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return bool
+     */
+    public static function isAusMobile(string $value) : bool
+    {
+        return preg_match('/^04[0-9]{8}$/', $value) ? true : false;
     }
 
     /**
