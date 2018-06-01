@@ -2373,7 +2373,7 @@ class Assert
      *
      * @param string $message
      * @param string $fieldName
-     * @return $this
+     * @return Assert
      * @throws AssertionFailedException
      */
     public function ausMobile(string $message='', string $fieldName='') : Assert
