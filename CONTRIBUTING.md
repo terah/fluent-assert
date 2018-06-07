@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/terah/fluent-assert).
+We accept contributions via Pull Requests on [Github](https://git.terah.com.au/terah/fluent-assert).
 
 
 ## Pull Requests
