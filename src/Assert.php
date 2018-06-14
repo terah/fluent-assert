@@ -94,6 +94,7 @@ class Assert
     const INVALID_IP_ADDRESS            = 69;
     const INVALID_AUS_MOBILE            = 70;
     const INVALID_ISNI                  = 71;
+    const INVALID_DATE_RANGE            = 72;
 
     const EMERGENCY                     = 'emergency';
     const ALERT                         = 'alert';
@@ -845,6 +846,40 @@ class Assert
             );
 
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_DATE, $fieldName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $dateMin
+     * @param string $dateMax
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function dateRange(string $dateMin, string $dateMax, string $message='', string $fieldName='') : Assert
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        $this->date($message, $fieldName);
+        (new Assert($dateMin))->date('Invalid input date for dateMin');
+        (new Assert($dateMax))->date('Invalid input date for dateMax');
+        $date                   = $this->value instanceof \DateTime ? $this->value->format('U') : strtotime($this->value);
+        $min                    = strtotime($dateMin);
+        $max                    = strtotime($dateMax);
+        if ( $date < $min || $date > $max )
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message ?: "Value \"%s\" is not between {$dateMin} and {$dateMax}.",
+                $this->stringify($this->value)
+            );
+
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DATE_RANGE, $fieldName);
         }
 
         return $this;
