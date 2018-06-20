@@ -33,7 +33,7 @@ namespace Terah\Assert;
  */
 function Assert($value, string $fieldName='', int $code=0, string $error='', string $level=Assert::WARNING)
 {
-    $assert = new Assert($value);
+    $assert                     = new Assert($value);
     if ( $fieldName )
     {
         $assert->fieldName($fieldName);
