@@ -49,12 +49,14 @@ class AssertionFailedException extends \Exception
         $this->constraints      = $constraints;
         $this->level            = $level;
         $this->propertyPath     = $propertyPath;
-        foreach ( $this->getTrace() as $point )
+        
+        $trace = $this->getTrace();
+        foreach ( $trace as $idx => $point )
         {
             $class = $point['class'] ??0?: '';
             if ( $class !== Assert::class )
             {
-                $this->location = (object)$point;
+                $this->location = $trace[$idx - 1] ?? $point;
 
                 break;
             }
