@@ -56,7 +56,7 @@ class AssertionFailedException extends \Exception
             $class                  = $point['class'] ??0?: '';
             if ( $class !== Assert::class )
             {
-                $this->location         = $trace[$idx - 1] ?? (object)$point;
+                $this->location         = (object)$trace[$idx - 1] ?? (object)$point;
 
                 break;
             }
