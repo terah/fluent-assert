@@ -2934,7 +2934,11 @@ class Assert
         {
             foreach ( $this->value as $idx => $value )
             {
-                $object = (new Assert($value))->setExceptionClass($this->exceptionClass);
+                $object = (new Assert($value))
+                                ->setExceptionClass($this->exceptionClass)
+                                ->fieldName($this->fieldName)
+                                ->code($this->overrideCode)
+                                ->error($this->overrideError);
                 call_user_func_array([$object, $func], $args);
             }
             return true;
