@@ -297,7 +297,7 @@ class Assert
      * @param int $code
      * @return Assert
      */
-    public function code(int $code) : Assert
+    public function code(int $code=null) : Assert
     {
         $this->overrideCode = $code;
 
@@ -2936,9 +2936,9 @@ class Assert
             {
                 $object = (new Assert($value))
                                 ->setExceptionClass($this->exceptionClass)
-                                ->fieldName($this->fieldName)
+                                ->fieldName($this->fieldName ?? '')
                                 ->code($this->overrideCode)
-                                ->error($this->overrideError);
+                                ->error($this->overrideError ?? '');
                 call_user_func_array([$object, $func], $args);
             }
             return true;
