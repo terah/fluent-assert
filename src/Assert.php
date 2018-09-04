@@ -1544,6 +1544,7 @@ class Assert
      */
     public function nonEmptyArray(string $message='', string $fieldName='') : Assert
     {
+        $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a non-empty array.';
 
         return $this->isArray($message, $fieldName)->notEmpty($message, $fieldName);
