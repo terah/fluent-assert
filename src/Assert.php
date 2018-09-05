@@ -95,6 +95,8 @@ class Assert
     const INVALID_AUS_MOBILE            = 70;
     const INVALID_ISNI                  = 71;
     const INVALID_DATE_RANGE            = 72;
+    const INVALID_UNC_PATH              = 73;
+    const INVALID_DRIVE_LETTER          = 74;
 
     const EMERGENCY                     = 'emergency';
     const ALERT                         = 'alert';
@@ -295,7 +297,7 @@ class Assert
      * @param int $code
      * @return Assert
      */
-    public function code(int $code) : Assert
+    public function code(int $code=null) : Assert
     {
         $this->overrideCode = $code;
 
@@ -1542,6 +1544,7 @@ class Assert
      */
     public function nonEmptyArray(string $message='', string $fieldName='') : Assert
     {
+        $message = $message ?: $this->overrideError;
         $message = $message ?: 'Value "%s" is not a non-empty array.';
 
         return $this->isArray($message, $fieldName)->notEmpty($message, $fieldName);
@@ -2735,7 +2738,11 @@ class Assert
         {
             return $this;
         }
-        if ( !preg_match('/^([a-z0-9]{4,20})$/', $this->value) )
+        try
+        {
+            $this->regex('/^([a-z0-9]{4,20})$/', $message, $fieldName);
+        }
+        catch (AssertionFailedException $e)
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
@@ -2777,6 +2784,72 @@ class Assert
             );
 
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_USERPRINCIPALNAME, $fieldName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assert that value is a valid a json-friendly UNC path. (e.g. \\\\someserver\\somelocation)
+     *
+     * @param string $message
+     * @param string $fieldName
+     * @calls regex
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function unc(string $message='', string $fieldName='') : Assert
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        try
+        {
+            $this->regex('/^\\\\\\\\[a-zA-Z0-9\.\-_]{1,}(\\\\[a-zA-Z0-9\-_]{1,}){1,}[\$]{0,1}/', $message, $fieldName);
+        }
+        catch (AssertionFailedException $e)
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message ?: 'Value "%s" is not a valid UNC path.',
+                $this->stringify($this->value)
+            );
+
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_UNC_PATH, $fieldName);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Assert that value is a valid drive letter. (e.g. 'H:')
+     *
+     * @param string $message
+     * @param string $fieldName
+     * @calls regex
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function driveLetter(string $message='', string $fieldName='') : Assert
+    {
+        if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        try
+        {
+            $this->regex('/^[a-zA-Z]:$/', $message, $fieldName);
+        }
+        catch (AssertionFailedException $e)
+        {
+            $message = $message ?: $this->overrideError;
+            $message = sprintf(
+                $message ?: 'Value "%s" is not a valid drive letter.',
+                $this->stringify($this->value)
+            );
+
+            throw $this->createException($message, $this->overrideCode ?: self::INVALID_DRIVE_LETTER, $fieldName);
         }
 
         return $this;
@@ -2862,7 +2935,11 @@ class Assert
         {
             foreach ( $this->value as $idx => $value )
             {
-                $object = (new Assert($value))->setExceptionClass($this->exceptionClass);
+                $object = (new Assert($value))
+                                ->setExceptionClass($this->exceptionClass)
+                                ->fieldName($this->fieldName ?? '')
+                                ->code($this->overrideCode)
+                                ->error($this->overrideError ?? '');
                 call_user_func_array([$object, $func], $args);
             }
             return true;

@@ -80,6 +80,18 @@ Tester::suite('AssertSuite')
         'citizen,john',
     ])
 
+    ->fixture('InvalidUncs', [
+        '\\server\\someFolder',
+        'server\\somePath',
+        '\\\\\\server\\\\somePath',
+    ])
+
+    ->fixture('InvalidDriveLetters', [
+        'A drive',
+        'A:\\',
+        'A',
+    ])
+
     ->fixture('InvalidUuids', [
         'zf6f8cb0-c57d-11e1-9b21-0800200c9a66',
         'af6f8cb0c57d11e19b210800200c9a66',
@@ -790,6 +802,37 @@ Tester::suite('AssertSuite')
         }
 
     }, '', Assert::INVALID_SAMACCOUNTNAME, AssertionFailedException::class)
+
+    ->test('testValidUnc', function(Suite $suite) {
+
+        (new Assert('\\\\some.server\\folderName'))->unc();
+        (new Assert('\\\\some.server\\folderName\\someOtherFolderName'))->unc();
+    })
+
+    ->test('testInvalidUnc', function(Suite $suite) {
+
+        foreach ( $suite->getFixture('InvalidUncs') as $value )
+        {
+            (new Assert($value))->unc();
+        }
+
+    }, '', Assert::INVALID_UNC_PATH, AssertionFailedException::class)
+
+    ->test('testValidDriveLetter', function(Suite $suite) {
+
+        (new Assert('A:'))->driveLetter();
+        (new Assert('h:'))->driveLetter();
+    })
+
+    ->test('testInvalidDriveLetter', function(Suite $suite) {
+
+        foreach ( $suite->getFixture('InvalidDriveLetters') as $value )
+        {
+            (new Assert($value))->driveLetter();
+        }
+
+    }, '', Assert::INVALID_DRIVE_LETTER, AssertionFailedException::class)
+
 
     ->test('testValidUuids', function(Suite $suite) {
 

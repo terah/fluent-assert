@@ -80,6 +80,8 @@ use Terah\Assert\Assert;
 (new Assert($value))->isJsonString(string $message='', string $fieldName='');
 (new Assert($value))->uuid(string $message='', string $fieldName='');
 (new Assert($value))->samAccountName(string $message='', string $fieldName='');
+(new Assert($value))->unc(string $message='', string $fieldName='');
+(new Assert($value))->driveLetter(string $message='', string $fieldName='');
 (new Assert($value))->userPrincipalName(string $message='', string $fieldName='');
 (new Assert($value))->count($count, string $message='', string $fieldName='');
 (new Assert($value))->choicesNotEmpty(array $choices, string $message='', string $fieldName='');
