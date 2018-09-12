@@ -297,7 +297,7 @@ class Assert
      * @param int $code
      * @return Assert
      */
-    public function code(int $code=null) : Assert
+    public function code(int $code) : Assert
     {
         $this->overrideCode = $code;
 
