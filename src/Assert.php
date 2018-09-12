@@ -2938,7 +2938,7 @@ class Assert
                 $object = (new Assert($value))
                                 ->setExceptionClass($this->exceptionClass)
                                 ->fieldName($this->fieldName ?? '')
-                                ->code($this->overrideCode)
+                                ->code($this->overrideCode ?? 0)
                                 ->error($this->overrideError ?? '');
                 call_user_func_array([$object, $func], $args);
             }
