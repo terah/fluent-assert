@@ -17,37 +17,79 @@ class Tester
     /** @var Logger $logger */
     public static $logger           = null;
 
-    /**
-     * @return bool
-     */
     public static function init() : bool
     {
         return true;
     }
 
-    /**
-     * @param string $name
-     * @return Suite
-     */
+    public static function runTests(string $fileName, string $suite, string $testFilter, bool $recursive, string $coverage, string $coverageExclude)
+    {
+        $totalFailed            = 0;
+        $totalTests             = 0;
+        $testFiles              = static::getTestFiles($fileName, $recursive);
+        if ( empty($testFiles) )
+        {
+            static::getLogger()->error("No test files found/specified");
+
+            exit(1);
+        }
+        foreach ( $testFiles as $fileName )
+        {
+            static::getLogger()->debug("Loading test file {$fileName}");
+            require($fileName);
+        }
+        if ( $coverage )
+        {
+            xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+        }
+        foreach ( static::$suites as $suiteName => $suiteObj )
+        {
+            if ( $suite && $suiteName !== $suite )
+            {
+                continue;
+            }
+            static::getLogger()->debug("Running test file {$fileName}");
+            $results        = static::run($suiteName, $testFilter);
+            $totalFailed    += $results['totalFailed'];
+            $totalTests     += $results['totalTests'];
+        }
+        if ( $coverage )
+        {
+            static::renderCoverage($coverage, $coverageExclude);
+        }
+        if ( $totalFailed )
+        {
+            static::getLogger()->error("Tests failed - {$totalFailed} of {$totalTests} tests have failed.");
+
+            exit(1);
+        }
+        static::getLogger()->info("Tests succeeded - {$totalTests} tests have passed.");
+
+        exit(0);
+    }
+
+
+    protected static function renderCoverage(string $path, string $coverageExclude)
+    {
+        $codeCoverage           = xdebug_get_code_coverage();
+        xdebug_stop_code_coverage();
+
+        $report                 = new CoverageReport($path);
+
+        return $report->createReport($codeCoverage, $coverageExclude);
+    }
+
+
     public static function suite(string $name='') : Suite
     {
         $name                   = $name ?: static::$currentSuite;
+        Assert::that(array_key_exists($name, static::$suites))->false("The test with the name ({$name}) already exists.");
         static::$suites[$name]  = new Suite();
 
         return static::$suites[$name];
     }
 
-    /**
-     * @param string   $testName
-     * @param Closure  $test
-     * @param string   $suiteName
-     * @param string   $successMessage
-     * @param int|null $exceptionCode
-     * @param string   $exceptionClass
-     * @param string   $exceptionMsg
-     * @return Suite
-     * @throws AssertionFailedException
-     */
+
     public static function test(string $testName, Closure $test, string $suiteName='', string $successMessage='', int $exceptionCode=0, string $exceptionClass='', string $exceptionMsg='') : Suite
     {
         Assert::that($successMessage)->notEmpty();
@@ -57,12 +99,8 @@ class Tester
         return static::suite($suiteName)->test($testName, $test, $successMessage, $exceptionCode, $exceptionClass, $exceptionMsg);
     }
 
-    /**
-     * @param string $suiteName
-     * @param string $testName
-     * @return array
-     */
-    public static function run(string $suiteName='', string $testName='') : array
+
+    public static function run(string $suiteName='', string $testFilter='') : array
     {
         $totalFailed            = 0;
         $totalTests             = 0;
@@ -70,20 +108,18 @@ class Tester
         if ( ! empty($suiteName) )
         {
             Assert::that($suites)->keyExists($suiteName, "The test suite ({$suiteName}) has not been loaded");
-            $suites                 = [$suites[$suiteName]];
+            $suites                 = [$suiteName => $suites[$suiteName]];
         }
         foreach ( $suites as $suite )
         {
-            $totalFailed            += $suite->run($testName);
-            $totalTests             += $suite->totalTestsCount();
+            $totalFailed            += $suite->run($testFilter);
+            $totalTests             += $suite->totalTestsRunCount();
         }
 
         return compact('totalFailed', 'totalTests');
     }
 
-    /**
-     * @return Logger
-     */
+
     public static function getLogger() : Logger
     {
         if ( ! static::$logger )
@@ -94,10 +130,7 @@ class Tester
         return static::$logger;
     }
 
-    /**
-     * @param string $suiteName
-     * @return Suite
-     */
+
     protected static function getSuite(string $suiteName='') : Suite
     {
         $suiteName                  = $suiteName ?: static::$currentSuite;
@@ -110,11 +143,49 @@ class Tester
     }
 
 
-    /**
-     * @param string $inputFile
-     * @param string $outputPath
-     * @return bool
-     */
+    protected static function getTestFiles(string $fileName='', bool $recursive=false) : array
+    {
+        if ( empty($fileName) )
+        {
+            return [];
+        }
+        if ( ! file_exists($fileName) )
+        {
+            static::getLogger()->error("{$fileName} does not exist; exiting");
+
+            exit(1);
+        }
+        $fileName               = realpath($fileName);
+        if ( is_dir($fileName) )
+        {
+            $iterator               = new \DirectoryIterator($fileName);
+            if ( $recursive )
+            {
+                $iterator               = new \RecursiveDirectoryIterator($fileName);
+                $iterator               = $recursive ? new \RecursiveIteratorIterator($iterator) : $iterator;
+            }
+            $testFiles              = [];
+            foreach ( $iterator as $fileInfo )
+            {
+                if ( preg_match('/Suite.php$/', $fileInfo->getBasename()) )
+                {
+                    $testFiles[]            = $fileInfo->getPathname();
+                }
+            }
+
+            return $testFiles;
+        }
+        if ( ! is_file($fileName) )
+        {
+            Tester::getLogger()->error("{$fileName} is not a file; exiting");
+
+            exit(1);
+        }
+
+        return [$fileName];
+    }
+
+
     public static function generateTest(string $inputFile, string $outputPath) : bool
     {
         $declaredClasses    = get_declared_classes();
@@ -196,13 +267,7 @@ PHP;
     }
 
 
-    /**
-     * @param string    $filePath
-     * @param string    $data
-     * @param int $flags
-     * @param int $dirMode
-     * @return bool
-     */
+
     protected static function createDirectoriesAndSaveFile(string $filePath, $data, $flags=0, $dirMode=0755) : bool
     {
         static::createParentDirectories($filePath, $dirMode);
@@ -211,11 +276,7 @@ PHP;
         return true;
     }
 
-    /**
-     * @param string $filePath
-     * @param int $mode
-     * @return bool
-     */
+
     protected static function createParentDirectories(string $filePath, $mode=0755) : bool
     {
         $directoryPath          = preg_match('/.*\//', $filePath);
@@ -234,10 +295,7 @@ PHP;
         return true;
     }
 
-    /**
-     * @param \ReflectionMethod $method
-     * @return string
-     */
+
     protected static function getMethodParams(\ReflectionMethod $method) : string
     {
         $output                 = [];
@@ -249,11 +307,7 @@ PHP;
         return implode(', ', $output);
     }
 
-    /**
-     * @param \ReflectionMethod $method
-     * @param string $extraPadding
-     * @return string
-     */
+
     protected static function getMethodArgs(\ReflectionMethod $method, string $extraPadding='') : string
     {
         $output                 = [];
@@ -269,10 +323,7 @@ PHP;
         return implode("\n        {$extraPadding}", $output);
     }
 
-    /**
-     * @param \ReflectionMethod $method
-     * @return string
-     */
+
     protected static function getReturnVal(\ReflectionMethod $method) : string
     {
         $returnType             = $method->hasReturnType() ? $method->getReturnType()->_toString() : '';
@@ -280,11 +331,7 @@ PHP;
         return static::getDefaultValue($returnType);
     }
 
-    /**
-     * @param string $type
-     * @param string $default
-     * @return string
-     */
+
     protected static function getDefaultValue(string $type='', string $default='null') : string
     {
         $typeMap    = [
@@ -304,10 +351,16 @@ PHP;
 class Suite
 {
     /** @var Closure[] */
+    protected $suiteUps     = [];
+
+    /** @var Closure[] */
     protected $setUps       = [];
 
     /** @var Closure[] */
     protected $tearDowns    = [];
+
+    /** @var Closure[] */
+    protected $suiteDowns   = [];
 
     /** @var Test[] */
     protected $tests        = [];
@@ -321,19 +374,25 @@ class Suite
     /** @var int **/
     protected $failedCount  = 0;
 
-    /**
-     * @param string $filter
-     * @return int
-     */
+    /** @var int */
+    protected $runCount     = 0;
+
+
     public function run(string $filter='') : int
     {
+        $filter                 = preg_quote($filter, '/');
+        foreach ( $this->suiteUps as $idx => $closure )
+        {
+            $closure->__invoke($this);
+        }
         foreach ( $this->tests as $test => $testCase )
         {
             $testName           = $testCase->getTestName();
-            if ( $filter && $testName !== $filter )
+            if ( $filter && ! preg_match("/{$filter}/", $testName) )
             {
                 continue;
             }
+            $this->runCount++;
             try
             {
                 $this->getLogger()->info("[{$testName}] - Starting...");
@@ -348,7 +407,7 @@ class Suite
                 }
                 $this->getLogger()->info("[{$testName}] - " . $testCase->getSuccessMessage());
             }
-            catch ( \Exception $e )
+            catch ( \Throwable $e )
             {
                 $expectedCode           = $testCase->getExceptionCode();
                 $expectedClass          = $testCase->getExceptionType();
@@ -387,30 +446,42 @@ class Suite
                 $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
             }
         }
+        foreach ( $this->suiteDowns as $idx => $closure )
+        {
+            $closure->__invoke($this);
+        }
 
         return $this->failedTestsCount();
     }
 
-    /**
-     * @return int
-     */
-    public function totalTestsCount() : int
+
+    public function totalTestsRunCount() : int
     {
-        return count($this->tests);
+        return $this->runCount;
     }
 
-    /**
-     * @return int
-     */
     public function failedTestsCount() : int
     {
         return $this->failedCount;
     }
 
-    /**
-     * @param Closure $callback
-     * @return Suite
-     */
+
+    public function onSuiteStart(Closure $callback) : Suite
+    {
+        $this->suiteUps[]       = $callback;
+
+        return $this;
+    }
+
+
+    public function onSuiteFinish(Closure $callback) : Suite
+    {
+        $this->suiteDowns[]     = $callback;
+
+        return $this;
+    }
+
+
     public function setUp(Closure $callback) : Suite
     {
         $this->setUps[]         = $callback;
@@ -418,10 +489,7 @@ class Suite
         return $this;
     }
 
-    /**
-     * @param Closure $callback
-     * @return Suite
-     */
+
     public function tearDown(Closure $callback) : Suite
     {
         $this->tearDowns[]      = $callback;
@@ -429,15 +497,7 @@ class Suite
         return $this;
     }
 
-    /**
-     * @param string   $testName
-     * @param Closure  $test
-     * @param string   $successMessage
-     * @param int|null $exceptionCode
-     * @param string   $exceptionClass
-     * @return Suite
-     * @throws AssertionFailedException
-     */
+
     public function test(string $testName, Closure $test, string $successMessage='', int $exceptionCode=0, string $exceptionClass='', string $exceptionMsg='') : Suite
     {
         $this->tests[]          = new Test($testName, $test, $successMessage, $exceptionCode, $exceptionClass, $exceptionMsg);
@@ -445,11 +505,7 @@ class Suite
         return $this;
     }
 
-    /**
-     * @param string $fixtureName
-     * @param        $value
-     * @return Suite
-     */
+
     public function fixture(string $fixtureName, $value) : Suite
     {
         $this->fixtures[$fixtureName]  = $value;
@@ -457,11 +513,7 @@ class Suite
         return $this;
     }
 
-    /**
-     * @param string $fixtureName
-     * @return mixed
-     * @throws AssertionFailedException
-     */
+
     public function getFixture(string $fixtureName)
     {
         Assert::that($this->fixtures)->keyExists($fixtureName, "The fixture ({$fixtureName}) does not exist.");
@@ -474,21 +526,6 @@ class Suite
         return $this->fixtures[$fixtureName];
     }
 
-    /**
-     * @param Closure $callback
-     * @return $this
-     */
-    public function execute(Closure $callback)
-    {
-        $callback->__invoke($this);
-
-        return $this;
-    }
-
-    /**
-     * @param Logger $logger
-     * @return $this
-     */
     public function setLogger(Logger $logger) : Suite
     {
         $this->logger           = $logger;
@@ -496,9 +533,7 @@ class Suite
         return $this;
     }
 
-    /**
-     * @return Logger
-     */
+
     public function getLogger() : Logger
     {
         if ( ! $this->logger )
@@ -682,6 +717,7 @@ class Test
     {
         return $this->getTest()->__invoke($suite);
     }
+
 }
 
 /**
@@ -747,9 +783,6 @@ class Logger
     /** @var bool  */
     protected $useLocking       = false;
 
-    /**
-     * @var array $logLevels List of supported levels
-     */
     static protected $logLevels       = [
         self::EMERGENCY => [1, self::WHITE,       self::RED,      self::DEFAULT,  'EMERG'],
         self::ALERT     => [2, self::WHITE,       self::YELLOW,   self::DEFAULT,  'ALERT'],
@@ -761,9 +794,6 @@ class Logger
         self::DEBUG     => [8, self::LIGHT_GRAY,  self::DEFAULT,  self::DEFAULT,  'DEBUG'],
     ];
 
-    /**
-     * @var array
-     */
     static protected $colours   = [
         'fore' => [
             self::BLACK         => '0;30',
@@ -798,13 +828,7 @@ class Logger
         self::BOLD => [],
     ];
 
-    /**
-     * @param mixed  $resource
-     * @param string $level
-     * @param bool   $useLocking
-     * @param bool   $gzipFile
-     * @param bool   $addDate
-     */
+
     public function __construct($resource=STDOUT, string $level=self::INFO, bool $useLocking=false, bool $gzipFile=false, bool $addDate=true)
     {
         $this->resource     = $resource;
@@ -913,10 +937,7 @@ class Logger
         $this->log(self::DEBUG, $message, $context);
     }
 
-    /**
-     * @param $resource
-     * @return Logger
-     */
+
     public function setLogFile($resource) : Logger
     {
         $this->resource     = $resource;
@@ -924,13 +945,7 @@ class Logger
         return $this;
     }
 
-    /**
-     * @param string $string
-     * @param string $foregroundColor
-     * @param string $backgroundColor
-     * @param bool $bold
-     * @return string
-     */
+
     public static function addColour(string $string, string $foregroundColor='', string $backgroundColor='', bool $bold=false) : string
     {
         // todo: support bold
@@ -952,13 +967,7 @@ class Logger
         return $coloredString;
     }
 
-    /**
-     * @param string    $string
-     * @param string    $foregroundColor
-     * @param string    $backgroundColor
-     * @param bool      $bold
-     * @return string
-     */
+
     public function colourize(string $string, string $foregroundColor='', string $backgroundColor='', bool $bold=false) : string
     {
         return static::addColour($string, $foregroundColor, $backgroundColor, $bold);
@@ -974,39 +983,31 @@ class Logger
         {
             throw new \InvalidArgumentException("Log level is invalid");
         }
-        $this->level = static::$logLevels[$level][0];
+        $this->level            = static::$logLevels[$level][0];
 
         return $this;
     }
 
-    /**
-     * @return Logger
-     */
+
     public function lock() : Logger
     {
-        $this->useLocking = true;
+        $this->useLocking       = true;
 
         return $this;
     }
 
-    /**
-     * @return Logger
-     */
+
     public function gzipped() : Logger
     {
-        $this->gzipFile = true;
+        $this->gzipFile         = true;
 
         return $this;
     }
 
-    /**
-     * @param callable $fnFormatter
-     *
-     * @return Logger
-     */
+
     public function formatter(callable $fnFormatter) : Logger
     {
-        $this->formatter = $fnFormatter;
+        $this->formatter        = $fnFormatter;
 
         return $this;
     }
@@ -1039,11 +1040,7 @@ class Logger
         $this->write($this->colourize($message, $fore, $back) . PHP_EOL);
     }
 
-    /**
-     * @param string $style
-     * @param string $message
-     * @return string
-     */
+
     public static function style(string $style, string $message) : string
     {
         $style = isset(static::$logLevels[$style]) ? $style : self::INFO;
@@ -1053,12 +1050,7 @@ class Logger
         return static::addColour($message, $fore, $back);
     }
 
-    /**
-     * @param string $level
-     * @param string $message
-     * @param array  $context
-     * @return string
-     */
+
     protected function formatMessage(string $level, string $message, array $context=[]) : string
     {
         # Handle objects implementing __toString
@@ -1111,9 +1103,7 @@ class Logger
         return $this->resource;
     }
 
-    /**
-     * @return string
-     */
+
     public function getLastLogEntry() : string
     {
         return $this->lastLogEntry;
@@ -1132,6 +1122,7 @@ class Logger
         return fopen($this->resource, 'a');
     }
 
+
     public function __destruct()
     {
         if ($this->closeLocally)
@@ -1139,4 +1130,98 @@ class Logger
             gzclose($this->getResource());
         }
     }
+
+}
+
+class CoverageReport extends \SplFileObject
+{
+    public function __construct(string $fileName, string $openMode='w')
+    {
+        parent::__construct($fileName, $openMode);
+    }
+
+    public function createReport(array $coverage, string $coverageExclude) : CoverageReport
+    {
+        $this->writeLine('
+        <!doctype html>
+            <html lang="en">
+                <head>
+                    <!-- Required meta tags -->
+                    <meta charset="utf-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                
+                    <!-- Bootstrap CSS -->
+                    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+                    <style type="text/css">
+                            div.row {margin:0;padding:0;}
+                            div.line-no {margin:0 10px 0 0;padding:0;text-align: right;}
+                            div.miss{background:#feebeb;margin:0;padding:0;}
+                            div.hit{ background:#e0ede0;margin:0;padding:0;}
+                            pre { margin: 0;}
+                    </style>
+                    <title>Coverage Report</title>
+                </head>
+                <body>
+                    <div class="container-fluid">
+                ');
+        $coverageExclude        = $coverageExclude ? preg_quote($coverageExclude, '/') : '';
+        foreach ( $coverage as $file => $lines )
+        {
+            if ( $coverageExclude && preg_match("/{$coverageExclude}/", $file) )
+            {
+                continue;
+            }
+            $this->writeFileCoverage($file, $lines);
+        }
+        $this->writeLine('
+                    </div>
+                </body>
+            </html>
+        ');
+
+        return $this;
+    }
+
+    protected function writeFileCoverage(string $file, array $hits) : CoverageReport
+    {
+        $source                 = file($file);
+        $this->writeHeader($file);
+        foreach ( $source as $lineNo => $line )
+        {
+            $sourceLine             = $lineNo + 1;
+            $class                  = isset($hits[$sourceLine]) && $hits[$sourceLine] !== -1 ? 'hit' : 'miss';
+            $this->writeSourceLine($line, $sourceLine, $class);
+        }
+
+        return $this;
+    }
+
+    protected function writeHeader(string $header) : CoverageReport
+    {
+        $this->writeLine("<h1>{$header}</h1>");
+
+        return $this;
+    }
+
+    protected function writeSourceLine(string $line, int $lineNo, string $class) : CoverageReport
+    {
+        $line                   = htmlspecialchars($line);
+        $this->writeLine("
+            <div class='row'>
+                <div class='col-1 line-no'>{$lineNo}</div>
+                <div class='col-11 source {$class}'><pre>{$line}</pre></div>
+            </div>
+        ");
+
+        return $this;
+    }
+
+    protected function writeLine($str) : CoverageReport
+    {
+        parent::fwrite($str);
+
+        return $this;
+    }
+
+
 }

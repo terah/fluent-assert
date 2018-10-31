@@ -181,7 +181,7 @@ class Assert
      */
     public static function that($value, string $fieldName='', int $code=0, string $error='', string $level=Assert::WARNING) : Assert
     {
-        $assert = new static($value);
+        $assert                 = new static($value);
         if ( $fieldName )
         {
             $assert->fieldName($fieldName);

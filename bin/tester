@@ -16,108 +16,28 @@ class TestRunner
 {
     public static function run()
     {
-        $fileName       = (string)static::getArg(1, getcwd());
-        $suite          = (string)static::getArg('suite', '');
-        $test           = (string)static::getArg('test', '');
-        $recursive      = (bool)static::getArg('recursive', true);
-        $generate       = (string)static::getArg('generate', '');
-        $output         = (string)static::getArg('output', '');
+        $fileName               = (string)static::getArg(1, getcwd());
+        $suite                  = (string)static::getArg('suite', '');
+        $testFilter             = (string)static::getArg('filter', '');
+        $recursive              = (bool)static::getArg('recursive', true);
+        $generate               = (string)static::getArg('generate', '');
+        $output                 = (string)static::getArg('output', '');
+        $coverage               = (string)static::getArg('coverage', '');
+        $coverageExclude        = (string)static::getArg('coverage-exclude', 'tests');
         if ( $generate )
         {
             static::generate($generate, $output);
         }
 
-        static::runTests($fileName, $suite, $test, $recursive);
+        Tester::runTests($fileName, $suite, $testFilter, $recursive, $coverage, $coverageExclude);
     }
+
 
     public static function generate(string $generate, string $output)
     {
         Tester::generateTest($generate, $output);
 
         exit(0);
-    }
-
-    /**
-     * @param string $fileName
-     * @param string $suite
-     * @param string $test
-     * @param bool   $recursive
-     */
-    public static function runTests(string $fileName, string $suite, string $test, bool $recursive)
-    {
-        $totalFailed            = 0;
-        $totalTests             = 0;
-        $tests                  = static::getTestFiles($fileName, $recursive);
-        if ( empty($tests) )
-        {
-            Tester::getLogger()->error("No test files found/specified");
-
-            exit(1);
-        }
-        foreach ( $tests as $fileName )
-        {
-            Tester::getLogger()->debug("Loading test file {$fileName}");
-            require($fileName);
-            $results        = Tester::run($suite, $test);
-            $totalFailed    += $results['totalFailed'];
-            $totalTests     += $results['totalTests'];
-        }
-        if ( $totalFailed )
-        {
-            Tester::getLogger()->error("Tests failed - {$totalFailed} of {$totalTests} tests have failed.");
-
-            exit(1);
-        }
-        Tester::getLogger()->info("Tests succeeded - {$totalTests} tests have passed.");
-
-        exit(0);
-    }
-
-    /**
-     * @param string $fileName
-     * @param bool   $recursive
-     * @return array
-     */
-    protected static function getTestFiles(string $fileName='', bool $recursive=false) : array
-    {
-        if ( empty($fileName) )
-        {
-            return [];
-        }
-        if ( ! file_exists($fileName) )
-        {
-            Tester::getLogger()->error("{$fileName} does not exist; exiting");
-
-            exit(1);
-        }
-        $fileName               = realpath($fileName);
-        if ( is_dir($fileName) )
-        {
-            $iterator               = new \DirectoryIterator($fileName);
-            if ( $recursive )
-            {
-                $iterator               = new \RecursiveDirectoryIterator($fileName);
-                $iterator               = $recursive ? new RecursiveIteratorIterator($iterator) : $iterator;
-            }
-            $testFiles              = [];
-            foreach ( $iterator as $fileInfo )
-            {
-                if ( preg_match('/Suite.php$/', $fileInfo->getBasename()) )
-                {
-                    $testFiles[] = $fileInfo->getPathname();
-                }
-            }
-
-            return $testFiles;
-        }
-        if ( ! is_file($fileName) )
-        {
-            Tester::getLogger()->error("{$fileName} is not a file; exiting");
-
-            exit(1);
-        }
-
-        return [$fileName];
     }
 
     /**
