@@ -351,31 +351,34 @@ PHP;
 class Suite
 {
     /** @var Closure[] */
-    protected $suiteUps     = [];
+    protected $suiteUps         = [];
 
     /** @var Closure[] */
-    protected $setUps       = [];
+    protected $setUps           = [];
 
     /** @var Closure[] */
-    protected $tearDowns    = [];
+    protected $tearDowns        = [];
 
     /** @var Closure[] */
-    protected $suiteDowns   = [];
+    protected $suiteDowns       = [];
 
     /** @var Test[] */
-    protected $tests        = [];
+    protected $tests            = [];
+
+    /** @var Closure[] */
+    protected $fixtureClosures  = [];
 
     /** @var mixed[] */
-    protected $fixtures     = [];
+    protected $fixtures         = [];
 
     /** @var Logger */
-    protected $logger       = null;
+    protected $logger           = null;
 
     /** @var int **/
-    protected $failedCount  = 0;
+    protected $failedCount      = 0;
 
     /** @var int */
-    protected $runCount     = 0;
+    protected $runCount         = 0;
 
 
     public function run(string $filter='') : int
@@ -387,7 +390,7 @@ class Suite
         }
         foreach ( $this->tests as $test => $testCase )
         {
-            $testName           = $testCase->getTestName();
+            $testName               = $testCase->getTestName();
             if ( $filter && ! preg_match("/{$filter}/", $testName) )
             {
                 continue;
@@ -443,7 +446,7 @@ class Suite
 
                     continue;
                 }
-                $this->getLogger()->info("[{$test}] - " . $testCase->getSuccessMessage());
+                $this->getLogger()->info("[{$testName}] - " . $testCase->getSuccessMessage());
             }
         }
         foreach ( $this->suiteDowns as $idx => $closure )
@@ -508,20 +511,20 @@ class Suite
 
     public function fixture(string $fixtureName, $value) : Suite
     {
-        $this->fixtures[$fixtureName]  = $value;
+        $this->fixtureClosures[$fixtureName]    = $value;
 
         return $this;
     }
 
-
-    public function getFixture(string $fixtureName)
+    public function getFixture(string $fixtureName, bool $forceReload=false)
     {
-        Assert::that($this->fixtures)->keyExists($fixtureName, "The fixture ({$fixtureName}) does not exist.");
+        Assert::that($this->fixtureClosures)->keyExists($fixtureName, "The fixture ({$fixtureName}) does not exist.");
 
-        if ( is_callable($this->fixtures[$fixtureName]) )
+        if ( $forceReload || ! array_key_exists($fixtureName, $this->fixtures) && is_callable($this->fixtureClosures[$fixtureName]) )
         {
-            $this->fixtures[$fixtureName]   = $this->fixtures[$fixtureName]->__invoke($this);
+            $this->fixtures[$fixtureName]   = $this->fixtureClosures[$fixtureName]->__invoke($this);
         }
+        Assert::that($this->fixtures)->keyExists($fixtureName, "The fixture with the key ({$fixtureName}) does not exist.");
 
         return $this->fixtures[$fixtureName];
     }

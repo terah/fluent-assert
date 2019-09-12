@@ -133,7 +133,7 @@ class Assert
 
     /** @var string */
     protected $overrideError            = '';
-    
+
     /**
      * Exception to throw when an assertion failed.
      *
@@ -2442,6 +2442,9 @@ class Assert
      */
     public static function isAusMobile(string $value) : bool
     {
+        $value                  = trim(str_replace(' ', '', $value));
+        $value                  = preg_replace('/^\+61/', '0', $value);
+
         return preg_match('/^04[0-9]{8}$/', $value) ? true : false;
     }
 
