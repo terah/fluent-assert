@@ -2,6 +2,8 @@
 
 namespace Terah\Assert;
 
+use ArrayObject;
+
     /**
      * Assert
      *
@@ -234,6 +236,7 @@ class Assert
 
         return $this;
     }
+
 
     /**
      * Allow value to pass assertion if it is empty.
@@ -698,6 +701,22 @@ class Assert
     }
 
     /**
+     * Assert that value is a valid status (-1, 0, or 1).
+     *
+     * @param string $message
+     * @param string $fieldName
+     * @return Assert
+     * @throws AssertionFailedException
+     */
+    public function active(string $message='', string $fieldName='') : Assert
+    {
+        $message                = $message ?: $this->overrideError;
+        $message                = $message ?: 'Value "%s" is not a valid status.';
+
+        return $this->integer($message, $fieldName)->inArray([0, 1]);
+    }
+
+    /**
      * Assert that value is null or a valid ID.
      *
      * @param string $message
@@ -732,6 +751,12 @@ class Assert
      * @throws AssertionFailedException
      */
     public function int(string $message='', string $fieldName='') : Assert
+    {
+        return $this->integer($message, $fieldName);
+    }
+
+
+    public function isInt(string $message='', string $fieldName='') : Assert
     {
         return $this->integer($message, $fieldName);
     }
@@ -791,6 +816,13 @@ class Assert
 
         return $this;
     }
+
+
+    public function isFloat(string $message='', string $fieldName='') : Assert
+    {
+        return $this->float($message, $fieldName);
+    }
+
 
     /**
      * Assert that value (integer or integer'ish) is a digit.
@@ -868,8 +900,8 @@ class Assert
             return $this;
         }
         $this->date($message, $fieldName);
-        (new Assert($dateMin))->date('Invalid input date for dateMin');
-        (new Assert($dateMax))->date('Invalid input date for dateMax');
+        Assert::that($dateMin)->date('Invalid input date for dateMin');
+        Assert::that($dateMax)->date('Invalid input date for dateMax');
         $date                   = $this->value instanceof \DateTime ? $this->value->format('U') : strtotime($this->value);
         $min                    = strtotime($dateMin);
         $max                    = strtotime($dateMax);
@@ -971,6 +1003,12 @@ class Assert
         return $this;
     }
 
+
+    public function isBoolean(string $message='', string $fieldName='') : Assert
+    {
+        return $this->boolean($message, $fieldName);
+    }
+
     /**
      * Assert that value is a valid PHP scalar.
      *
@@ -999,6 +1037,12 @@ class Assert
         return $this;
     }
 
+
+    public function isScalar(string $message='', string $fieldName='') : Assert
+    {
+        return $this->scalar($message, $fieldName);
+    }
+
     /**
      * Assert that value is not empty.
      *
@@ -1010,6 +1054,10 @@ class Assert
     public function notEmpty(string $message='', string $fieldName='') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
+        {
+            return $this;
+        }
+        if ( $this->value instanceof ArrayObject && $this->value->count() )
         {
             return $this;
         }
@@ -1111,6 +1159,13 @@ class Assert
 
         return $this;
     }
+
+
+    public function isString(string $message='', string $fieldName='') : Assert
+    {
+        return $this->string($message, $fieldName);
+    }
+
 
     /**
      * Assert that value matches a provided Regex.
@@ -1896,7 +1951,7 @@ class Assert
             return $this;
         }
         $this->keyIsset($key, $message, $fieldName);
-        (new Assert($this->value[$key]))->setExceptionClass($this->exceptionClass)->notEmpty($message, $fieldName);
+        Assert::that($this->value[$key])->setExceptionClass($this->exceptionClass)->notEmpty($message, $fieldName);
 
         return $this;
     }
@@ -2509,6 +2564,12 @@ class Assert
         return $this;
     }
 
+
+    public function isTrue(string $message='', string $fieldName='') : Assert
+    {
+        return $this->true($message, $fieldName);
+    }
+
     /**
      * Assert that value is boolean True.
      *
@@ -2563,6 +2624,12 @@ class Assert
         }
 
         return $this;
+    }
+
+
+    public function isFalse(string $message='', string $fieldName='') : Assert
+    {
+        return $this->false($message, $fieldName);
     }
 
     /**
@@ -2934,11 +3001,11 @@ class Assert
         {
             return true;
         }
-        if ( $this->all && (new Assert($this->value))->setExceptionClass($this->exceptionClass)->isTraversable() )
+        if ( $this->all && Assert::that($this->value)->setExceptionClass($this->exceptionClass)->isTraversable() )
         {
             foreach ( $this->value as $idx => $value )
             {
-                $object = (new Assert($value))
+                $object = Assert::that($value)
                                 ->setExceptionClass($this->exceptionClass)
                                 ->fieldName($this->fieldName ?? '')
                                 ->code($this->overrideCode ?? 0)
@@ -2990,7 +3057,7 @@ class Assert
         {
             return $this;
         }
-        (new Assert($object))->setExceptionClass($this->exceptionClass)->isObject($message, $fieldName);
+        Assert::that($object)->setExceptionClass($this->exceptionClass)->isObject($message, $fieldName);
         if ( !method_exists($object, $this->value) )
         {
             $message = $message ?: $this->overrideError;

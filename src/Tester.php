@@ -520,7 +520,7 @@ class Suite
     {
         Assert::that($this->fixtureClosures)->keyExists($fixtureName, "The fixture ({$fixtureName}) does not exist.");
 
-        if ( $forceReload || ! array_key_exists($fixtureName, $this->fixtures) && is_callable($this->fixtureClosures[$fixtureName]) )
+        if ( $forceReload || ( ! array_key_exists($fixtureName, $this->fixtures) && is_callable($this->fixtureClosures[$fixtureName]) ) )
         {
             $this->fixtures[$fixtureName]   = $this->fixtureClosures[$fixtureName]->__invoke($this);
         }

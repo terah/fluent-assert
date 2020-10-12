@@ -3,7 +3,7 @@
 
 require_once __DIR__ . '/../../../../vendor/autoload.php';
 
-use function Terah\Assert\Assert;
+use Terah\Assert\Assert;
 
 use Assert as Beberlei;
 
@@ -26,7 +26,7 @@ $start = microtime(true);
 
 for ( $i = 0 ; $i < 100000 ; $i++ )
 {
-    Assert(true)->true();
+    Assert::that(true)->true();
 }
 $time = microtime(true) - $start;
 echo "Taken: $time" . PHP_EOL;
