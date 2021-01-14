@@ -2,9 +2,15 @@
 
 namespace Terah\Assert;
 
+use ArrayAccess;
 use ArrayObject;
+use Closure;
+use DateTime;
+use ReflectionClass;
+use ReflectionException;
+use Traversable;
 
-    /**
+/**
      * Assert
      *
      * LICENSE
@@ -109,39 +115,29 @@ class Assert
     const INFO                          = 'info';
     const DEBUG                         = 'debug';
 
-    /** @var bool */
-    protected $nullOr                   = false;
+    protected bool $nullOr              = false;
 
-    /** @var bool */
-    protected $emptyOr                  = false;
+    protected bool $emptyOr             = false;
 
     /** @var mixed */
     protected $value                    = null;
 
-    /** @var bool */
-    protected $all                      = false;
+    protected bool $all                 = false;
 
-    /** @var string */
-    protected $fieldName                = '';
+    protected string $fieldName         = '';
 
-    /** @var string */
-    protected $propertyPath             = '';
+    protected string $propertyPath      = '';
 
-    /** @var string */
-    protected $level                    = 'critical';
+    protected string $level             = 'critical';
 
-    /** @var int */
-    protected $overrideCode             = null;
+    protected int $overrideCode         = 0;
 
-    /** @var string */
-    protected $overrideError            = '';
+    protected string $overrideError     = '';
 
     /**
      * Exception to throw when an assertion failed.
-     *
-     * @var string
      */
-    protected $exceptionClass           = AssertionFailedException::class;
+    protected string $exceptionClass    = AssertionFailedException::class;
 
     /**
      * @param mixed $value
@@ -152,12 +148,12 @@ class Assert
     }
 
     /**
-     * @param \Closure[] $validators
+     * @param Closure[]|array $validators
      * @return array
      */
     public static function runValidators(array $validators) : array
     {
-        $errors = [];
+        $errors                 = [];
         foreach ( $validators as $fieldName => $validator )
         {
             try
@@ -302,7 +298,7 @@ class Assert
      */
     public function code(int $code) : Assert
     {
-        $this->overrideCode = $code;
+        $this->overrideCode     = $code;
 
         return $this;
     }
@@ -867,7 +863,7 @@ class Assert
             return $this;
         }
         $this->notEmpty($message, $fieldName);
-        if ( $this->value instanceof \DateTime )
+        if ( $this->value instanceof DateTime )
         {
             return $this;
         }
@@ -902,7 +898,7 @@ class Assert
         $this->date($message, $fieldName);
         Assert::that($dateMin)->date('Invalid input date for dateMin');
         Assert::that($dateMax)->date('Invalid input date for dateMax');
-        $date                   = $this->value instanceof \DateTime ? $this->value->format('U') : strtotime($this->value);
+        $date                   = $this->value instanceof DateTime ? $this->value->format('U') : strtotime($this->value);
         $min                    = strtotime($dateMin);
         $max                    = strtotime($dateMax);
         if ( $date < $min || $date > $max )
@@ -926,7 +922,7 @@ class Assert
      * @return $this
      * @throws AssertionFailedException
      */
-    public function after($afterDate, string $message='', string $fieldName='')
+    public function after($afterDate, string $message='', string $fieldName='') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -1677,7 +1673,7 @@ class Assert
         {
             return $this;
         }
-        if ( !is_array($this->value) && !$this->value instanceof \Traversable )
+        if ( !is_array($this->value) && !$this->value instanceof Traversable )
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
@@ -1705,7 +1701,7 @@ class Assert
         {
             return $this;
         }
-        if ( !is_array($this->value) && !$this->value instanceof \ArrayAccess )
+        if ( !is_array($this->value) && !$this->value instanceof ArrayAccess )
         {
             $message = $message ?: $this->overrideError;
             $message = sprintf(
@@ -2694,7 +2690,7 @@ class Assert
      * @param string $fieldName
      * @return Assert
      * @throws AssertionFailedException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function implementsInterface(string $interfaceName, string $message='', string $fieldName='') : Assert
     {
@@ -2702,11 +2698,11 @@ class Assert
         {
             return $this;
         }
-        $reflection = new \ReflectionClass($this->value);
+        $reflection             = new ReflectionClass($this->value);
         if ( !$reflection->implementsInterface($interfaceName) )
         {
-            $message = $message ?: $this->overrideError;
-            $message = sprintf(
+            $message                = $message ?: $this->overrideError;
+            $message                = sprintf(
                 $message ?: 'Class "%s" does not implement interface "%s".',
                 $this->stringify($this->value),
                 $this->stringify($interfaceName)
@@ -2935,7 +2931,7 @@ class Assert
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function isni(string $message='', string $fieldName='')
+    public function isni(string $message='', string $fieldName='') : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
@@ -3015,7 +3011,7 @@ class Assert
             return true;
         }
 
-        return ( $this->nullOr && is_null($this->value) ) || ( $this->emptyOr && empty($this->value) ) ? true : false;
+        return ( $this->nullOr && is_null($this->value) ) || ( $this->emptyOr && empty($this->value) );
     }
 
     /**

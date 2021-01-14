@@ -3,19 +3,26 @@
 namespace Terah\Assert;
 
 use Closure;
+use DirectoryIterator;
+use Exception;
+use InvalidArgumentException;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use ReflectionClass;
+use ReflectionMethod;
+use SplFileObject;
+use Throwable;
 
 class Tester
 {
     const DEFAULT_SUITE             = 'default';
 
-    /** @var string  */
-    protected static $currentSuite  = self::DEFAULT_SUITE;
+    protected static string $currentSuite  = self::DEFAULT_SUITE;
 
     /** @var Suite[]  */
-    protected static $suites        = [];
+    protected static array $suites        = [];
 
-    /** @var Logger $logger */
-    public static $logger           = null;
+    public static ?Logger $logger           = null;
 
     public static function init() : bool
     {
@@ -158,11 +165,11 @@ class Tester
         $fileName               = realpath($fileName);
         if ( is_dir($fileName) )
         {
-            $iterator               = new \DirectoryIterator($fileName);
+            $iterator               = new DirectoryIterator($fileName);
             if ( $recursive )
             {
-                $iterator               = new \RecursiveDirectoryIterator($fileName);
-                $iterator               = $recursive ? new \RecursiveIteratorIterator($iterator) : $iterator;
+                $iterator               = new RecursiveDirectoryIterator($fileName);
+                $iterator               = new RecursiveIteratorIterator($iterator);
             }
             $testFiles              = [];
             foreach ( $iterator as $fileInfo )
@@ -193,8 +200,8 @@ class Tester
 
         $className          = array_values(array_diff_key(get_declared_classes(), $declaredClasses));
 
-        $reflectionClass    = new \ReflectionClass($className[0]);
-        $publicMethods      = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $reflectionClass    = new ReflectionClass($className[0]);
+        $publicMethods      = $reflectionClass->getMethods(ReflectionMethod::IS_PUBLIC);
         $fullClassName      = $reflectionClass->getName();
         $className          = $reflectionClass->getShortName();
         $namespace          = $reflectionClass->getNamespaceName();
@@ -296,7 +303,7 @@ PHP;
     }
 
 
-    protected static function getMethodParams(\ReflectionMethod $method) : string
+    protected static function getMethodParams(ReflectionMethod $method) : string
     {
         $output                 = [];
         foreach ( $method->getParameters() as $param )
@@ -308,14 +315,14 @@ PHP;
     }
 
 
-    protected static function getMethodArgs(\ReflectionMethod $method, string $extraPadding='') : string
+    protected static function getMethodArgs(ReflectionMethod $method, string $extraPadding='') : string
     {
         $output                 = [];
         $params                 = $method->getParameters();
         foreach ( $params as $param )
         {
             $type                   = $param->hasType() ? $param->getType()->_toString() : '';
-            $paramDef               = str_pad('$' . $param->getName(), 32, ' ') . '= ';
+            $paramDef               = str_pad('$' . $param->getName(), 32) . '= ';
             $paramDef               .= static::getDefaultValue($type);
             $output[]               = $paramDef . ';';
         }
@@ -324,7 +331,7 @@ PHP;
     }
 
 
-    protected static function getReturnVal(\ReflectionMethod $method) : string
+    protected static function getReturnVal(ReflectionMethod $method) : string
     {
         $returnType             = $method->hasReturnType() ? $method->getReturnType()->_toString() : '';
 
@@ -363,22 +370,22 @@ class Suite
     protected $suiteDowns       = [];
 
     /** @var Test[] */
-    protected $tests            = [];
+    protected array $tests            = [];
 
     /** @var Closure[] */
     protected $fixtureClosures  = [];
 
     /** @var mixed[] */
-    protected $fixtures         = [];
+    protected array $fixtures         = [];
 
     /** @var Logger */
-    protected $logger           = null;
+    protected ?Logger $logger           = null;
 
     /** @var int **/
-    protected $failedCount      = 0;
+    protected int $failedCount      = 0;
 
     /** @var int */
-    protected $runCount         = 0;
+    protected int $runCount         = 0;
 
 
     public function run(string $filter='') : int
@@ -410,7 +417,7 @@ class Suite
                 }
                 $this->getLogger()->info("[{$testName}] - " . $testCase->getSuccessMessage());
             }
-            catch ( \Throwable $e )
+            catch ( Throwable $e )
             {
                 $expectedCode           = $testCase->getExceptionCode();
                 $expectedClass          = $testCase->getExceptionType();
@@ -552,22 +559,22 @@ class Suite
 class Test
 {
     /** @var string  */
-    public $testName        = '';
+    public string $testName        = '';
 
     /** @var string  */
-    public $successMessage  = '';
+    public string $successMessage  = '';
 
     /** @var Closure  */
-    public $test            = null;
+    public ?Closure $test            = null;
 
     /** @var string */
-    public $exceptionType   = null;
+    public ?string $exceptionType   = null;
 
     /** @var int */
-    public $exceptionCode   = null;
+    public ?int $exceptionCode   = null;
 
     /** @var string */
-    public $exceptionMsg    = null;
+    public ?string $exceptionMsg    = null;
 
     /**
      * Test constructor.
@@ -763,30 +770,30 @@ class Logger
     protected $resource         = null;
 
     /** @var string $level */
-    protected $level            = self::INFO;
+    protected string $level            = self::INFO;
 
     /** @var bool $closeLocally */
-    protected $closeLocally     = false;
+    protected bool $closeLocally     = false;
 
     /** @var bool */
-    protected $addDate          = true;
+    protected bool $addDate          = true;
 
     /** @var string  */
-    protected $separator        = ' | ';
+    protected string $separator        = ' | ';
 
-    /** @var \Closure */
-    protected $formatter        = null;
+    /** @var Closure */
+    protected ?Closure $formatter        = null;
 
     /** @var string  */
-    protected $lastLogEntry     = '';
+    protected string $lastLogEntry     = '';
 
     /** @var bool|null  */
-    protected $gzipFile         = null;
+    protected ?bool $gzipFile         = null;
 
     /** @var bool  */
-    protected $useLocking       = false;
+    protected bool $useLocking       = false;
 
-    static protected $logLevels       = [
+    static protected array $logLevels       = [
         self::EMERGENCY => [1, self::WHITE,       self::RED,      self::DEFAULT,  'EMERG'],
         self::ALERT     => [2, self::WHITE,       self::YELLOW,   self::DEFAULT,  'ALERT'],
         self::CRITICAL  => [3, self::RED,         self::DEFAULT,  self::BOLD ,    'CRIT'],
@@ -797,7 +804,7 @@ class Logger
         self::DEBUG     => [8, self::LIGHT_GRAY,  self::DEFAULT,  self::DEFAULT,  'DEBUG'],
     ];
 
-    static protected $colours   = [
+    static protected array $colours   = [
         'fore' => [
             self::BLACK         => '0;30',
             self::DARK_GRAY     => '1;30',
@@ -984,7 +991,7 @@ class Logger
     {
         if ( ! isset(static::$logLevels[$level]) )
         {
-            throw new \InvalidArgumentException("Log level is invalid");
+            throw new InvalidArgumentException("Log level is invalid");
         }
         $this->level            = static::$logLevels[$level][0];
 
@@ -1022,7 +1029,7 @@ class Logger
      * @param string         $message  If an object is passed it must implement __toString()
      * @param array          $context  Placeholders to be substituted in the message
      */
-    public function log($level, $message, array $context=[])
+    public function log($level, string $message, array $context=[])
     {
         $level                  = isset(static::$logLevels[$level]) ? $level : self::INFO;
         list($logLevel, $fore, $back, $style) = static::$logLevels[$level];
@@ -1087,7 +1094,7 @@ class Logger
 
     /**
      * @return mixed|resource
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getResource()
     {
@@ -1100,7 +1107,7 @@ class Logger
         $this->resource         = $this->openResource();
         if ( ! is_resource($this->resource) )
         {
-            throw new \Exception("The resource ({$fileName}) could not be opened");
+            throw new Exception("The resource ({$fileName}) could not be opened");
         }
 
         return $this->resource;
@@ -1136,7 +1143,7 @@ class Logger
 
 }
 
-class CoverageReport extends \SplFileObject
+class CoverageReport extends SplFileObject
 {
     public function __construct(string $fileName, string $openMode='w')
     {

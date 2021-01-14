@@ -26,8 +26,6 @@ class Validate extends Assert
 {
     /**
      * Exception to throw when an assertion failed.
-     *
-     * @var string
      */
-    protected $exceptionClass           = ValidationFailedException::class;
+    protected string $exceptionClass    = ValidationFailedException::class;
 }

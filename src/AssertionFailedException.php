@@ -2,6 +2,9 @@
 
 namespace Terah\Assert;
 
+use Exception;
+use stdClass;
+
 /**
  * Assert
  *
@@ -21,14 +24,14 @@ namespace Terah\Assert;
  * @author Terry Cullen <terry@terah.com.au>
  *
  */
-class AssertionFailedException extends \Exception
+class AssertionFailedException extends Exception
 {
-    private $fieldName;
+    private string $fieldName;
     private $value;
-    private $constraints;
-    private $level;
-    private $propertyPath;
-    private $location;
+    private array $constraints;
+    private string $level;
+    private string $propertyPath;
+    private stdClass $location;
 
     /**
      * AssertionFailedException constructor.
@@ -65,8 +68,6 @@ class AssertionFailedException extends \Exception
 
     /**
      * Get the field name that was set for the assertion object.
-     *
-     * @return string
      */
     public function getFieldName() : string
     {
@@ -85,19 +86,13 @@ class AssertionFailedException extends \Exception
 
     /**
      * Get the constraints that applied to the failed assertion.
-     *
-     * @return array
      */
     public function getConstraints() : array
     {
         return $this->constraints;
     }
 
-    /**
-     * Get the error level.
-     *
-     * @return string
-     */
+
     public function getLevel() : string
     {
         return $this->level ? $this->level : 'critical';
@@ -159,11 +154,11 @@ class AssertionFailedException extends \Exception
      *
      * @return object
      */
-    public function getLocation() : \stdClass
+    public function getLocation() : stdClass
     {
         if ( ! $this->location )
         {
-            return new \stdClass();
+            return new stdClass();
         }
 
         return $this->location;

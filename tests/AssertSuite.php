@@ -2,6 +2,10 @@
 
 namespace Terah\Assert\Test;
 
+use ArrayObject;
+use Countable;
+use DateTime;
+use stdClass;
 use Terah\Assert\Assert;
 use Terah\Assert\AssertionFailedException;
 use Terah\Assert\Tester;
@@ -12,15 +16,15 @@ Tester::suite('AssertSuite')
 
     ->fixture('InvalidFloats', [1, false, 'test', null, '1.23', '10'])
 
-    ->fixture('InvalidIntegers', [1.23, false, 'test', null, '1.23', '10', new \DateTime()])
+    ->fixture('InvalidIntegers', [1.23, false, 'test', null, '1.23', '10', new DateTime()])
 
     ->fixture('InvalidIntegerish', [1.23, false, 'test', null, '1.23'])
 
-    ->fixture('InvalidEmpty', ['foo', true, 12, ['foo'], new \stdClass()])
+    ->fixture('InvalidEmpty', ['foo', true, 12, ['foo'], new stdClass()])
 
     ->fixture('InvalidNotEmpty', ['', false, 0, null, [] ])
 
-    ->fixture('InvalidString', [1.23, false, new \ArrayObject, null, 10, true])
+    ->fixture('InvalidString', [1.23, false, new ArrayObject, null, 10, true])
 
     ->fixture('ValidUrl', [
         'straight with Http'                                    => 'http://example.org',
@@ -49,7 +53,7 @@ Tester::suite('AssertSuite')
         'ل'                                                     => 1,
     ])
 
-    ->fixture('InvalidArray', [null, false, "test", 1, 1.23, new \stdClass, fopen('php://memory', 'r'), 0])
+    ->fixture('InvalidArray', [null, false, "test", 1, 1.23, new stdClass, fopen('php://memory', 'r'), 0])
 
     ->fixture('ValidIsJsonString', [
         '»null« value'                                          => json_encode(null),
@@ -102,7 +106,7 @@ Tester::suite('AssertSuite')
 
     ->fixture('InvalidCount', [
         [['Hi', 'There'], 3],
-        [new class implements \Countable {public function count(){return 1;}}, 2],
+        [new class implements Countable {public function count(){return 1;}}, 2],
     ])
 
     ->fixture('InvalidChoicesForInvalidKeySet', [
@@ -181,7 +185,7 @@ Tester::suite('AssertSuite')
 
     ->test('testInvalidScalar', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->scalar();
+        Assert::that(new stdClass)->scalar();
 
     }, '', Assert::INVALID_SCALAR, AssertionFailedException::class)
 
@@ -436,34 +440,34 @@ Tester::suite('AssertSuite')
 
     ->test('testValidNotIsInstanceOf', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->notIsInstanceOf('PDO');
+        Assert::that(new stdClass)->notIsInstanceOf('PDO');
     })
 
     ->test('testInvalidNotInstanceOf', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->notIsInstanceOf('stdClass');
+        Assert::that(new stdClass)->notIsInstanceOf('stdClass');
 
     }, '', Assert::INVALID_NOT_INSTANCE_OF, AssertionFailedException::class)
 
     ->test('testValidInstanceOf', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->isInstanceOf('stdClass');
+        Assert::that(new stdClass)->isInstanceOf('stdClass');
     })
 
     ->test('testInvalidInstanceOf', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->isInstanceOf('PDO');
+        Assert::that(new stdClass)->isInstanceOf('PDO');
 
     }, '', Assert::INVALID_INSTANCE_OF, AssertionFailedException::class)
 
     ->test('testValidSubclassOf', function(Suite $suite) {
 
-        Assert::that(new class extends \stdClass{})->subclassOf('stdClass');
+        Assert::that(new class extends stdClass{})->subclassOf('stdClass');
     })
 
     ->test('testInvalidSubclassOf', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->subclassOf('PDO');
+        Assert::that(new stdClass)->subclassOf('PDO');
 
     }, '', Assert::INVALID_SUBCLASS_OF, AssertionFailedException::class)
 
@@ -585,12 +589,12 @@ Tester::suite('AssertSuite')
 
         Assert::that(1)->same(1);
         Assert::that("foo")->same("foo");
-        Assert::that($obj = new \stdClass())->same($obj);
+        Assert::that($obj = new stdClass())->same($obj);
     })
 
     ->test('testInvalidSame', function(Suite $suite) {
 
-        Assert::that(new \stdClass())->same(new \stdClass());
+        Assert::that(new stdClass())->same(new stdClass());
 
     }, '', Assert::INVALID_SAME, AssertionFailedException::class)
 
@@ -598,7 +602,7 @@ Tester::suite('AssertSuite')
 
         Assert::that(1)->eq("1");
         Assert::that("foo")->eq(true);
-        Assert::that($obj = new \stdClass())->eq($obj);
+        Assert::that($obj = new stdClass())->eq($obj);
     })
 
     ->test('testInvalidEq', function(Suite $suite) {
@@ -610,7 +614,7 @@ Tester::suite('AssertSuite')
     ->test('testValidNotEq', function(Suite $suite) {
 
         Assert::that("1")->notEq(false);
-        Assert::that(new \stdClass())->notEq([]);
+        Assert::that(new stdClass())->notEq([]);
     })
 
     ->test('testInvalidNotEq', function(Suite $suite) {
@@ -622,7 +626,7 @@ Tester::suite('AssertSuite')
     ->test('testValidNotSame', function(Suite $suite) {
 
         Assert::that("1")->notSame(2);
-        Assert::that(new \stdClass())->notSame([]);
+        Assert::that(new stdClass())->notSame([]);
     })
 
     ->test('testInvalidNotSame', function(Suite $suite) {
@@ -691,7 +695,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidLengthForGivenEncoding', function(Suite $suite) {
 
-        Assert::that("址")->length(1, '', '', 'utf8');
+        Assert::that("址")->length(1);
     })
 
     ->test('testValidFile', function(Suite $suite) {
@@ -757,14 +761,14 @@ Tester::suite('AssertSuite')
 
     ->test('testValidImplementsInterfaceWithClassObject', function(Suite $suite) {
 
-        $class = new \ArrayObject();
+        $class = new ArrayObject();
 
         Assert::that($class)->implementsInterface('\Traversable');
     })
 
     ->test('testInvalidImplementsInterfaceWithClassObject', function(Suite $suite) {
 
-        $class = new \ArrayObject();
+        $class = new ArrayObject();
 
         Assert::that($class)->implementsInterface('\SplObserver');
 
@@ -881,12 +885,12 @@ Tester::suite('AssertSuite')
 
     ->test('testAllWithComplexAssertion', function(Suite $suite) {
 
-        Assert::that([new \stdClass, new \stdClass])->all()->isInstanceOf('stdClass');
+        Assert::that([new stdClass, new stdClass])->all()->isInstanceOf('stdClass');
     })
 
     ->test('testAllWithComplexAssertionThrowsExceptionOnElementThatFailsAssertion', function(Suite $suite) {
 
-        Assert::that([new \stdClass, new \stdClass])->all()->isInstanceOf('PDO', 'Assertion failed', 'foos');
+        Assert::that([new stdClass, new stdClass])->all()->isInstanceOf('PDO', 'Assertion failed', 'foos');
 
     }, '', Assert::INVALID_INSTANCE_OF, AssertionFailedException::class)
 
@@ -899,7 +903,7 @@ Tester::suite('AssertSuite')
     ->test('testValidCount', function(Suite $suite) {
 
         Assert::that(['Hi'])->count(1);
-        Assert::that(new class implements \Countable {public function count(){return 1;}})->count(1);
+        Assert::that(new class implements Countable {public function count(){return 1;}})->count(1);
     })
 
     ->test('testInvalidCount', function(Suite $suite) {
@@ -943,7 +947,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidIsObject', function(Suite $suite) {
 
-        Assert::that(new \stdClass)->isObject();
+        Assert::that(new stdClass)->isObject();
     })
 
     ->test('testInvalidIsObject', function(Suite $suite) {
@@ -954,7 +958,7 @@ Tester::suite('AssertSuite')
 
     ->test('testValidMethodExists', function(Suite $suite) {
 
-        Assert::that('methodExists')->methodExistsAssert::that(null);
+        Assert::that('methodExists')->methodExists(null);
     })
 
     ->test('testValidChaining', function(Suite $suite) {
