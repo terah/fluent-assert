@@ -993,7 +993,7 @@ class Logger
         {
             throw new InvalidArgumentException("Log level is invalid");
         }
-        $this->level            = static::$logLevels[$level][0];
+        $this->level            = $level;
 
         return $this;
     }
