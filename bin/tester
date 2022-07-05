@@ -16,6 +16,11 @@ class TestRunner
 {
     public static function run()
     {
+        if ( !empty(static::getArg('help', '')) )
+        {
+            static::showHelp();
+            exit();
+        }
         $fileName               = (string)static::getArg(1, getcwd());
         $suite                  = (string)static::getArg('suite', '');
         $testFilter             = (string)static::getArg('filter', '');
@@ -185,6 +190,20 @@ class TestRunner
         return isset($args[$name]) && $args[$name] ? $args[$name] : $default;
     }
 
+    public static function showHelp()
+    {
+        echo "\nUsage:  tester [OPTIONS]\n";
+        echo "\nInitiate a fluent-assert tester session across a test suite.\n";
+        echo "\nOptions:\n";
+        echo "    (first arg)           Location of test suite file/s or directory to search (default is pwd)\n";
+        echo "    --suite               Specify the name of a test suite to run\n";
+        echo "    --filter              Specify the name of a particular test to run\n";
+        echo "    --recursive           Recursively search directories for test suite files (default is true)\n";
+        echo "    --generate            Input file for generating tests\n";
+        echo "    --output              Output path for generated tests\n";
+        echo "    --coverage            Starts gathering xdebug information for code coverage report\n";
+        echo "    --coverage-exclude    Any exclusions from the xdebug code coverage report (excludes 'tests' by default)\n";
+    }
 }
 
 TestRunner::run();
