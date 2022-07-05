@@ -2806,7 +2806,7 @@ class Assert
         }
         try
         {
-            $this->regex('/^([a-z0-9]{4,20})$/', $message, $fieldName);
+            $this->regex('/^([a-z0-9]{3,20})$/', $message, $fieldName);
         }
         catch (AssertionFailedException $e)
         {
