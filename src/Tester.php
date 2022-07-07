@@ -286,13 +286,16 @@ PHP;
 
     protected static function createParentDirectories(string $filePath, $mode=0755) : bool
     {
-        $directoryPath          = preg_match('/.*\//', $filePath);
-        Assert::that($filePath)
-            ->notEmpty("Failed to identify path ({$directoryPath}) to create")
-            ->notEq(DIRECTORY_SEPARATOR, "Failed to identify path ({$directoryPath}) to create");
+        preg_match('/.*\//', $filePath, $matches);
+        $directoryPath = $matches[0];
+
+        Assert::that($directoryPath)
+            ->error("Failed to identify directory path to create from the given filepath ($filePath)")
+            ->notEmpty()
+            ->notEq(DIRECTORY_SEPARATOR);
         if ( file_exists($directoryPath) )
         {
-            Assert::that(is_dir($directoryPath))->notFalse("Failed to create parent directories.. files exists and is not a directory({$directoryPath})");
+            Assert::that(is_dir($directoryPath))->notFalse("Failed to create parent directories.. path exists but is not a directory({$directoryPath})");
 
             return true;
         }
