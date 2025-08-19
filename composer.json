@@ -11,16 +11,16 @@
         {
             "name": "Terry Cullen",
             "email": "terry@terah.com.au",
-            "homepage": "http://terah.com.au",
+            "homepage": "http://elry.com.au",
             "role": "Developer"
         }
     ],
     "bin": ["bin/tester"],
     "require": {
-        "php" : ">=7.4"
+        "php" : ">=8.0"
     },
     "require-dev": {
-        "scrutinizer/ocular": "~1.1"
+
     },
     "autoload": {
         "psr-4": {
