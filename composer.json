@@ -5,13 +5,13 @@
         "terah",
         "fluent-assert"
     ],
-    "homepage": "https://bitbucket.org/terahdigital/fluent-assert",
+    "homepage": "https://github.com/terah/fluent-assert",
     "license": "MIT",
     "authors": [
         {
             "name": "Terry Cullen",
             "email": "terry@terah.com.au",
-            "homepage": "http://elry.com.au",
+            "homepage": "https://elry.com.au",
             "role": "Developer"
         }
     ],
