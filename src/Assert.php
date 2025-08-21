@@ -1198,24 +1198,21 @@ class Assert
      *
      * @param string $message
      * @param string $fieldName
+     * @param int $flags - FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 OR FILTER_FLAG_IPV4
      * @return Assert
      * @throws AssertionFailedException
      */
-    public function ipAddress(string $message='', string $fieldName='') : Assert
+    public function ipAddress(string $message='', string $fieldName='', int $flags=FILTER_FLAG_IPV4) : Assert
     {
         if ( $this->doAllOrNullOr(__FUNCTION__, func_get_args()) )
         {
             return $this;
         }
         $this->string($message, $fieldName);
-        $pattern   = '/^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/';
-        if ( ! preg_match($pattern, $this->value) )
+        if ( ! filter_var($this->value, FILTER_VALIDATE_IP, $flags) )
         {
-            $message = $message ?: $this->overrideError;
-            $message = sprintf(
-                $message ?: 'Value "%s" was expected to be a valid IP Address',
-                $this->stringify($this->value)
-            );
+            $message                = $message ?: $this->overrideError;
+            $message                = sprintf($message ?: 'Value "%s" was expected to be a valid IP Address', $this->stringify($this->value));
 
             throw $this->createException($message, $this->overrideCode ?: self::INVALID_IP_ADDRESS, $fieldName);
         }
